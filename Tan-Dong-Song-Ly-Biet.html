@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a141f">
+<title>情深深雨濛濛 - Tân Dòng Sông Ly Biệt</title>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;900&display=swap');
+
+* {box-sizing: border-box;}
+html {scroll-behavior: smooth;}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+    margin: 0;
+    background:
+        radial-gradient(1100px 480px at 50% -120px, rgba(147,188,205,0.16), transparent 60%),
+        linear-gradient(168deg, #0a141f 0%, #10222f 42%, #16303f 78%, #0d1a27 100%);
+    background-attachment: fixed;
+    color: #dfe3e6;
+    line-height: 1.7;
+    min-height: 100vh;
+}
+/* distant skyline / mist silhouette at the bottom */
+body::after {
+    content: "";
+    position: fixed; left: 0; right: 0; bottom: 0; height: 180px;
+    background: linear-gradient(to top, rgba(4,9,15,0.55), rgba(4,9,15,0));
+    pointer-events: none; z-index: 0;
+}
+#rain {
+    position: fixed; inset: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+}
+body.rain-off #rain {display: none;}
+
+.wrap {max-width: 1200px; margin: 0 auto; padding: 40px 28px 90px; position: relative; z-index: 1;}
+
+h1 {
+    font-family: "Noto Serif SC", "Songti SC", serif;
+    font-size: 54px; font-weight: 900; text-align: center;
+    margin: 18px 0 10px; letter-spacing: 0.12em;
+    color: #f0ead9;
+    text-shadow: 0 2px 22px rgba(147,188,205,0.35), 0 1px 2px rgba(0,0,0,0.6);
+}
+h1::after {
+    content: ""; display: block; width: 96px; height: 3px; border-radius: 99px;
+    background: linear-gradient(90deg, #5f8296, #c9a86a);
+    margin: 18px auto 0; box-shadow: 0 2px 10px rgba(201,168,106,0.35);
+}
+.subtitle {
+    text-align: center; margin-top: 14px;
+    font-size: 15px; font-weight: 600; letter-spacing: 0.42em; text-transform: uppercase;
+    color: #c9a86a;
+}
+.verse {
+    text-align: center; margin-top: 10px;
+    font-family: "Noto Serif SC", serif; font-style: italic; font-size: 17px;
+    color: #9db2bf;
+}
+
+.toolbar {display: flex; gap: 12px; justify-content: center; margin: 30px 0 42px; flex-wrap: wrap;}
+.toolbar button {
+    border: 1px solid rgba(201,168,106,0.28);
+    background: rgba(13,26,39,0.72);
+    backdrop-filter: blur(6px);
+    border-radius: 999px; padding: 10px 22px; cursor: pointer;
+    font-size: 15px; font-weight: 600; color: #c3ced6;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    transition: all 0.2s ease;
+}
+.toolbar button:hover {background: rgba(28,48,66,0.9); transform: translateY(-1px); color: #eef2f4;}
+.toolbar button[aria-pressed="true"] {
+    background: linear-gradient(135deg, #a9853f, #c9a86a);
+    color: #131f2a; border-color: transparent;
+    box-shadow: 0 6px 18px rgba(201,168,106,0.35);
+}
+
+.line {
+    background: linear-gradient(160deg, rgba(23,42,60,0.82), rgba(11,22,34,0.86));
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(147,188,205,0.16);
+    border-radius: 18px; padding: 32px 36px; margin-bottom: 20px;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.38);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.line:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 44px rgba(0,0,0,0.5);
+    border-color: rgba(201,168,106,0.35);
+}
+
+.cn {font-size: 42px; text-align: center;}
+.char-unit {display: inline-block; text-align: center; margin: 0 4px 24px 4px; vertical-align: top;}
+.ruby-py {display: block; font-size: 15px; color: #8fbccd; line-height: 1; margin-bottom: 2px; white-space: nowrap; font-weight: 500;}
+.hz {
+    display: block; background: none; border: none; padding: 0 2px; margin: 0;
+    font-size: 42px; line-height: 1; cursor: pointer; color: #f0ead9;
+    font-family: "Noto Serif SC", serif; border-radius: 8px; transition: all 0.2s ease;
+}
+.ruby-hv {display: block; font-size: 14px; color: #8e9ca7; line-height: 1; margin-top: 2px; white-space: nowrap;}
+.punct {display: inline-block; vertical-align: top; padding-top: 15px; font-size: 42px; color: #aeb9c1; margin-bottom: 24px;}
+.hz:hover {background: rgba(201,168,106,0.16); color: #e8ce8f; transform: scale(1.05);}
+.hz:focus {outline: 2px solid #c9a86a; outline-offset: 4px;}
+
+.vi {
+    color: #d8dde0; font-size: 19px; font-weight: 500; text-align: center;
+    margin-top: 12px; padding-top: 24px;
+    border-top: 1px solid rgba(201,168,106,0.22);
+}
+.py, .hv {display: none;}
+body.hide-hv .ruby-hv {display: none;}
+body.hide-py .ruby-py {display: none;}
+body.hide-vi .vi {display: none; border-top: none; margin-top: 0; padding-top: 0;}
+.foot {color: #7e8d99; font-size: 13px; text-align: center; margin-top: 32px;}
+
+/* Popup */
+.overlay {
+    position: fixed; inset: 0; background: rgba(4,10,17,0.72);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: none; align-items: flex-start; justify-content: center;
+    padding: 24px 16px; z-index: 20; overflow: auto;
+}
+.overlay.open {display: flex;}
+.popup {
+    background: linear-gradient(165deg, #182c40, #101e2d);
+    border: 1px solid rgba(201,168,106,0.28);
+    border-radius: 20px; max-width: 920px; width: 100%;
+    padding: 36px 40px; box-shadow: 0 28px 70px rgba(0,0,0,0.6);
+    margin-top: 4vh; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: #dfe3e6;
+}
+@keyframes popIn {from {opacity: 0; transform: translateY(20px) scale(0.95);} to {opacity: 1; transform: none;}}
+.popup .top {display: flex; justify-content: space-between; align-items: flex-start; position: relative;}
+.popup .header-left {display: flex; align-items: center; gap: 24px;}
+.popup .big {
+    font-family: "Noto Serif SC", serif; font-size: 68px; line-height: 1;
+    width: 104px; height: 104px; display: flex; align-items: center; justify-content: center;
+    border-radius: 16px; background: #0c1a28; color: #e8ce8f;
+    box-shadow: inset 0 0 0 1px rgba(201,168,106,0.4), 0 10px 24px rgba(0,0,0,0.45);
+}
+.trad-badge {
+    background: transparent; border: 1px solid #c9a86a; color: #e8ce8f;
+    padding: 6px 16px; border-radius: 99px;
+    font-size: 16px; font-family: "Noto Serif SC", serif; font-weight: 600;
+    display: none; letter-spacing: 0.05em;
+}
+.popup .close {
+    border: none; background: rgba(255,255,255,0.07); border-radius: 50%;
+    width: 40px; height: 40px; cursor: pointer; font-size: 24px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; color: #c3ced6;
+}
+.popup .close:hover {background: #c9a86a; color: #131f2a; transform: rotate(90deg);}
+.popup h2 {font-size: 24px; margin: 16px 0 6px; font-family: "Noto Serif SC", serif; color: #f0ead9;}
+.popup p {margin: 8px 0; font-size: 16px; color: #cdd6dc;}
+.popup .label {
+    color: #c9a86a; font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; margin-top: 24px; display: inline-block;
+    border-bottom: 2px solid rgba(201,168,106,0.3); padding-bottom: 2px;
+}
+#stroke {
+    width: 200px; height: 200px; margin: 16px auto;
+    border: 1px solid rgba(201,168,106,0.35); border-radius: 14px;
+    background: #fff; box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+.stroke-btns {display: flex; gap: 12px; justify-content: center; margin-top: 12px;}
+.stroke-btns button {
+    border: 1px solid rgba(147,188,205,0.4); background: transparent; border-radius: 99px;
+    padding: 8px 18px; cursor: pointer; font-weight: 500; color: #c3ced6; transition: all 0.2s;
+}
+.stroke-btns button:hover {border-color: #c9a86a; color: #131f2a; background: #c9a86a;}
+.parts {width: 100%; border-collapse: collapse; font-size: 15px; margin-top: 8px; background: rgba(255,255,255,0.04); border-radius: 12px; overflow: hidden;}
+.parts th, .parts td {border-bottom: 1px solid rgba(255,255,255,0.07); padding: 12px 14px; text-align: left; vertical-align: top; color: #d8dde0;}
+.parts th {color: #e3c98f; font-weight: 600; background: rgba(201,168,106,0.12);}
+.parts tr:hover td {background: rgba(255,255,255,0.05);}
+.words {margin: 8px 0; padding-left: 20px; color: #d8dde0;}
+.words li {margin: 6px 0; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 8px; border-left: 3px solid #c9a86a;}
+
+@media(max-width:700px){.popup{padding: 24px;}}
+@media(max-width:600px){
+    h1{font-size:36px;} .subtitle{letter-spacing:0.28em; font-size:13px;} .verse{font-size:15px;}
+    .cn,.hz,.punct{font-size:32px;}
+    .popup .big{font-size:52px; width:80px; height:80px;}
+    .popup .header-left{flex-direction: column; align-items: flex-start; gap: 12px;}
+}
+@media (prefers-reduced-motion: reduce) { html {scroll-behavior: auto;} }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+</head>
+<body>
+<canvas id="rain" aria-hidden="true"></canvas>
+<div class="wrap">
+<h1>情深深雨濛濛</h1>
+<div class="subtitle">Tân Dòng Sông Ly Biệt</div>
+<div class="verse">“Tình sâu sâu, mưa mờ mờ — biết bao lầu đài chìm trong mưa khói”</div>
+
+<div class="toolbar">
+<button id="btn-rain" aria-pressed="true" onclick="toggleRain(this)">🌧 Mưa rơi</button>
+<button id="btn-py" aria-pressed="true" onclick="toggleOpt('hide-py',this)">Pinyin</button>
+<button id="btn-vi" aria-pressed="true" onclick="toggleOpt('hide-vi',this)">Nghĩa Việt</button>
+<button id="btn-hv" aria-pressed="true" onclick="toggleOpt('hide-hv',this)">Hán Việt</button>
+</div>
+
+<div class="line"><div class="cn">情深深雨濛濛，多少楼台烟雨中。</div><div class="py">Qíng shēn shēn yǔ méng méng, duō shǎo lóu tái yān yǔ zhōng.</div><div class="hv">Tình thâm thâm vũ mông mông, đa thiểu lâu đài yên vũ trung.</div><div class="vi">Tình sâu sâu, mưa mờ mờ; biết bao lầu đài chìm trong mưa khói.</div></div>
+<div class="line"><div class="cn">记得当初你侬我侬，车如流水马如龙。</div><div class="py">Jì de dāng chū nǐ nóng wǒ nóng, chē rú liú shuǐ mǎ rú lóng.</div><div class="hv">Ký đắc đương sơ nễ nông ngã nông, xa như lưu thủy mã như long.</div><div class="vi">Nhớ thuở ban đầu anh anh em em quấn quýt; xe như nước chảy, ngựa như rồng.</div></div>
+<div class="line"><div class="cn">尽管狂风平地起，美人如玉剑如虹。</div><div class="py">Jǐn guǎn kuáng fēng píng dì qǐ, měi rén rú yù jiàn rú hóng.</div><div class="hv">Tận quản cuồng phong bình địa khởi, mỹ nhân như ngọc kiếm như hồng.</div><div class="vi">Dù cuồng phong nổi lên từ mặt đất bằng, người đẹp như ngọc, kiếm như cầu vồng.</div></div>
+<div class="line"><div class="cn">情深深雨濛濛，世界只在你眼中。</div><div class="py">Qíng shēn shēn yǔ méng méng, shì jiè zhǐ zài nǐ yǎn zhōng.</div><div class="hv">Tình thâm thâm vũ mông mông, thế giới chỉ tại nễ nhãn trung.</div><div class="vi">Tình sâu sâu, mưa mờ mờ; thế giới chỉ ở trong mắt em.</div></div>
+<div class="line"><div class="cn">相逢不晚，为何匆匆，山山水水几万重。</div><div class="py">Xiāng féng bù wǎn, wèi hé cōng cōng, shān shān shuǐ shuǐ jǐ wàn chóng.</div><div class="hv">Tương phùng bất vãn, vi hà thông thông, sơn sơn thủy thủy kỷ vạn trùng.</div><div class="vi">Gặp nhau chưa muộn, cớ sao vội vã? Núi núi, nước nước muôn trùng.</div></div>
+<div class="line"><div class="cn">一曲高歌千行泪，情在回肠荡气中。</div><div class="py">Yì qǔ gāo gē qiān háng lèi, qíng zài huí cháng dàng qì zhōng.</div><div class="hv">Nhất khúc cao ca thiên hàng lệ, tình tại hồi trường đãng khí trung.</div><div class="vi">Một khúc cao ca, nghìn hàng lệ; tình ở trong lòng quặn thắt, dạt dào.</div></div>
+<div class="line"><div class="cn">情深深雨濛濛，天也无尽地无穷。</div><div class="py">Qíng shēn shēn yǔ méng méng, tiān yě wú jìn dì wú qióng.</div><div class="hv">Tình thâm thâm vũ mông mông, thiên dã vô tận địa vô cùng.</div><div class="vi">Tình sâu sâu, mưa mờ mờ; trời cũng vô tận, đất cũng vô cùng.</div></div>
+<div class="line"><div class="cn">高楼望断，情有独钟。</div><div class="py">Gāo lóu wàng duàn, qíng yǒu dú zhōng.</div><div class="hv">Cao lâu vọng đoạn, tình hữu độc chung.</div><div class="vi">Lầu cao trông đến mỏi mắt, tình chỉ dành riêng cho một người.</div></div>
+<div class="line"><div class="cn">盼过春夏和秋冬，盼来盼去盼不尽，天涯何处是归鸿。</div><div class="py">Pàn guò chūn xià hé qiū dōng, pàn lái pàn qù pàn bú jìn, tiān yá hé chù shì guī hóng.</div><div class="hv">Phán quá xuân hạ hòa thu đông, phán lai phán khứ phán bất tận, thiên nhai hà xứ thị quy hồng.</div><div class="vi">Mong qua xuân, hạ cùng thu, đông; mong tới mong lui mong không hết; chân trời nơi nào là chim hồng trở về?</div></div>
+</div>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closePopup()">
+<div class="popup" role="dialog" aria-modal="true" aria-labelledby="pop-title">
+<div class="top">
+    <div class="header-left">
+        <div class="big" id="pop-char"></div>
+        <div class="trad-badge" id="pop-trad"></div>
+    </div>
+    <button class="close" onclick="closePopup()" aria-label="Đóng">×</button>
+</div>
+<h2 id="pop-title"></h2>
+<p id="pop-py"></p>
+<p id="pop-vi"></p>
+<p class="label">Thứ tự nét</p>
+<div id="stroke"></div>
+<div class="stroke-btns"><button onclick="playStrokes()">▶ Chạy thứ tự nét</button><button onclick="showAllStrokes()">Hiện tất cả nét</button></div>
+<p id="stroke-note" class="foot" style="text-align:left"></p>
+<p class="label">Bộ thủ</p>
+<p id="pop-rad"></p>
+<p class="label">Chiết tự</p>
+<p id="pop-comp"></p>
+<p class="label">Loại chữ</p>
+<p id="pop-type"></p>
+<p class="label">Từng thành phần — cách đọc, nghĩa riêng, vai trò</p>
+<div id="pop-parts"></div>
+<p class="label">Từ ghép / cụm trong bài có chữ này</p>
+<div id="pop-words"></div>
+<p class="label">Cách nhớ</p>
+<p id="pop-memo"></p>
+<p class="label">Trong câu</p>
+<p id="pop-line" style="font-style: italic; background: rgba(127,179,200,0.1); padding: 12px; border-radius: 8px;"></p>
+</div>
+</div>
+
+<script>
+const TRADITIONAL = {"楼":"樓", "台":"臺", "烟":"煙", "记":"記", "当":"當", "侬":"儂", "车":"車", "马":"馬", "龙":"龍", "尽":"盡", "风":"風", "剑":"劍", "为":"為", "几":"幾", "万":"萬", "泪":"淚", "肠":"腸", "荡":"蕩", "气":"氣", "无":"無", "穷":"窮", "断":"斷", "钟":"鍾", "过":"過", "来":"來", "处":"處", "归":"歸", "鸿":"鴻"};
+const DATA={"情":["qíng","tình","tình cảm","忄 — Tâm đứng (bộ Tâm)","忄 + 青","Tim (忄) mà xanh (青) vì nhớ ai — tình sâu đến đổi màu."],"深":["shēn","thâm","sâu","氵 — Thủy (ba chấm thủy)","氵 + 罙","Nước (氵) sâu thăm thẳm, tình cũng sâu như vậy."],"雨":["yǔ","vũ","mưa","雨 — Vũ (bộ Vũ, mưa)","雨","Trên là trời, dưới là 4 giọt mưa rơi — nhìn là thấy mưa."],"濛":["méng","mông","mờ mịt, mưa bụi","氵 — Thủy (ba chấm thủy)","氵 + 蒙","Nước mưa (氵) che phủ (蒙) mọi thứ, nhìn đâu cũng mông lung."],"多":["duō","đa","nhiều","夕 — Tịch (buổi chiều)","夕 + 夕","Một buổi chiều đã dài, hai buổi chiều chồng lên nhau = nhiều."],"少":["shǎo","thiểu","ít","小 — Tiểu (nhỏ)","小 + 丿","Chữ nhỏ (小) mà còn bị gạch bớt một nét = ít."],"楼":["lóu","lâu","lầu, tòa nhà","木 — Mộc (gỗ, cây)","木 + 娄","Nhà lầu dựng bằng gỗ (木), tầng tầng lớp lớp chồng lên."],"台":["tái","đài","đài, lầu","口 — Khẩu (miệng)","厶 + 口","Cái đài cao có miệng (口) để đứng ngắm, đứng hát."],"烟":["yān","yên","khói, sương khói","火 — Hỏa (lửa)","火 + 因","Lửa (火) bốc lên thành khói mờ, như sương khói Giang Nam."],"中":["zhōng","trung","giữa, trong","丨 — Cổn (nét sổ)","口 + 丨","Một nét sổ đâm giữa khung miệng (口) = ở chính giữa."],"记":["jì","ký","nhớ, ghi nhớ","讠 — Ngôn (lời nói)","讠 + 己","Nói (讠) với chính mình (己) để ghi nhớ."],"得":["dé","đắc","được","彳 — Xích (bước chân trái)","彳 + 日 + 寸","Đi (彳) cả ngày (日) mới cầm (寸) được thứ mình muốn = được."],"当":["dāng","đương","lúc, ban đầu","⺌ — Tiểu đầu (đầu chữ Tiểu)","⺌ + 口","Đúng lúc mở miệng (口) nói — 当初 = thuở ban đầu."],"初":["chū","sơ","ban đầu","衤 — Y (áo)","衤 + 刀","Cắt (刀) tấm vải (衤) đầu tiên = khởi đầu, lúc đầu."],"你":["nǐ","nễ","bạn, em, anh (ngôi 2)","亻 — Nhân đứng (bộ Nhân)","亻 + 尔","Người (亻) đứng trước mặt bạn chính là 你."],"侬":["nóng","nông","anh/em thân mật (tiếng Ngô)","亻 — Nhân đứng (bộ Nhân)","亻 + 农","Người (亻) làm nông (农) ở Giang Nam gọi nhau thân mật là 侬."],"我":["wǒ","ngã","tôi, ta","戈 — Qua (giáo, mác)","手 (biến thể) + 戈","Tay cầm giáo (戈) tự vệ — đó là tôi."],"车":["chē","xa","xe","车 — Xa (xe)","车","Nhìn từ trên xuống như chiếc xe có trục và bánh."],"如":["rú","như","như, giống như","女 — Nữ (con gái)","女 + 口","Nói (口) dịu như con gái (女) = như."],"流":["liú","lưu","chảy","氵 — Thủy (ba chấm thủy)","氵 + 㐬","Nước (氵) chảy không ngừng — 车如流水: xe như nước chảy."],"水":["shuǐ","thủy","nước","水 — Thủy (nước)","水","Nét giữa là dòng chính, hai nét bên là sóng sánh."],"马":["mǎ","mã","ngựa","马 — Mã (ngựa)","马","Nhìn nghiêng thấy đầu, bờm và chân ngựa đang phi."],"龙":["lóng","long","rồng","龙 — Long (rồng)","龙","Nét uốn lượn như thân rồng bay."],"尽":["jìn","tận","hết, dù cho","尸 — Thi (thây, xác)","尸 + 二 + 丶","Đi đến tận cùng, dù thế nào cũng hết — 尽管 = dù cho."],"管":["guǎn","quản","quản, dù","竹 — Trúc (tre)","竹 + 官","Ống tre (竹) mà quan (官) cũng quản được = dù sao cũng vậy."],"狂":["kuáng","cuồng","dữ dội, điên cuồng","犭 — Khuyển (chó)","犭 + 王","Chó (犭) mà làm vua (王) thì cuồng loạn — gió cuồng."],"风":["fēng","phong","gió","风 — Phong (gió)","风","Bên trong khung như cơn gió xoáy cuộn lại."],"平":["píng","bình","bằng phẳng","干 — Can (càn, khô)","干 + 丷","Mặt đất phẳng lì, không gồ ghề — 平地 = đất bằng."],"地":["dì","địa","đất","土 — Thổ (đất)","土 + 也","Đất (土) là nơi mọi thứ cũng (也) mọc lên."],"起":["qǐ","khởi","nổi lên, dậy","走 — Tẩu (đi)","走 + 己","Chân đi (走) cùng mình (己) đứng dậy = khởi lên."],"美":["měi","mỹ","đẹp","羊 — Dương (dê)","羊 + 大","Con dê (羊) lớn (大) thì đẹp — 美人 = người đẹp."],"人":["rén","nhân","người","人 — Nhân (người)","人","Hai chân dang ra bước đi = hình người."],"玉":["yù","ngọc","ngọc","玉 — Ngọc (ngọc)","王 + 丶","Vua (王) đeo thêm một chấm = viên ngọc quý."],"剑":["jiàn","kiếm","kiếm, gươm","刂 — Đao đứng (dao)","刂 + 佥","Dao bén (刂) thành kiếm, sáng như cầu vồng — 剑如虹."],"虹":["hóng","hồng","cầu vồng","虫 — Trùng (sâu, côn trùng)","虫 + 工","Cầu vồng như con sâu (虫) khổng lồ vắt ngang trời."],"世":["shì","thế","đời, thế giới","一 — Nhất (một)","一 + 廿 biến thể","Ba đời nối nhau thành một đường dài = thế gian."],"界":["jiè","giới","giới, thế giới","田 — Điền (ruộng)","田 + 介","Ruộng (田) có ranh giới (介) phân chia = thế giới riêng."],"只":["zhǐ","chỉ","chỉ, chỉ có","口 — Khẩu (miệng)","口 + 八","Miệng (口) nói chia (八) ra, cuối cùng chỉ còn một thứ."],"在":["zài","tại","ở, tại","土 — Thổ (đất)","才 + 土","Người tài (才) đứng trên đất (土) = ở tại đó."],"眼":["yǎn","nhãn","mắt","目 — Mục (mắt)","目 + 艮","Mắt (目) nhìn chằm chằm không rời — 世界只在你眼中."],"相":["xiāng","tương","gặp nhau, lẫn nhau","目 — Mục (mắt)","木 + 目","Mắt (目) nhìn cây (木) — hai bên nhìn nhau là gặp nhau."],"逢":["féng","phùng","gặp gỡ","辶 — Sước (bước đi)","夆 + 辶","Đi (辶) trên đường mà gặp nhau — 相逢 = gặp gỡ."],"不":["bù","bất","không","一 — Nhất (một)","一 + 丿 + 丶 biến thể","Một nét ngang bị chặn lại = phủ định, không."],"晚":["wǎn","vãn","muộn","日 — Nhật (mặt trời)","日 + 免","Mặt trời (日) đã lặn mà còn miễn (免) cưỡng = muộn. Nhưng 相逢不晚: gặp nhau chưa muộn."],"为":["wèi","vị","vì, vì sao","丶 — Chủ (chấm)","丶 + 力","Dùng sức (力) làm việc vì ai đó = vì — 为何 = vì sao."],"何":["hé","hà","gì, sao, nào","亻 — Nhân đứng (bộ Nhân)","亻 + 可","Người (亻) hỏi có thể (可) sao? = vì sao, cái gì."],"匆":["cōng","thông","vội vàng","勹 — Bao (bao bọc)","勹 + 勿","Bị bao (勹) lấy mà chớ (勿) dừng = vội vã, 匆匆 = vội vội vàng vàng."],"山":["shān","sơn","núi","山 — Sơn (núi)","山","Ba đỉnh nhô lên = núi."],"几":["jǐ","kỷ","mấy, vài","几 — Kỷ (bàn nhỏ)","几","Nhìn như chiếc bàn nhỏ — hỏi mấy cái?"],"万":["wàn","vạn","vạn, mười nghìn","一 — Nhất (một)","一 + 勹 + 丿","Một (一) vòng bao (勹) cả vạn thứ."],"重":["chóng","trùng","trùng, lớp lớp","里 — Lý (dặm, làng)","千 + 里","Nghìn (千) dặm (里) chồng lên nhau = trùng trùng điệp điệp."],"一":["yī","nhất","một","一 — Nhất (một)","一","Một nét ngang = một."],"曲":["qǔ","khúc","khúc hát","曰 — Viết (nói)","曰 + 卄 biến thể","Miệng (曰) hát thành khúc cong cong — 一曲 = một khúc hát."],"高":["gāo","cao","cao","高 — Cao (cao)","亠 + 口 + 冋","Đứng trên mái nhà cao, mở miệng (口) hát vang — 高歌."],"歌":["gē","ca","hát, ca","欠 — Khiếm (há miệng)","哥 + 欠","Anh (哥) há miệng (欠) hát = ca hát."],"千":["qiān","thiên","nghìn","十 — Thập (mười)","十 + 丿","Mười (十) thêm một nét sổ = nghìn."],"行":["háng","hàng","hàng, dòng","彳 — Xích (bước chân trái)","彳 + 亍","Bước trái (彳) nối bước phải (亍) thành hàng — 千行泪 = nghìn hàng lệ."],"泪":["lèi","lệ","nước mắt","氵 — Thủy (ba chấm thủy)","氵 + 目","Nước (氵) chảy từ mắt (目) = lệ. Đây là chữ nhớ nhanh nhất bài."],"回":["huí","hồi","quay về, quặn lại","口 — Khẩu (miệng)","口 trong 口","Miệng lồng trong miệng = đi vòng quanh rồi trở về — 回肠 = ruột quặn lại."],"肠":["cháng","trường","ruột","月 — Nhục (thịt)","月 + 昜","Ruột (月, bộ thịt) quặn thắt khi xúc động — 回肠荡气."],"荡":["dàng","đãng","lay động, dạt dào","艹 — Thảo (cỏ)","艹 + 汤","Cỏ (艹) lay trong nước sóng (汤) = lòng dạt dào."],"气":["qì","khí","khí, hơi","气 — Khí (hơi)","气","Một nét cong như làn khí bay lên."],"天":["tiān","thiên","trời","大 — Đại (lớn)","一 + 大","Một (一) vạch trời trên đầu người lớn dang tay (大) = trời."],"也":["yě","dã","cũng","乙 — Ất (nét cong)","乙 biến thể","Chữ dùng để nhấn cũng vậy — trời cũng vô tận, đất cũng vô cùng."],"无":["wú","vô","không có","无 — Vô (không)","无","Bốn nét như không còn gì — 无尽 = vô tận, 无穷 = vô cùng."],"穷":["qióng","cùng","cùng tận, hết","穴 — Huyệt (hang)","穴 + 躬","Vào hang (穴) cúi mình (躬) đến tận cùng = vô cùng."],"望":["wàng","vọng","trông, ngóng","月 — Nguyệt (trăng)","亡 + 月 + 王","Đứng trên lầu cao ngóng (望) về phương xa đến mỏi mắt — 高楼望断."],"断":["duàn","đoạn","đứt, đoạn","斤 — Cân (rìu)","𠃜 + 米 + 斤","Dùng rìu (斤) chặt đứt — nhìn đến đứt cả tầm mắt."],"有":["yǒu","hữu","có","月 — Nguyệt (trăng)","𠂇 + 月","Tay cầm thịt (月) = có."],"独":["dú","độc","chỉ một, duy nhất","犭 — Khuyển (chó)","犭 + 蜀","Con chó (犭) đi một mình = độc, duy nhất — 情有独钟."],"钟":["zhōng","chung","chuông; dành riêng","钅 — Kim (kim loại)","钅 + 中","Chuông kim loại (钅) treo ở giữa (中) — tình chỉ rung cho một người."],"盼":["pàn","phán","mong, ngóng trông","目 — Mục (mắt)","目 + 分","Mắt (目) chia (分) ra nhìn bốn phương ngóng đợi =盼."],"过":["guò","quá","qua, trải qua","辶 — Sước (bước đi)","辶 + 寸","Đi (辶) qua từng tấc thời gian: xuân hạ thu đông đều đã qua."],"春":["chūn","xuân","mùa xuân","日 — Nhật (mặt trời)","三 + 人 + 日","Mặt trời (日) lên, cây cỏ nảy mầm = xuân."],"夏":["xià","hạ","mùa hè","夊 — Tuy (chân đi chậm)","𦣻 biến thể","Trên như mái che nắng, dưới chân bước chậm trong hè nóng."],"和":["hé","hòa","và, cùng","口 — Khẩu (miệng)","禾 + 口","Lúa (禾) vào miệng (口) hòa hợp = và, cùng nhau."],"秋":["qiū","thu","mùa thu","禾 — Hòa (lúa)","禾 + 火","Lúa (禾) chín dưới nắng lửa (火) mùa thu."],"冬":["dōng","đông","mùa đông","冫 — Băng (băng)","夂 + 丶","Chân bước chậm trong giá lạnh, trên có chấm băng giá."],"来":["lái","lai","đến, lại","米 — Mễ (gạo, lúa) — thành phần chính","一 + 米 biến thể","Lúa chín thì người lại đến — 盼来 = mong cho đến."],"去":["qù","khứ","đi, qua","厶 — Tư (riêng)","土 + 厶","Rời đất (土) mà đi = đi xa — 盼去 = mong cho qua."],"涯":["yá","nhai","bờ, chân trời","氵 — Thủy (ba chấm thủy)","氵 + 厓","Nước (氵) chảy đến tận bờ = chân trời xa — 天涯."],"处":["chù","xứ","chỗ, nơi","夂 — Tuy (chân đi chậm)","夂 + 卜","Chân đi đến một chỗ để bói (卜) = nơi chốn — 何处 = nơi nào."],"是":["shì","thị","là","日 — Nhật (mặt trời)","日 + 疋","Mặt trời (日) mọc đúng chỗ = là, chính là."],"归":["guī","quy","trở về","刂 — Đao đứng (dao) — thành phần chính","彐 + 刂","Cầm dao (刂) cắt đường về — chim hồng trở về."],"鸿":["hóng","hồng","chim hồng, ngỗng trời","鸟 — Điểu (chim)","江 + 鸟","Chim (鸟) bay qua sông (江) lớn = hồng nhạn mang tin người xa — 归鸿."]};
+const COMPONENTS={"⺌":["—","tiểu đầu","đầu chữ Tiểu, nét trên của các chữ như 当"],"㐬":["liú","lưu","dòng chảy, thành phần gợi âm trong 流"],"三":["sān","tam","ba"],"丨":["gǔn","cổn","nét sổ"],"丶":["zhǔ","chủ","chấm, nét chấm"],"丷":["—","—","hai nét chấm trên, thành phần hình"],"丿":["piě","phiệt","nét phẩy"],"乙":["yǐ","ất","nét cong"],"二":["èr","nhị","hai"],"亍":["chù","xúc","bước chân phải"],"亠":["tóu","đầu","đầu, mũ trên"],"亡":["wáng","vong","mất, trốn"],"介":["jiè","giới","ranh giới, ở giữa"],"佥":["qiān","thiêm","cùng, đều"],"免":["miǎn","miễn","miễn, tránh"],"八":["bā","bát","tám, chia ra"],"冋":["jiōng","quynh","vùng đất xa, thành phần hình trong 高"],"农":["nóng","nông","làm ruộng, nông nghiệp"],"刀":["dāo","đao","dao"],"刂":["dāo","đao","dao đứng"],"分":["fēn","phân","chia ra"],"力":["lì","lực","sức"],"勹":["bāo","bao","bao bọc"],"勿":["wù","vật","chớ, đừng"],"十":["shí","thập","mười"],"卄":["niàn","niệm","hai mươi"],"卜":["bǔ","bốc","bói"],"厓":["yá","nhai","bờ, vách núi"],"厶":["sī","tư","riêng"],"可":["kě","khả","có thể"],"哥":["gē","ca","anh"],"因":["yīn","nhân","nguyên nhân, dựa vào"],"夂":["zhǐ","chỉ","chân đi chậm"],"夆":["féng","phùng","gặp, thành phần gợi âm trong 逢"],"夕":["xī","tịch","buổi chiều"],"娄":["lóu","lâu","chồng chất, tầng"],"官":["guān","quan","quan lại"],"寸":["cùn","thốn","tấc"],"尔":["ěr","nhĩ","ngươi, như vậy"],"尸":["shī","thi","thây, bày ra"],"工":["gōng","công","công việc"],"己":["jǐ","kỷ","mình"],"干":["gān","can","khô, làm"],"廿":["niàn","niệm","hai mươi"],"彐":["jì","kế","thành phần hình"],"彳":["chì","xích","bước chân trái"],"忄":["xīn","tâm","tim, bộ Tâm đứng"],"戈":["gē","qua","giáo, mác"],"手":["shǒu","thủ","tay"],"才":["cái","tài","tài năng"],"斤":["jīn","cân","rìu, cân"],"昜":["yáng","dương","ánh sáng, thành phần gợi âm trong 肠"],"曰":["yuē","viết","nói rằng"],"月":["yuè","nguyệt","trăng; khi làm bộ thủ còn chỉ thịt (nhục)"],"目":["mù","mục","mắt"],"欠":["qiàn","khiếm","há miệng, thiếu"],"汤":["tāng","thang","nước nóng, sóng nước"],"犭":["quǎn","khuyển","chó, bộ Khuyển"],"蜀":["shǔ","thục","nước Thục, thành phần gợi âm trong 独"],"衤":["yī","y","áo, bộ Y"],"讠":["yán","ngôn","lời nói, bộ Ngôn"],"走":["zǒu","tẩu","đi"],"躬":["gōng","cung","cúi mình, thân mình"],"辶":["chuò","sước","bước đi, bộ Sước"],"里":["lǐ","lý","dặm, làng"],"钅":["jīn","kim","kim loại, bộ Kim"],"青":["qīng","thanh","xanh"],"鸟":["niǎo","điểu","chim"],"𠂇":["—","—","tay trái, thành phần hình trong 有"],"𠃜":["—","—","thành phần hình trên của 断, ít dùng độc lập"],"𦣻":["—","—","thành phần hình trên của 夏, ít dùng độc lập"],"疋":["pǐ / shū","thất","tấm vải (pǐ); bước chân (shū)"],"蒙":["méng","mông","che phủ, mờ mịt"],"罙":["—","—","thành phần trong 深, ít dùng độc lập"],"艮":["gèn","cấn","quẻ Cấn, cứng, dừng"],"王":["wáng","vương","vua"],"大":["dà","đại","lớn"],"女":["nǚ","nữ","con gái"],"土":["tǔ","thổ","đất"],"火":["huǒ","hỏa","lửa"],"木":["mù","mộc","gỗ, cây"],"田":["tián","điền","ruộng"],"日":["rì","nhật","mặt trời, ngày"],"口":["kǒu","khẩu","miệng"],"小":["xiǎo","tiểu","nhỏ"],"竹":["zhú","trúc","tre"],"羊":["yáng","dương","dê"],"虫":["chóng","trùng","sâu, côn trùng"],"禾":["hé","hòa","lúa"],"穴":["xué","huyệt","hang"],"米":["mǐ","mễ","gạo, lúa"],"江":["jiāng","giang","sông lớn"],"亻":["rén","nhân","người, bộ Nhân đứng"],"氵":["shuǐ","thủy","nước, bộ Thủy ba chấm"],"艹":["cǎo","thảo","cỏ, bộ Thảo"],"冫":["bīng","băng","băng, hai chấm băng"]};
+const PHONETIC={"情":"青","濛":"蒙","楼":"娄","记":"己","管":"官","逢":"夆","钟":"中","涯":"厓","深":"罙","流":"㐬","烟":"因","狂":"王","地":"也","虹":"工","眼":"艮","晚":"免","独":"蜀","荡":"汤","肠":"昜","望":"亡","何":"可","鸿":"江","歌":"哥","盼":"分"};
+const TYPES={"情":"Hình thanh — 忄 gợi nghĩa (cảm xúc, tim), 青 qīng gợi âm (qīng gần qíng).","深":"Hình thanh — 氵 gợi nghĩa (nước), 罙 gợi âm / gợi nghĩa sâu.","濛":"Hình thanh — 氵 gợi nghĩa (nước, mưa), 蒙 méng gợi âm đúng luôn.","楼":"Hình thanh — 木 gợi nghĩa (gỗ, nhà), 娄 lóu gợi âm.","记":"Hình thanh — 讠 gợi nghĩa (lời nói, ghi), 己 jǐ gợi âm (jǐ gần jì).","管":"Hình thanh — 竹 gợi nghĩa (tre, ống), 官 guān gợi âm đúng luôn.","逢":"Hình thanh — 辶 gợi nghĩa (đi, gặp trên đường), 夆 féng gợi âm đúng luôn.","钟":"Hình thanh — 钅 gợi nghĩa (kim loại, chuông), 中 zhōng gợi âm đúng luôn.","涯":"Hình thanh — 氵 gợi nghĩa (nước, bờ), 厓 yá gợi âm đúng luôn.","流":"Hình thanh — 氵 gợi nghĩa (nước chảy), 㐬 liú gợi âm đúng luôn.","歌":"Hình thanh — 欠 gợi nghĩa (há miệng), 哥 gē gợi âm đúng luôn.","眼":"Hình thanh — 目 gợi nghĩa (mắt), 艮 gèn gợi âm theo âm cổ.","晚":"Hình thanh — 日 gợi nghĩa (mặt trời, thời gian), 免 miǎn gợi âm theo âm cổ.","独":"Hình thanh — 犭 gợi nghĩa (chó, đi một mình), 蜀 shǔ gợi âm theo âm cổ.","荡":"Hình thanh — 艹 gợi nghĩa (cỏ, lay động), 汤 tāng gợi âm (tāng gần dàng).","肠":"Hình thanh — 月 (nhục) gợi nghĩa (ruột, thịt), 昜 yáng gợi âm theo âm cổ.","望":"Hình thanh — 月 / 王 là thành phần hình, 亡 wáng gợi âm (wáng gần wàng).","何":"Hình thanh — 亻 gợi nghĩa (người hỏi), 可 kě gợi âm theo âm cổ.","鸿":"Hình thanh — 鸟 gợi nghĩa (chim), 江 jiāng gợi âm theo âm cổ.","烟":"Hình thanh — 火 gợi nghĩa (lửa, khói), 因 yīn gợi âm theo âm cổ.","狂":"Hình thanh — 犭 gợi nghĩa (chó, dữ), 王 wáng gợi âm theo âm cổ.","地":"Hình thanh — 土 gợi nghĩa (đất), 也 yě gợi âm theo âm cổ.","虹":"Hình thanh — 虫 gợi nghĩa (sâu, vật dài uốn), 工 gōng gợi âm theo âm cổ.","盼":"Hình thanh — 目 gợi nghĩa (mắt ngóng), 分 fēn gợi âm theo âm cổ.","多":"Hội ý — 夕 + 夕, hai buổi chiều chồng lên = nhiều.","相":"Hội ý — 木 + 目, mắt nhìn cây = nhìn nhau, gặp nhau.","回":"Hội ý — 口 lồng trong 口, đi vòng rồi trở về.","美":"Hội ý — 羊 + 大, dê lớn thì đẹp.","雨":"Tượng hình — trời và các hạt mưa rơi.","山":"Tượng hình — ba ngọn núi nhô lên.","水":"Tượng hình — dòng nước chảy.","马":"Tượng hình (giản thể) — hình ngựa giản lược.","龙":"Tượng hình (giản thể) — thân rồng uốn lượn.","人":"Tượng hình — người đứng hai chân.","一":"Chỉ sự — một nét ngang = một.","中":"Chỉ sự — nét sổ xuyên giữa khung = ở giữa.","来":"Giả tá — vốn là hình cây lúa, mượn làm chữ “đến, lại”.","泪":"Giản thể là hội ý: 氵 (nước) + 目 (mắt) = nước mắt. Phồn thể 淚 mới là hình thanh (戻 lì gợi âm) — giản thể đã đổi mất thành phần gợi âm gốc.","过":"Giản thể đã lược: phồn thể 過 là hình thanh (辶 gợi nghĩa đi, 咼 guō gợi âm); giản thể 过 chỉ còn 辶 + 寸.","是":"Không còn gợi âm rõ theo tiếng hiện đại: 日 (mặt trời) + 疋 (bước chân / tấm vải). Học theo nghĩa: mặt trời ở đúng vị trí, bước đi đúng chỗ = là, chính là, đúng vậy."};
+const WORDS={"情深深":["qíng shēn shēn","tình thâm thâm","tình rất sâu"],"雨濛濛":["yǔ méng méng","vũ mông mông","mưa bụi mờ mịt"],"多少":["duō shǎo","đa thiểu","biết bao"],"楼台":["lóu tái","lâu đài","lầu đài"],"烟雨":["yān yǔ","yên vũ","mưa khói, sương khói mưa"],"记得":["jì de","ký đắc","nhớ được, nhớ"],"当初":["dāng chū","đương sơ","thuở ban đầu, lúc đầu"],"你侬我侬":["nǐ nóng wǒ nóng","nễ nông ngã nông","anh anh em em quấn quýt"],"车如流水":["chē rú liú shuǐ","xa như lưu thủy","xe như nước chảy"],"马如龙":["mǎ rú lóng","mã như long","ngựa như rồng"],"尽管":["jǐn guǎn","tận quản","dù cho, mặc dù"],"狂风":["kuáng fēng","cuồng phong","gió dữ"],"平地":["píng dì","bình địa","đất bằng"],"美人":["měi rén","mỹ nhân","người đẹp"],"如玉":["rú yù","như ngọc","như ngọc"],"剑如虹":["jiàn rú hóng","kiếm như hồng","kiếm như cầu vồng"],"世界":["shì jiè","thế giới","thế giới"],"眼中":["yǎn zhōng","nhãn trung","trong mắt"],"相逢":["xiāng féng","tương phùng","gặp gỡ"],"不晚":["bù wǎn","bất vãn","chưa muộn"],"为何":["wèi hé","vi hà","vì sao"],"匆匆":["cōng cōng","thông thông","vội vã"],"山山水水":["shān shān shuǐ shuǐ","sơn sơn thủy thủy","núi non sông nước"],"几万重":["jǐ wàn chóng","kỷ vạn trùng","muôn trùng"],"一曲":["yì qǔ","nhất khúc","một khúc hát"],"高歌":["gāo gē","cao ca","hát cao vút"],"千行泪":["qiān háng lèi","thiên hàng lệ","nghìn hàng lệ"],"回肠荡气":["huí cháng dàng qì","hồi trường đãng khí","lòng quặn thắt, khí dâng trào; xúc động nghẹn ngào"],"天也无尽":["tiān yě wú jìn","thiên dã vô tận","trời cũng vô tận"],"地无穷":["dì wú qióng","địa vô cùng","đất cũng vô cùng"],"高楼":["gāo lóu","cao lâu","lầu cao"],"望断":["wàng duàn","vọng đoạn","trông đến mỏi mắt, đứt tầm mắt"],"情有独钟":["qíng yǒu dú zhōng","tình hữu độc chung","tình chỉ dành cho một người"],"盼过":["pàn guò","phán quá","mong qua, đã mong qua"],"春夏":["chūn xià","xuân hạ","xuân và hạ"],"秋冬":["qiū dōng","thu đông","thu và đông"],"盼来盼去":["pàn lái pàn qù","phán lai phán khứ","mong tới mong lui"],"盼不尽":["pàn bú jìn","phán bất tận","mong không hết"],"天涯":["tiān yá","thiên nhai","chân trời"],"何处":["hé chù","hà xứ","nơi nào"],"归鸿":["guī hóng","quy hồng","chim hồng trở về"]};
+
+function toggleOpt(cls,btn){document.body.classList.toggle(cls);var on=!document.body.classList.contains(cls);btn.setAttribute('aria-pressed',on?'true':'false');}
+var currentChar=null,writer=null;
+
+function compInfo(tok){
+  if(DATA[tok]) return [DATA[tok][0], DATA[tok][1], DATA[tok][2]];
+  if(COMPONENTS[tok]) return COMPONENTS[tok];
+  return ["—","","thành phần hình, ít dùng độc lập"];
+}
+function renderParts(ch,d){
+  var radTok=(d[3]||"").split("—")[0].trim();
+  var toks=[];
+  (d[4]||"").split("+").forEach(function(raw){
+    var cleaned=raw.replace(/\([^)]*\)/g,"").replace("biến thể","").trim();
+    var first=cleaned.split(/\s+/)[0]||"";
+    if(first && toks.indexOf(first)===-1) toks.push(first);
+  });
+  var rows=toks.map(function(tok){
+    var info=compInfo(tok);
+    var role=(tok===radTok)?"Gợi nghĩa (bộ thủ)":(PHONETIC[ch]===tok?"Gợi âm (hình thanh)":"Thành phần hình / nghĩa");
+    return "<tr><td><b>"+tok+"</b></td><td>"+info[0]+" · "+info[1]+"</td><td>"+info[2]+"</td><td>"+role+"</td></tr>";
+  }).join("");
+  var note=PHONETIC[ch]?"<p class=\"foot\" style=\"text-align:left\">Trong chữ hình thanh, một bên gợi nghĩa, một bên gợi âm. Âm cổ có thể khác âm Quan thoại hiện đại, nên thành phần gợi âm đôi khi không đọc giống hệt chữ ngày nay — đó là bình thường, không phải bạn nhớ sai.</p>":"";
+  return "<table class=\"parts\"><tr><th>Thành phần</th><th>Cách đọc · Hán Việt</th><th>Nghĩa riêng</th><th>Vai trò trong chữ này</th></tr>"+rows+"</table>"+note;
+}
+function renderWords(ch){
+  var list=Object.keys(WORDS).filter(function(w){return w.indexOf(ch)>-1;});
+  if(!list.length) return "<p>Chữ này đứng một mình trong câu, không nằm trong cụm ghép riêng của bài.</p>";
+  return "<ul class=\"words\">"+list.map(function(w){var wd=WORDS[w];return "<li><b>"+w+"</b> — "+wd[0]+" · "+wd[1]+" — "+wd[2]+"</li>";}).join("")+"</ul>";
+}
+
+function makeClickable(){
+  document.querySelectorAll('.line').forEach(function(lineEl){
+    var cnEl=lineEl.querySelector('.cn'); if(!cnEl) return;
+    var pyEl=lineEl.querySelector('.py');
+    var hvEl=lineEl.querySelector('.hv');
+    var pyTokens=pyEl?pyEl.textContent.split(/[\s,\uFF0C\u3001\u3002.]+/).filter(function(s){return s; }):[];
+    var hvTokens=hvEl?hvEl.textContent.split(/[\s,\uFF0C\u3001\u3002.]+/).filter(function(s){return s; }):[];
+    var text=cnEl.textContent;
+    lineEl.setAttribute('data-cn',text);
+    if(hvEl) lineEl.setAttribute('data-hv',hvEl.textContent);
+    cnEl.textContent='';
+    var idx=0;
+    Array.from(text).forEach(function(ch){
+      if(!/[\u4e00-\u9fff]/.test(ch)){
+        var ps=document.createElement('span'); ps.className='punct'; ps.textContent=ch; cnEl.appendChild(ps); return;
+      }
+      var py=pyTokens[idx]||(DATA[ch]?DATA[ch][0]:'');
+      var hv=hvTokens[idx]||(DATA[ch]?DATA[ch][1]:''); idx++;
+      var unit=document.createElement('span'); unit.className='char-unit';
+      var pySpan=document.createElement('span'); pySpan.className='ruby-py'; pySpan.textContent=py;
+      var b=document.createElement('button'); b.className='hz'; b.textContent=ch; b.setAttribute('data-ch',ch);
+      b.onclick=(function(cc,line){return function(){openPopup(cc,line);};})(ch,lineEl);
+      var hvSpan=document.createElement('span'); hvSpan.className='ruby-hv'; hvSpan.textContent=hv;
+      unit.appendChild(pySpan); unit.appendChild(b); unit.appendChild(hvSpan); cnEl.appendChild(unit);
+    });
+  });
+}
+function openPopup(ch,line){
+  var d=DATA[ch];if(!d)return;currentChar=ch;
+  document.getElementById('pop-char').textContent=ch;
+  
+  var tradBadge = document.getElementById('pop-trad');
+  if(TRADITIONAL[ch]) {
+      tradBadge.textContent = 'Phồn thể: ' + TRADITIONAL[ch];
+      tradBadge.style.display = 'block';
+  } else {
+      tradBadge.style.display = 'none';
+  }
+  
+  document.getElementById('pop-title').textContent=ch+' — '+d[1];
+  document.getElementById('pop-py').innerHTML='<b>Pinyin:</b> '+d[0]+' &nbsp;·&nbsp; <b>Hán Việt:</b> '+d[1];
+  document.getElementById('pop-vi').innerHTML='<b>Nghĩa:</b> '+d[2];
+  document.getElementById('pop-rad').textContent=d[3];
+  document.getElementById('pop-comp').textContent=d[4];
+  document.getElementById('pop-memo').textContent=d[5];
+  document.getElementById('pop-line').textContent=line?(line.getAttribute('data-cn')||line.querySelector('.cn').textContent)+' — '+(line.getAttribute('data-hv')||'')+' — '+line.querySelector('.vi').textContent:'';
+  document.getElementById('pop-type').textContent=TYPES[ch]||'Xem bảng thành phần bên dưới.';
+  document.getElementById('pop-parts').innerHTML=renderParts(ch,d);
+  document.getElementById('pop-words').innerHTML=renderWords(ch);
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('stroke-note').textContent='';
+  loadWriter(ch);
+}
+function closePopup(){document.getElementById('overlay').classList.remove('open');}
+function loadWriter(ch){
+  var box=document.getElementById('stroke');box.innerHTML='';writer=null;
+  if(typeof HanziWriter==='undefined'){document.getElementById('stroke-note').textContent='Cần mạng để xem nét chạy.';return;}
+  try{
+    writer=HanziWriter.create('stroke',ch,{width:190,height:190,padding:5,showOutline:true,strokeAnimationSpeed:1,delayBetweenStrokes:250, strokeColor: '#16324f'});
+    writer.animateCharacter();
+  }catch(e){document.getElementById('stroke-note').textContent='Không tải được thứ tự nét cho chữ này.';}
+}
+function playStrokes(){if(writer)writer.animateCharacter();else if(currentChar)loadWriter(currentChar);}
+function showAllStrokes(){if(writer)writer.showCharacter();else if(currentChar)loadWriter(currentChar);}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closePopup();});
+makeClickable();
+</script>
+
+<script>
+/* ---- Mưa rơi: canvas streaks + splashes, lãng mạn như lời bài hát ---- */
+(function(){
+  var canvas = document.getElementById('rain');
+  var ctx = canvas.getContext('2d');
+  var W = 0, H = 0, drops = [], splashes = [], raf = null, running = false;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    var n = Math.max(50, Math.min(150, Math.floor(W / 9)));
+    drops = [];
+    for (var i = 0; i < n; i++) drops.push(newDrop(true));
+  }
+  function newDrop(anywhere){
+    return {
+      x: Math.random() * (W + 100) - 50,
+      y: anywhere ? Math.random() * H : -30,
+      len: 11 + Math.random() * 14,
+      speed: 9 + Math.random() * 9,
+      drift: -1.1 - Math.random() * 0.7,
+      op: 0.08 + Math.random() * 0.26
+    };
+  }
+  function frame(){
+    ctx.clearRect(0, 0, W, H);
+    ctx.lineWidth = 1; ctx.lineCap = 'round';
+    for (var i = 0; i < drops.length; i++){
+      var d = drops[i];
+      ctx.strokeStyle = 'rgba(174,199,216,' + d.op + ')';
+      ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x + d.drift * 1.6, d.y + d.len); ctx.stroke();
+      d.y += d.speed; d.x += d.drift;
+      if (d.y > H - 6){
+        if (splashes.length < 60 && Math.random() < 0.5) splashes.push({x: d.x, y: H - 4 - Math.random() * 26, r: 1, op: 0.35});
+        drops[i] = newDrop(false);
+      }
+    }
+    for (var j = splashes.length - 1; j >= 0; j--){
+      var s = splashes[j]; s.r += 0.55; s.op -= 0.02;
+      if (s.op <= 0){ splashes.splice(j, 1); continue; }
+      ctx.strokeStyle = 'rgba(174,199,216,' + s.op + ')';
+      ctx.beginPath(); ctx.ellipse(s.x, s.y, s.r * 1.7, s.r * 0.5, 0, 0, Math.PI * 2); ctx.stroke();
+    }
+    if (running) raf = requestAnimationFrame(frame);
+  }
+  function start(){ if (!running){ running = true; raf = requestAnimationFrame(frame); } }
+  function stop(){ running = false; if (raf) cancelAnimationFrame(raf); ctx.clearRect(0, 0, W, H); }
+
+  window.toggleRain = function(btn){
+    var off = document.body.classList.toggle('rain-off');
+    btn.setAttribute('aria-pressed', off ? 'false' : 'true');
+    if (off) stop(); else start();
+  };
+
+  resize();
+  window.addEventListener('resize', resize);
+  var btn = document.getElementById('btn-rain');
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.body.classList.add('rain-off');
+    if (btn) btn.setAttribute('aria-pressed', 'false');
+  } else {
+    start();
+  }
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden) { if (raf) cancelAnimationFrame(raf); }
+    else if (running) raf = requestAnimationFrame(frame);
+  });
+})();
+</script>
+
+</body>
+</html>
