@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a141f">
+<title>五十年以后 - Năm Mươi Năm Sau</title>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;900&display=swap');
+
+* {box-sizing: border-box;}
+html {scroll-behavior: smooth;}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+    margin: 0;
+    background:
+        radial-gradient(1100px 480px at 50% -120px, rgba(147,188,205,0.16), transparent 60%),
+        linear-gradient(168deg, #0a141f 0%, #10222f 42%, #16303f 78%, #0d1a27 100%);
+    background-attachment: fixed;
+    color: #dfe3e6;
+    line-height: 1.7;
+    min-height: 100vh;
+}
+/* distant skyline / mist silhouette at the bottom */
+body::after {
+    content: "";
+    position: fixed; left: 0; right: 0; bottom: 0; height: 180px;
+    background: linear-gradient(to top, rgba(4,9,15,0.55), rgba(4,9,15,0));
+    pointer-events: none; z-index: 0;
+}
+#rain {
+    position: fixed; inset: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 12; /* above content: rain falls over the whole screen */
+}
+body.rain-off #rain {display: none;}
+
+.wrap {max-width: 1200px; margin: 0 auto; padding: 40px 28px 90px; position: relative; z-index: 1;}
+
+h1 {
+    font-family: "Noto Serif SC", "Songti SC", serif;
+    font-size: 54px; font-weight: 900; text-align: center;
+    margin: 18px 0 10px; letter-spacing: 0.12em;
+    color: #f0ead9;
+    text-shadow: 0 2px 22px rgba(147,188,205,0.35), 0 1px 2px rgba(0,0,0,0.6);
+}
+h1::after {
+    content: ""; display: block; width: 96px; height: 3px; border-radius: 99px;
+    background: linear-gradient(90deg, #5f8296, #c9a86a);
+    margin: 18px auto 0; box-shadow: 0 2px 10px rgba(201,168,106,0.35);
+}
+.subtitle {
+    text-align: center; margin-top: 14px;
+    font-size: 15px; font-weight: 600; letter-spacing: 0.42em; text-transform: uppercase;
+    color: #c9a86a;
+}
+.verse {
+    text-align: center; margin-top: 10px;
+    font-family: "Noto Serif SC", serif; font-style: italic; font-size: 17px;
+    color: #9db2bf;
+}
+
+.toolbar {display: flex; gap: 12px; justify-content: center; margin: 30px 0 42px; flex-wrap: wrap;}
+.toolbar button {
+    border: 1px solid rgba(201,168,106,0.28);
+    background: rgba(13,26,39,0.72);
+    backdrop-filter: blur(6px);
+    border-radius: 999px; padding: 10px 22px; cursor: pointer;
+    font-size: 15px; font-weight: 600; color: #c3ced6;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    transition: all 0.2s ease;
+}
+.toolbar button:hover {background: rgba(28,48,66,0.9); transform: translateY(-1px); color: #eef2f4;}
+.toolbar button[aria-pressed="true"] {
+    background: linear-gradient(135deg, #a9853f, #c9a86a);
+    color: #131f2a; border-color: transparent;
+    box-shadow: 0 6px 18px rgba(201,168,106,0.35);
+}
+
+.line {
+    background: linear-gradient(160deg, rgba(23,42,60,0.82), rgba(11,22,34,0.86));
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(147,188,205,0.16);
+    border-radius: 18px; padding: 32px 36px; margin-bottom: 20px;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.38);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.line:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 44px rgba(0,0,0,0.5);
+    border-color: rgba(201,168,106,0.35);
+}
+
+.cn {font-size: 42px; text-align: center;}
+.char-unit {display: inline-block; text-align: center; margin: 0 4px 24px 4px; vertical-align: top;}
+.ruby-py {display: block; font-size: 15px; color: #8fbccd; line-height: 1; margin-bottom: 2px; white-space: nowrap; font-weight: 500;}
+.hz {
+    display: block; background: none; border: none; padding: 0 2px; margin: 0;
+    font-size: 42px; line-height: 1; cursor: pointer; color: #f0ead9;
+    font-family: "Noto Serif SC", serif; border-radius: 8px; transition: all 0.2s ease;
+}
+.ruby-hv {display: block; font-size: 14px; color: #8e9ca7; line-height: 1; margin-top: 2px; white-space: nowrap;}
+.punct {display: block; font-size: 42px; line-height: 1; color: #aeb9c1; font-family: "Noto Serif SC", serif; text-align: center;}
+.hz:hover {background: rgba(201,168,106,0.16); color: #e8ce8f; transform: scale(1.05);}
+.hz:focus {outline: 2px solid #c9a86a; outline-offset: 4px;}
+
+.vi {
+    color: #d8dde0; font-size: 19px; font-weight: 500; text-align: center;
+    margin-top: 12px; padding-top: 24px;
+    border-top: 1px solid rgba(201,168,106,0.22);
+}
+.py, .hv {display: none;}
+body.hide-hv .ruby-hv {display: none;}
+body.hide-py .ruby-py {display: none;}
+body.hide-vi .vi {display: none; border-top: none; margin-top: 0; padding-top: 0;}
+.foot {color: #7e8d99; font-size: 13px; text-align: center; margin-top: 32px;}
+
+/* Popup */
+.overlay {
+    position: fixed; inset: 0; background: rgba(4,10,17,0.72);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: none; align-items: flex-start; justify-content: center;
+    padding: 24px 16px; z-index: 20; overflow: auto;
+}
+.overlay.open {display: flex;}
+.popup {
+    background: linear-gradient(165deg, #182c40, #101e2d);
+    border: 1px solid rgba(201,168,106,0.28);
+    border-radius: 20px; max-width: 920px; width: 100%;
+    padding: 36px 40px; box-shadow: 0 28px 70px rgba(0,0,0,0.6);
+    margin-top: 4vh; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: #dfe3e6;
+}
+@keyframes popIn {from {opacity: 0; transform: translateY(20px) scale(0.95);} to {opacity: 1; transform: none;}}
+.popup .top {display: flex; justify-content: space-between; align-items: flex-start; position: relative;}
+.popup .header-left {display: flex; align-items: center; gap: 24px;}
+.popup .big {
+    font-family: "Noto Serif SC", serif; font-size: 68px; line-height: 1;
+    width: 104px; height: 104px; display: flex; align-items: center; justify-content: center;
+    border-radius: 16px; background: #0c1a28; color: #e8ce8f;
+    box-shadow: inset 0 0 0 1px rgba(201,168,106,0.4), 0 10px 24px rgba(0,0,0,0.45);
+}
+.char-wrap {display: flex; flex-direction: column; align-items: center; gap: 8px;}
+.char-label {font-size: 12px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: #8e9ca7;}
+.trad-wrap {display: none;}
+.popup .big.trad {
+    color: #b9d2e2;
+    box-shadow: inset 0 0 0 1px rgba(147,188,205,0.5), 0 10px 24px rgba(0,0,0,0.45);
+}
+.trad-badge {display: none;}
+.popup .close {
+    border: none; background: rgba(255,255,255,0.07); border-radius: 50%;
+    width: 40px; height: 40px; cursor: pointer; font-size: 24px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; color: #c3ced6;
+}
+.popup .close:hover {background: #c9a86a; color: #131f2a; transform: rotate(90deg);}
+.popup h2 {font-size: 24px; margin: 16px 0 6px; font-family: "Noto Serif SC", serif; color: #f0ead9;}
+.popup p {margin: 8px 0; font-size: 16px; color: #cdd6dc;}
+#pop-vi {
+    background: rgba(201,168,106,0.10); border: 1px solid rgba(201,168,106,0.28);
+    padding: 10px 14px; border-radius: 10px; font-size: 17px; color: #efe9d8;
+}
+#pop-note {
+    background: rgba(147,188,205,0.08); border: 1px solid rgba(147,188,205,0.20);
+    padding: 10px 14px; border-radius: 10px;
+}
+#pop-note:empty {display: none;}
+.popup .label {
+    color: #c9a86a; font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; margin-top: 24px; display: inline-block;
+    border-bottom: 2px solid rgba(201,168,106,0.3); padding-bottom: 2px;
+}
+#stroke {
+    width: 200px; height: 200px; margin: 16px auto;
+    border: 1px solid rgba(201,168,106,0.35); border-radius: 14px;
+    background: #fff; box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+.stroke-btns {display: flex; gap: 12px; justify-content: center; margin-top: 12px;}
+.stroke-btns button {
+    border: 1px solid rgba(147,188,205,0.4); background: transparent; border-radius: 99px;
+    padding: 8px 18px; cursor: pointer; font-weight: 500; color: #c3ced6; transition: all 0.2s;
+}
+.stroke-btns button:hover {border-color: #c9a86a; color: #131f2a; background: #c9a86a;}
+.parts {width: 100%; border-collapse: collapse; font-size: 15px; margin-top: 8px; background: rgba(255,255,255,0.04); border-radius: 12px; overflow: hidden;}
+.parts th, .parts td {border-bottom: 1px solid rgba(255,255,255,0.07); padding: 12px 14px; text-align: left; vertical-align: top; color: #d8dde0;}
+.parts th {color: #e3c98f; font-weight: 600; background: rgba(201,168,106,0.12);}
+.parts tr:hover td {background: rgba(255,255,255,0.05);}
+.words {margin: 8px 0; padding-left: 20px; color: #d8dde0;}
+.words li {margin: 6px 0; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 8px; border-left: 3px solid #c9a86a;}
+
+@media(max-width:700px){.popup{padding: 24px;}}
+@media(max-width:600px){
+    h1{font-size:36px;} .subtitle{letter-spacing:0.28em; font-size:13px;} .verse{font-size:15px;}
+    .cn,.hz,.punct{font-size:32px;}
+    .popup .big{font-size:52px; width:80px; height:80px;}
+    .popup .header-left{flex-direction: row; flex-wrap: wrap; align-items: flex-start; gap: 12px;}
+}
+@media (prefers-reduced-motion: reduce) { html {scroll-behavior: auto;} }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+</head>
+<body>
+<canvas id="rain" aria-hidden="true"></canvas>
+<div class="wrap">
+<h1>五十年以后</h1>
+<div class="subtitle">Năm Mươi Năm Sau</div>
+<div class="verse">Hải Lai A Mộc · “Năm mươi năm sau, em vẫn ở bên anh”</div>
+
+<div class="toolbar">
+<button id="btn-rain" aria-pressed="true" onclick="toggleRain(this)">🌅 Hoàng hôn</button>
+<button id="btn-py" aria-pressed="true" onclick="toggleOpt('hide-py',this)">Pinyin</button>
+<button id="btn-vi" aria-pressed="true" onclick="toggleOpt('hide-vi',this)">Nghĩa Việt</button>
+<button id="btn-hv" aria-pressed="true" onclick="toggleOpt('hide-hv',this)">Hán Việt</button>
+</div>
+
+<div class="line"><div class="cn">此生最好的运气，就是遇见了你。</div><div class="py">Cǐ shēng zuì hǎo de yùn qì, jiù shì yù jiàn le nǐ.</div><div class="hv">Thử sinh tối hảo đích vận khí, tựu thị ngộ kiến liễu nhĩ.</div><div class="vi">Vận may lớn nhất đời này, chính là được gặp em.</div></div>
+<div class="line"><div class="cn">刚好你也爱我，我也爱着你。</div><div class="py">Gāng hǎo nǐ yě ài wǒ, wǒ yě ài zhe nǐ.</div><div class="hv">Cương hảo nhĩ dã ái ngã, ngã dã ái trước nhĩ.</div><div class="vi">Vừa khéo em cũng yêu anh, anh cũng đang yêu em.</div></div>
+<div class="line"><div class="cn">在这个尴尬年纪，我不再是一个人。</div><div class="py">Zài zhè gè gān gà nián jì, wǒ bù zài shì yī gè rén.</div><div class="hv">Tại giá cá giam giới niên kỷ, ngã bất tái thị nhất cá nhân.</div><div class="vi">Ở cái tuổi dở dang này, anh không còn một mình nữa.</div></div>
+<div class="line"><div class="cn">多幸运能和你在一起。</div><div class="py">Duō xìng yùn néng hé nǐ zài yī qǐ.</div><div class="hv">Đa hạnh vận năng hòa nhĩ tại nhất khởi.</div><div class="vi">May mắn biết bao khi được ở bên em.</div></div>
+<div class="line"><div class="cn">此生最大的欢喜，就是等到了你。</div><div class="py">Cǐ shēng zuì dà de huān xǐ, jiù shì děng dào le nǐ.</div><div class="hv">Thử sinh tối đại đích hoan hỉ, tựu thị đẳng đáo liễu nhĩ.</div><div class="vi">Niềm vui lớn nhất đời này, chính là đã chờ được em.</div></div>
+<div class="line"><div class="cn">是你带我走出，那片沼泽地。</div><div class="py">Shì nǐ dài wǒ zǒu chū, nà piàn zhǎo zé dì.</div><div class="hv">Thị nhĩ đới ngã tẩu xuất, na phiến chiểu trạch địa.</div><div class="vi">Là em đưa anh bước ra khỏi vũng lầy ấy.</div></div>
+<div class="line"><div class="cn">从我们交换信物，深情相望那刻起。</div><div class="py">Cóng wǒ men jiāo huàn xìn wù, shēn qíng xiàng wàng nà kè qǐ.</div><div class="hv">Tòng ngã môn giao hoán tín vật, thâm tình tương vọng na khắc khởi.</div><div class="vi">Từ khoảnh khắc ta trao nhau tín vật, đắm đuối nhìn nhau ấy.</div></div>
+<div class="line"><div class="cn">我的余生就是你。</div><div class="py">Wǒ de yú shēng jiù shì nǐ.</div><div class="hv">Ngã đích dư sinh tựu thị nhĩ.</div><div class="vi">Quãng đời còn lại của anh chính là em.</div></div>
+<div class="line"><div class="cn">我希望五十年以后，你还能在我左右。</div><div class="py">Wǒ xī wàng wǔ shí nián yǐ hòu, nǐ hái néng zài wǒ zuǒ yòu.</div><div class="hv">Ngã hi vọng ngũ thập niên dĩ hậu, nhĩ hoàn năng tại ngã tả hữu.</div><div class="vi">Anh mong năm mươi năm sau, em vẫn còn ở bên anh.</div></div>
+<div class="line"><div class="cn">和你坐在摇椅里，感受那夕阳的温柔。</div><div class="py">Hé nǐ zuò zài yáo yǐ lǐ, gǎn shòu nà xī yáng de wēn róu.</div><div class="hv">Hòa nhĩ tọa tại dao ỷ lý, cảm thụ na tịch dương đích ôn nhu.</div><div class="vi">Cùng em ngồi trong ghế xích đu, cảm nhận ánh hoàng hôn dịu dàng.</div></div>
+<div class="line"><div class="cn">听微风轻轻地吹，听河水慢慢地流。</div><div class="py">Tīng wēi fēng qīng qīng de chuī, tīng hé shuǐ màn màn de liú.</div><div class="hv">Thính vi phong khinh khinh địa xuy, thính hà thủy mạn mạn địa lưu.</div><div class="vi">Nghe gió nhẹ khẽ thổi, nghe nước sông chậm rãi trôi.</div></div>
+<div class="line"><div class="cn">再聊聊从前日子，刚谈恋爱的时候。</div><div class="py">Zài liáo liáo cóng qián rì zǐ, gāng tán liàn ài de shí hòu.</div><div class="hv">Tái liêu liêu tòng tiền nhật tử, cương đàm luyến ái đích thời hậu.</div><div class="vi">Lại kể nhau nghe chuyện ngày xưa, thuở mới yêu nhau.</div></div>
+<div class="line"><div class="cn">我希望五十年以后，你还能在我左右。</div><div class="py">Wǒ xī wàng wǔ shí nián yǐ hòu, nǐ hái néng zài wǒ zuǒ yòu.</div><div class="hv">Ngã hi vọng ngũ thập niên dĩ hậu, nhĩ hoàn năng tại ngã tả hữu.</div><div class="vi">Anh mong năm mươi năm sau, em vẫn còn ở bên anh.</div></div>
+<div class="line"><div class="cn">那时都已白了头，还想听你叫我丫头。</div><div class="py">Nà shí dōu yǐ bái le tóu, hái xiǎng tīng nǐ jiào wǒ yā tóu.</div><div class="hv">Na thời đô dĩ bạch liễu đầu, hoàn tưởng thính nhĩ khiếu ngã nha đầu.</div><div class="vi">Khi ấy tóc đều đã bạc trắng, vẫn muốn nghe em gọi anh là “nha đầu”.</div></div>
+<div class="line"><div class="cn">轻轻牵着你的手，静静靠在你胸口。</div><div class="py">Qīng qīng qiān zhe nǐ de shǒu, jìng jìng kào zài nǐ xiōng kǒu.</div><div class="hv">Khinh khinh khiên trước nhĩ đích thủ, tĩnh tĩnh kháo tại nhĩ hung khẩu.</div><div class="vi">Khẽ nắm lấy tay em, lặng lẽ tựa vào ngực em.</div></div>
+<div class="line"><div class="cn">这个画面，是不是就叫做长相厮守。</div><div class="py">Zhè gè huà miàn, shì bù shì jiù jiào zuò cháng xiàng sī shǒu.</div><div class="hv">Giá cá họa diện, thị bất thị tựu khiếu tố trưởng tương tư thủ.</div><div class="vi">Khung cảnh ấy, có phải chính là “bên nhau trọn đời” không?</div></div>
+<div class="line"><div class="cn">此生最大的欢喜，就是等到了你。</div><div class="py">Cǐ shēng zuì dà de huān xǐ, jiù shì děng dào le nǐ.</div><div class="hv">Thử sinh tối đại đích hoan hỉ, tựu thị đẳng đáo liễu nhĩ.</div><div class="vi">Niềm vui lớn nhất đời này, chính là đã chờ được em.</div></div>
+<div class="line"><div class="cn">是你带我走出，那片沼泽地。</div><div class="py">Shì nǐ dài wǒ zǒu chū, nà piàn zhǎo zé dì.</div><div class="hv">Thị nhĩ đới ngã tẩu xuất, na phiến chiểu trạch địa.</div><div class="vi">Là em đưa anh bước ra khỏi vũng lầy ấy.</div></div>
+<div class="line"><div class="cn">从我们交换信物，深情相望那刻起。</div><div class="py">Cóng wǒ men jiāo huàn xìn wù, shēn qíng xiàng wàng nà kè qǐ.</div><div class="hv">Tòng ngã môn giao hoán tín vật, thâm tình tương vọng na khắc khởi.</div><div class="vi">Từ khoảnh khắc ta trao nhau tín vật, đắm đuối nhìn nhau ấy.</div></div>
+<div class="line"><div class="cn">我的余生就是你。</div><div class="py">Wǒ de yú shēng jiù shì nǐ.</div><div class="hv">Ngã đích dư sinh tựu thị nhĩ.</div><div class="vi">Quãng đời còn lại của anh chính là em.</div></div>
+<div class="line"><div class="cn">我希望五十年以后，你还能在我左右。</div><div class="py">Wǒ xī wàng wǔ shí nián yǐ hòu, nǐ hái néng zài wǒ zuǒ yòu.</div><div class="hv">Ngã hi vọng ngũ thập niên dĩ hậu, nhĩ hoàn năng tại ngã tả hữu.</div><div class="vi">Anh mong năm mươi năm sau, em vẫn còn ở bên anh.</div></div>
+<div class="line"><div class="cn">和你坐在摇椅里，感受那夕阳的温柔。</div><div class="py">Hé nǐ zuò zài yáo yǐ lǐ, gǎn shòu nà xī yáng de wēn róu.</div><div class="hv">Hòa nhĩ tọa tại dao ỷ lý, cảm thụ na tịch dương đích ôn nhu.</div><div class="vi">Cùng em ngồi trong ghế xích đu, cảm nhận ánh hoàng hôn dịu dàng.</div></div>
+<div class="line"><div class="cn">听微风轻轻地吹，听河水慢慢地流。</div><div class="py">Tīng wēi fēng qīng qīng de chuī, tīng hé shuǐ màn màn de liú.</div><div class="hv">Thính vi phong khinh khinh địa xuy, thính hà thủy mạn mạn địa lưu.</div><div class="vi">Nghe gió nhẹ khẽ thổi, nghe nước sông chậm rãi trôi.</div></div>
+<div class="line"><div class="cn">再聊聊从前日子，刚谈恋爱的时候。</div><div class="py">Zài liáo liáo cóng qián rì zǐ, gāng tán liàn ài de shí hòu.</div><div class="hv">Tái liêu liêu tòng tiền nhật tử, cương đàm luyến ái đích thời hậu.</div><div class="vi">Lại kể nhau nghe chuyện ngày xưa, thuở mới yêu nhau.</div></div>
+<div class="line"><div class="cn">我希望五十年以后，你还能在我左右。</div><div class="py">Wǒ xī wàng wǔ shí nián yǐ hòu, nǐ hái néng zài wǒ zuǒ yòu.</div><div class="hv">Ngã hi vọng ngũ thập niên dĩ hậu, nhĩ hoàn năng tại ngã tả hữu.</div><div class="vi">Anh mong năm mươi năm sau, em vẫn còn ở bên anh.</div></div>
+<div class="line"><div class="cn">那时都已白了头，还想听你叫我丫头。</div><div class="py">Nà shí dōu yǐ bái le tóu, hái xiǎng tīng nǐ jiào wǒ yā tóu.</div><div class="hv">Na thời đô dĩ bạch liễu đầu, hoàn tưởng thính nhĩ khiếu ngã nha đầu.</div><div class="vi">Khi ấy tóc đều đã bạc trắng, vẫn muốn nghe em gọi anh là “nha đầu”.</div></div>
+<div class="line"><div class="cn">轻轻牵着你的手，静静靠在你胸口。</div><div class="py">Qīng qīng qiān zhe nǐ de shǒu, jìng jìng kào zài nǐ xiōng kǒu.</div><div class="hv">Khinh khinh khiên trước nhĩ đích thủ, tĩnh tĩnh kháo tại nhĩ hung khẩu.</div><div class="vi">Khẽ nắm lấy tay em, lặng lẽ tựa vào ngực em.</div></div>
+<div class="line"><div class="cn">这个画面，是不是就叫做长相厮守。</div><div class="py">Zhè gè huà miàn, shì bù shì jiù jiào zuò cháng xiàng sī shǒu.</div><div class="hv">Giá cá họa diện, thị bất thị tựu khiếu tố trưởng tương tư thủ.</div><div class="vi">Khung cảnh ấy, có phải chính là “bên nhau trọn đời” không?</div></div>
+<div class="line"><div class="cn">我希望五十年以后，你还能在我左右。</div><div class="py">Wǒ xī wàng wǔ shí nián yǐ hòu, nǐ hái néng zài wǒ zuǒ yòu.</div><div class="hv">Ngã hi vọng ngũ thập niên dĩ hậu, nhĩ hoàn năng tại ngã tả hữu.</div><div class="vi">Anh mong năm mươi năm sau, em vẫn còn ở bên anh.</div></div>
+<div class="line"><div class="cn">那时都已白了头，还想听你叫我丫头。</div><div class="py">Nà shí dōu yǐ bái le tóu, hái xiǎng tīng nǐ jiào wǒ yā tóu.</div><div class="hv">Na thời đô dĩ bạch liễu đầu, hoàn tưởng thính nhĩ khiếu ngã nha đầu.</div><div class="vi">Khi ấy tóc đều đã bạc trắng, vẫn muốn nghe em gọi anh là “nha đầu”.</div></div>
+<div class="line"><div class="cn">轻轻牵着你的手，静静靠在你胸口。</div><div class="py">Qīng qīng qiān zhe nǐ de shǒu, jìng jìng kào zài nǐ xiōng kǒu.</div><div class="hv">Khinh khinh khiên trước nhĩ đích thủ, tĩnh tĩnh kháo tại nhĩ hung khẩu.</div><div class="vi">Khẽ nắm lấy tay em, lặng lẽ tựa vào ngực em.</div></div>
+<div class="line"><div class="cn">这个画面，是不是就叫做长相厮守。</div><div class="py">Zhè gè huà miàn, shì bù shì jiù jiào zuò cháng xiàng sī shǒu.</div><div class="hv">Giá cá họa diện, thị bất thị tựu khiếu tố trưởng tương tư thủ.</div><div class="vi">Khung cảnh ấy, có phải chính là “bên nhau trọn đời” không?</div></div>
+</div>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closePopup()">
+<div class="popup" role="dialog" aria-modal="true" aria-labelledby="pop-title">
+<div class="top">
+    <div class="header-left">
+        <div class="char-wrap"><div class="big" id="pop-char"></div><div class="char-label">Giản thể</div></div>
+        <div class="char-wrap trad-wrap" id="pop-trad-wrap"><div class="big trad" id="pop-trad-char"></div><div class="char-label">Phồn thể</div></div>
+    </div>
+    <button class="close" onclick="closePopup()" aria-label="Đóng">×</button>
+</div>
+<h2 id="pop-title"></h2>
+<p id="pop-py"></p>
+<p id="pop-vi"></p>
+<p id="pop-note"></p>
+<p class="label">Thứ tự nét</p>
+<div id="stroke"></div>
+<div class="stroke-btns"><button onclick="playStrokes()">▶ Chạy thứ tự nét</button><button onclick="showAllStrokes()">Hiện tất cả nét</button></div>
+<p id="stroke-note" class="foot" style="text-align:left"></p>
+<p class="label">Bộ thủ</p>
+<p id="pop-rad"></p>
+<p class="label">Chiết tự</p>
+<p id="pop-comp"></p>
+<p class="label">Loại chữ</p>
+<p id="pop-type"></p>
+<p class="label">Từng thành phần — cách đọc, nghĩa riêng, vai trò</p>
+<div id="pop-parts"></div>
+<p class="label">Từ ghép / cụm trong bài có chữ này</p>
+<div id="pop-words"></div>
+<p class="label">Cách nhớ</p>
+<p id="pop-memo"></p>
+<p class="label">Trong câu</p>
+<p id="pop-line" style="font-style: italic; background: rgba(127,179,200,0.1); padding: 12px; border-radius: 8px;"></p>
+</div>
+</div>
+
+<script>
+const TRADITIONAL={"运": "運", "气": "氣", "见": "見", "刚": "剛", "爱": "愛", "着": "著", "这": "這", "个": "個", "尴": "尷", "纪": "紀", "欢": "歡", "带": "帶", "泽": "澤", "从": "從", "们": "們", "换": "換", "余": "餘", "后": "後", "还": "還", "摇": "搖", "里": "裏", "阳": "陽", "温": "溫", "听": "聽", "风": "風", "轻": "輕", "谈": "談", "恋": "戀", "时": "時", "头": "頭", "牵": "牽", "静": "靜", "画": "畫", "长": "長", "厮": "廝"};
+const DATA={"此": ["cǐ", "thử", "này; đây", "止 — Chỉ (dừng)", "止 + 匕", "'Dừng lại! Đừng gõ muỗng xuống vỉa hè nữa — tôi không chịu nổi tiếng ồn!' — dừng cộng muỗng là 'thử', này."], "生": ["shēng", "sinh", "sinh ra; sống; sinh", "生 — Sinh (sống, sinh ra)", "生", "Sinh con tạo ra một gia đình ba người từ hai người vốn có. Đứa bé mới sinh là người ở trên cùng. Ta biết nó còn nhỏ, vì chấm nhỏ cho ta biết điều đó. Quyền trượng đóng vai trò như cái chốt gắn kết gia đình mới lại với nhau."], "最": ["zuì", "tối", "nhất, nhất", "日 — Nhật (mặt trời, ngày)", "日 + 取", "Bạn đúng là đứa con tham lam. Bạn luôn muốn phần nhiều nhất của bất cứ thứ gì. Bất cứ nơi nào mặt trời chiếu sáng, bạn dường như cảm thấy bất cứ thứ gì ở đó đều là của bạn, để bạn lấy đi."], "好": ["hǎo", "hảo", "tốt; hay", "女 — Nữ (phụ nữ)", "女 + 子", "Không cảnh nào gợi lên cảm giác tốt đẹp hơn hình ảnh người phụ nữ cùng đứa con của mình."], "的": ["de", "đích", "(trong 打的) xe taxi; của", "白 — Bạch (trắng)", "白 + 勺", "Chữ 'của' ở đây được đặt trong ngoặc kép, vì đây là cách tóm tắt quá đơn giản về vai trò của 的 trong ngữ pháp tiếng Trung; có lẽ cách dễ nhất để nhớ chữ này là nheo mắt nhìn các thành phần, sẽ thấy chúng tạo thành cách viết cách điệu của 'de' bằng chữ cái tiếng Anh — dù sao chữ này xuất hiện rất thường xuyên, không chữ nào thường xuyên hơn, nên bạn sẽ sớm học thuộc nó thôi."], "运": ["yùn", "vận", "vận chuyển; vận may; vận", "辶 — Sước (đi, bước)", "云 + 辶", "Tôi ghét việc chuyển nhà! Vận chuyển đồ đạc thật mệt mỏi và khiến mọi thứ dường như xa xôi. Một thái độ tốt hơn là tắt trí óc đi, và tiến lên phía trước theo hướng những đám mây xa xăm cho đến khi mọi việc xong xuôi."], "气": ["qì", "khí", "khí, hơi", "气 — Khí (hơi)", "丿 + 米", "Ban đầu, chữ này được vẽ để mô phỏng đường viền uốn lượn của những đám mây trên trời. Người đàn ông, bị biến dạng vì tai nạn, nằm như xác chết trên vỉa hè. Đột nhiên, anh ta cử động một cánh tay để cho thấy tinh thần và sinh khí vẫn còn trong cơ thể mình."], "就": ["jiù", "tựu", "thì, liền, ngay", "尤 — Vưu (lạ)", "京 + 尤", "Nếu một tội ác đặc biệt khủng khiếp là lỗi của bạn, thì bạn có thể phải chịu án tử hình ở kinh đô!"], "是": ["shì", "thị", "là, đúng", "日 — Nhật (mặt trời, ngày)", "日 + 正", "Khi mặt trời chiếu sáng, mọi thứ đều đúng đắn trên đời. Đó là bản chất của sự tồn tại."], "遇": ["yù", "ngộ", "gặp; đối xử", "辶 — Sước (đi)", "辶 + 禺", "Trên đường về nhà, người nông dân lần theo dấu chân thú trên cánh đồng, dẫn đến cuộc gặp bất ngờ với chó sói đang rình đàn cừu."], "见": ["jiàn", "kiến", "thấy; gặp", "见 — Kiến (thấy)", "目 + 儿", "Một anh chàng đi lại với túi giấy trùm đầu — ta thấy viền của nó, còn anh ta thì chẳng thấy gì. Hoặc viền ấy là hình đầu anh ta, để khi đi anh ta thấy đường."], "了": ["le", "liễu", "hiểu, rõ", "亅 — Quyết (móc)", "丿 + 亅", "Một trong những cách dùng quan trọng của từ thường gặp này là báo hiệu một sự 'thay đổi trạng thái' đột ngột, gợi ý bởi những đường ngoằn ngoèo, quanh co của chữ này. Chúng ta sẽ dùng nó để chỉ một thay đổi đột ngột, quan trọng."], "你": ["nǐ", "nhĩ", "bạn; anh; chị", "亻 — Nhân (người)", "亻 + 尔", "Tôi đang nói với bạn — tôi là người đàn ông bên trái, còn bạn trông nhỏ hơn vì đứng xa hơn."], "刚": ["gāng", "cương", "cứng, chắc; vừa mới", "刂 — Đao (dao)", "冈 + 刂", "Khoáng chất và lớp đất mặt trên gò núi cứng và chắc đến mức ta cần một loại dao nào đó để đào xuyên qua."], "也": ["yě", "dã", "cũng; vậy", "乙 — Ất (...)", "也", "Vương trượng ở giữa tượng trưng cho triều đình của một vị vua quyền lực. Triều đình có thể là nơi trú ẩn nhưng cũng là hầm mỏ đầy nguy hiểm, tùy bạn chơi trò chính trị giỏi đến đâu."], "爱": ["ài", "ái", "yêu; thích", "爪 — Trảo (móng vuốt)", "爫 + 冖 + 心 + 友", "Sau nhiều năm tận hưởng niềm vui bên nhau, tình quen biết nhỏ đã nở thành một ý tưởng lớn. Bạn tôi và tôi nhận ra mình đang yêu nhau sâu đậm."], "我": ["wǒ", "ngã", "tôi; ta", "戈 — Qua (giáo)", "手 + 戈", "Tôi tự tin cầm thanh kiếm trong tay để tượng trưng cho lúc kết thúc khóa huấn luyện và bước vào đời với con người mới."], "着": ["zhe", "trước", "chạm; dính; (trợ từ)", "目 — Mục (mắt)", "羊 + 目", "Những con cừu nhỏ không bao giờ đứng yên. Người chăn cừu dùng mắt để theo dõi bước tiến liên tục của chúng."], "在": ["zài", "tại", "ở; tại; đang", "土 — Thổ (đất)", "才 + 土", "Chữ 'một' và cây quyền trượng đánh dấu một vị trí trên mặt đất, nơi bạn đến được bằng cách đi theo con đường hành động."], "这": ["zhè", "giá", "này; đây", "辶 — Sước (đi)", "文 + 辶", "'Này' dùng cho một vật cụ thể bạn đang nghĩ tới. Trong lời nói, bạn tiến về phía vật đó — một hiện vật văn hóa quan trọng."], "个": ["gè", "cá", "cái, chiếc (lượng từ)", "人 — Nhân (người)", "人 + 丿", "Một người đàn ông với cây trượng — một người ở tít trên cao — đi dạo quanh chợ, lợi dụng vị trí của mình để nếm đủ thứ. Chẳng có quy luật nào đằng sau việc nếm thử này, nên ta dùng lượng từ không chuyên này."], "尴": ["gān", "giam", "lúng túng, ngượng ngùng", "尢 — Vưu (què, khập khiễng)", "尢 + 监", "Chân khập khiễng (尢) mà bị giám sát (监) thì lúng túng, ngượng ngập — 尴尬."], "尬": ["gà", "giới", "lúng túng (chỉ dùng trong 尴尬)", "尢 — Vưu (què, khập khiễng)", "尢 + 介", "Đi khập khiễng (尢) chen vào giữa (介) mọi người — ngượng chín mặt."], "年": ["nián", "niên", "năm", "年 — Niên (năm)", "丿 + 千", "Đây là 生, 'sinh ra'; nó đã bị thay đổi một chút — nét giữa chỉ xuống thay vì chỉ lên; khi năm tháng trôi qua, ta đi xa khỏi lúc sinh ra và tiến về phía cái chết, còn nét mực nhỏ bất ngờ kia gợi rằng chính những năm tháng cũng đầy những bước ngoặt bất ngờ."], "纪": ["jì", "kỷ", "thế kỷ; ghi chép", "纟 — Mịch (tơ)", "纟 + 己", "Trên tấm gấm lụa, người thợ dệt đã dệt nên hoa văn tinh xảo ghi lại lịch sử của nhiều người — nhiều 'cái tôi' và thành tựu lịch sử của họ."], "不": ["bù", "bất", "không", "一 — Nhất (một)", "一 + 卜", "Đây là một cách để chắc chắn một hành động sẽ không đi đến hoàn thành — hãy giữ nó ở dưới đất, hoặc ngoài tầm chú ý. Nó cũng trông như một ly rượu vang úp ngược, với que khuấy úp ngược. Đây chắc chắn không phải là cách để say!"], "再": ["zài", "tái", "lại; nữa", "冂 — Quynh (biên giới, khung)", "一 + 冉", "Nhà vua và triều đình có ham muốn không kìm được — ngứa ngáy muốn mở rộng lãnh thổ ra ngoài biên giới, và làm đi làm lại mãi."], "一": ["yī", "nhất", "một", "一 — Nhất (một)", "一", "Các vạch đếm của người Trung Quốc rõ ràng là nằm ngang chứ không phải dọc. Một vạch như vậy tượng trưng cho số một."], "人": ["rén", "nhân", "người", "人 — Nhân (người)", "人 (chữ đơn, bộ thủ 人)", "Đôi khi người đàn ông giữ nguyên hình dáng, nhưng phần lớn thời gian 人 bị ép lại thành 亻, như ta sẽ thấy."], "多": ["duō", "đa", "nhiều", "夕 — Tịch (chiều tối)", "夕 + 夕", "Chữ này đặc biệt hữu ích. Nó gợi “nhiều” như trong cụm “nhiều đêm trăng”, “nhiều đêm”. Nhưng nó cũng gợi sự trôi qua của thời gian, nhiều thời gian, buổi chiều nối tiếp buổi chiều."], "幸": ["xìng", "hạnh", "may mắn; hạnh phúc", "干 — Can (khô)", "土 + 丷 + 干", "Hãy tưởng tượng vùng đất ngập nước ở Trung Quốc: người có đất vừa nhiều vừa khô thật may mắn — hạnh phúc."], "能": ["néng", "năng", "có thể, có khả năng", "肉 — Nhục (thịt)", "厶 + 月 + 匕 + 匕", "Ta thấy sự riêng tư chồng lên một tháng, đặt cạnh một phép so sánh bị lật ngược. Làm sao điều đó gợi ý “có thể”? Tốt hơn hãy hiểu chữ này như một bức tranh gợi ý. Bản thân “tháng” trông giống một cái lon, và mũi của một cô gái đang khát hiện ra phía trên nó khi cô sắp uống một ngụm. Những hình giống cái muôi ở bên phải cho thấy những lọn tóc xoăn sáng bóng của cô rủ xuống phía trước thành từng vòng tinh tế."], "和": ["hé", "hòa", "hòa; ấm áp", "口 — Khẩu (miệng)", "禾 + 口", "Hòa hợp vào cuối ngày — gạo và miệng tôi hành động đồng lòng để lấp đầy và làm dịu cái bụng đang sôi réo. Thật tuyệt vời!"], "起": ["qǐ", "khởi", "đứng dậy; bắt đầu", "走 — Tẩu (đi)", "走 + 己", "Hãy tưởng tượng đi dạo vào ngày hè oi bức sau cơn mưa rào. Bộ 'tự mình' trông như làn hơi nước bốc lên từ mặt đường vì nóng."], "大": ["dà", "đại", "lớn; to", "大 — Đại (lớn)", "大", "Một người đứng dang rộng hai tay, dang ra thành một đường ngang dài — nhấn mạnh ý 'lớn'."], "欢": ["huān", "hoan", "vui vẻ; hoan hỉ", "欠 — Khiếm (ngáp, thiếu)", "又 + 欠", "Tôi dùng tay để cuối cùng trả hết khoản vay tôi còn nợ. Không biết ai vui hơn — tôi, vì trút được gánh nặng, hay bạn tôi, vì lấy lại được tiền."], "喜": ["xǐ", "hỉ", "vui; thích", "口 — Khẩu (miệng)", "壴 + 口", "Có người không bao giờ thấy đủ đậu. Với số ít kỳ lạ ấy, họ thích nhất là xúc mười bát đậu vào miệng."], "等": ["děng", "đẳng", "đợi; bằng nhau", "竹 — Trúc (tre)", "⺮ + 寺", "Tôi đến chùa Phật vì tò mò, rồi nhìn chằm chằm vào tường tre, chờ đợi sốt ruột cho buổi lễ kết thúc."], "到": ["dào", "đáo", "đến; tới", "刂 — Đao (dao)", "至 + 刂", "Tôi cần đến văn phòng để phỏng vấn xin việc quan trọng và rất lo lắng. Cho đến khi tới nơi, cảm xúc của tôi như ở trên lưỡi dao."], "带": ["dài", "đới", "mang theo; thắt lưng", "巾 — Cân (khăn)", "巾 + 巾", "Thành phần khăn — thực ra là vải sang trọng — xuất hiện hai lần, một lần (ở trên) có thêm trang trí. Cùng nhau, chúng tạo thành một bộ trang phục cổ xưa, được thắt lưng ở giữa. Hãy dùng thắt lưng như dây xích để dắt ai đó đi cùng bạn."], "走": ["zǒu", "tẩu", "đi; đi bộ", "走 — Tẩu (đi)", "止 + 土", "Đi bộ là giậm chân xuống vỉa hè — bạn dùng chân để vượt qua nhiều mặt đất."], "出": ["chū", "xuất", "ra; xuất", "凵 — Khảm (há miệng)", "山 + 山", "Dù chữ này trông như có liên quan đến 山, tốt hơn hãy tập trung vào năm nét dọc, trông như những ngón tay gầy guộc. Thực ra, khi nhìn kỹ, 出 giống một bàn tay, có phần vặn vẹo, như bàn tay của mụ phù thủy đội lốt bà già đã vẫy gọi Bạch Tuyết ra khỏi nhà của bảy chú lùn, dụ nàng rời khỏi nơi an toàn trong phòng để đến với số phận của mình."], "那": ["nà", "na", "đó; kia", "阝 — Ấp (thành ấp)", "冄 + 阝", "Một giấc mơ kỳ lạ! Đêm khuya, mặt trăng chạy qua các đường phố trong thành, trên đôi chân mặt trăng bé xíu — đó là lý do các vạch kẻ cứ tụt lại phía sau."], "片": ["piàn", "phiến", "tấm; mảnh; danh thiếp (trong 名片)", "片 — Phiến (mảnh)", "片", "Chữ vẽ một cận thần thời Phục Hưng nhìn nghiêng: tư thế thẳng, một chân hơi lùi, tay cầm khay bánh mỏng, có vật nặng đè lên các lát bánh để chúng không trượt khi dâng cho công chúa."], "沼": ["zhǎo", "chiểu", "đầm lầy, ao bùn", "氵 — Thủy (ba chấm thủy)", "氵 + 召", "Nước (氵) đọng được gọi (召) lại thành đầm — 沼泽 là đầm lầy."], "泽": ["zé", "trạch", "đầm nước; ân trạch", "氵 — Thủy (ba chấm thủy)", "氵 + 睪 (viết gọn)", "Vùng nước (氵) rộng mênh mông nuôi sống vạn vật — vừa là đầm, vừa là ân trạch."], "地": ["dì", "địa", "đất; mặt đất; địa", "土 — Thổ (đất)", "土 + 也", "Đây là chữ miêu tả 'đất' rõ ràng hơn. Ngoài việc gợi đến đất đai, nó còn nhắc ta rằng hành tinh của chúng ta vừa nguy hiểm — coi chừng hầm mỏ! — vừa an toàn, là nơi nương náu. Nó khô cằn mà cũng màu mỡ, cao mà cũng thấp, khô mà cũng ướt."], "从": ["cóng", "tòng", "từ; theo; đi theo", "人 — Nhân (người)", "人 + 人", "Hai hình ảnh của cùng một người: hình sau bên trái là vị trí ban đầu, hình trước là vị trí hiện tại — hình sau cho biết anh ta đến từ đâu."], "们": ["men", "môn", "hậu tố số nhiều (chỉ người)", "亻 — Nhân (người)", "亻 + 门", "Mọi người tự nhiên tụ tập quanh cổng và cửa ra vào để hóng tin tức hay nhận đồ ăn — cách hay để diễn tả ý 'nhiều'."], "交": ["jiāo", "giao", "giao nhau, gặp gỡ, giao", "亠 — Đầu (nắp, đầu)", "六 + 乂", "Nơi gặp gỡ là nơi các con đường giao nhau; hãy gặp nhau uống một ly sau giờ làm, lúc sáu giờ."], "换": ["huàn", "hoán", "đổi, thay; hoán", "扌 — Thủ (tay)", "扌 + 奂", "Bản chất của trao đổi là làm và nói — tượng trưng bằng bàn tay và người đàn ông nài nỉ bạn mua hàng."], "信": ["xìn", "tín", "tin, thư, tin tưởng", "亻 — Nhân (người)", "亻 + 言", "Ngày nay có cả triệu cách để liên lạc với người không ở ngay trước mặt bạn. Ngày xưa thì không như vậy — khi ấy, thư là cách chính để lưu giữ lời nói của một người một cách lâu dài."], "物": ["wù", "vật", "vật, đồ vật", "牛 — Ngưu (trâu, bò)", "牛 + 勿", "Hãy tưởng tượng một người nhập cư nói tiếng Anh chưa sõi: “Chẳng có chuyện gì đâu — đừng 'ox' tôi nữa!” Nhiều người nước ngoài phát âm “ask” nghe như “ox”."], "深": ["shēn", "thâm", "sâu; thâm", "氵 — Thủy (nước)", "氵 + 罙", "Vũng nước sâu đến mức bao trọn cả hang động lẫn ngọn cây cao nhất — coi chừng chết đuối!"], "情": ["qíng", "tình", "tình cảm; cảm xúc", "忄 — Tâm (tim)", "忄 + 青", "Tình cảm là cảm xúc thường gắn với thiên nhiên và màu sắc của nó."], "相": ["xiàng", "tương", "lẫn nhau; dáng vẻ", "木 — Mộc (cây, gỗ)", "木 + 目", "Bạn nhìn thấy dáng vẻ của cái cây đẹp như tranh này bằng mắt."], "望": ["wàng", "vọng", "trông; ngắm; hy vọng", "月 — Nguyệt (trăng, tháng)", "亡 + 月 + 王", "Có lẽ chữ này nhắc đến một huyền thoại cổ xưa dai dẳng. Nếu bạn ngắm nhìn nhà vua dưới ánh trăng, chắc chắn bạn sẽ phải chết."], "刻": ["kè", "khắc", "khắc, chạm; giờ khắc", "刂 — Đao (dao)", "亥 + 刂", "Gần nửa đêm, kẻ xấu dùng dao khắc một thông điệp bí ẩn — lưỡi dao khắc sâu từng nét, đó là cách nhớ chữ 'khắc'."], "余": ["yú", "dư", "thừa; dư", "人 — Nhân (người)", "亼 + 朩", "Khi người ta bắt đầu khoe của cải, biết ngay họ có thừa — không còn lo chuyện sống còn nữa, đó là 'thừa, dư'."], "希": ["xī", "hi", "hy vọng; hiếm", "巾 — Cân (khăn)", "乂 + 巾", "Hai bàn tay chuyển động hài hòa chắp lại trong lời cầu nguyện, phủ bởi một chiếc khăn thêu đặc biệt — nghi lễ của hy vọng bắt đầu như thế."], "五": ["wǔ", "ngũ", "năm (số 5)", "二 — Nhị (hai)", "五", "Đây là hình nghiêng của ngai vàng hoàng gia, ta thấy những chỗ tựa cho năm chi chính của nữ hoàng — đầu, hai tay và hai chân."], "十": ["shí", "thập", "mười", "十 — Thập (mười)", "一 + 丨", "Chữ 十 trông như chữ 't' trong 'ten' — mười. Nét dọc giống số 'một' châu Âu; nét ngang bắt chước cử động tay chỉ 'không còn gì'."], "以": ["yǐ", "dĩ", "dùng, lấy; để", "人 — Nhân (người)", "丶 + 人", "Hãy nhìn tên ngốc thiếu ý thức môi trường này! Chúng ta thấy anh ta đang chuẩn bị ném một mẩu rác xuống hầm mỏ. Anh ta cần dùng thùng rác thay vào đó."], "后": ["hòu", "hậu", "phía sau, sau", "口 — Khẩu (miệng)", "厂 + 丿 + 口", "Ở đây cái miệng tượng trưng cho một anh chàng đang thử vai ở Hollywood — ôi, anh ta không được nhận vai; đừng để cánh cửa đập vào mông bạn trên đường đi ra."], "还": ["hái", "hoàn", "vẫn, còn", "辶 — Sước (đi, bước)", "辶 + 不", "Bạn cố tiến về phía trước, nhưng các thế lực không cho phép. Vì vậy, bạn vẫn chưa đạt được mục tiêu."], "左": ["zuǒ", "tả", "trái", "工 — Công (việc)", "𠂇 + 工", "Bạn có thể nghĩ mình thấy một bàn tay đang làm việc hiệu quả, nhưng bàn tay chiếm ưu thế so với công việc về kích thước để nhấn mạnh rằng chuyển động nhiều hơn công việc — một sự kém hiệu quả điển hình khi hầu hết mọi người dùng tay trái để làm việc gì đó."], "右": ["yòu", "hữu", "phải", "口 — Khẩu (miệng)", "𠂇 + 口", "Tay phải quan trọng đến vậy vì đó là bàn tay đang cử động mà chúng ta ăn bằng nó — bàn tay ta dùng để đưa thức ăn vào miệng."], "坐": ["zuò", "tọa", "ngồi; đi (xe)", "土 — Thổ (đất)", "人 + 人 + 土", "Hai người ngồi quay lưng vào nhau trên ghế dài, lưng tựa vào chỗ tựa giữa. Vì vẽ rất nhỏ nên ta biết hai người ngồi sát mặt đất."], "摇": ["yáo", "dao", "lắc; vẫy", "扌 — Thủ (tay)", "扌 + 爫 + 缶", "Một nhóm anh hùng mắc kẹt trên ngọn núi khô cằn. Mọi người vẫy tất cả các tay (đều giơ cao) thật mạnh để cầu cứu."], "椅": ["yǐ", "ỷ", "ghế", "木 — Mộc (gỗ, cây)", "木 + 奇", "Ghế bằng gỗ (木) có dáng lạ (奇) — 摇椅 là ghế xích đu."], "里": ["lǐ", "lý", "trong; dặm", "里 — Lý (trong, dặm)", "日 + 土", "Bên trong đất ruộng là rễ của bao nhiêu cây trồng tốt — 'trong' chính là ở bên trong như thế."], "感": ["gǎn", "cảm", "cảm thấy, cảm giác", "心 — Tâm (tim)", "咸 + 心", "Rắc muối lên vết thương là cách nổi tiếng để làm tăng cảm giác, dù theo nghĩa tiêu cực. Ở đây, vết thương hở nằm ngay trên trái tim của một người."], "受": ["shòu", "thụ", "nhận; chịu; cảm nhận", "又 — Hựu (tay phải)", "爫 + 冖 + 又", "Bàn tay dưới cùng là của hiệu trưởng trao bằng tốt nghiệp ngày lễ ra trường. Sinh viên giơ tay cao không chờ được để nhận bằng, mỗi tấm trong bìa che trơn nhẵn."], "夕": ["xī", "tịch", "chiều tối", "夕 — Tịch (chiều tối)", "夕", "Chữ 夕 vẽ vầng trăng non buổi chiều tối — một buổi tối lãng mạn."], "阳": ["yáng", "dương", "mặt trời, phía nắng", "阝 — Phụ (đồi núi)", "阝 + 日", "Mặt trời (日) ló lên trên đồi núi (阝) lúc bình minh — đó là dương (阳)."], "温": ["wēn", "ôn", "ấm, nhiệt độ", "氵 — Thủy (nước)", "氵 + 昷", "Nước lạnh trong một chiếc đĩa. Mặt trời mùa hè chiếu sáng cả ngày. Đến tối, nước đã ấm lên."], "柔": ["róu", "nhu", "mềm mại, dịu dàng", "木 — Mộc (gỗ, cây)", "矛 + 木", "Ngọn giáo (矛) cứng mà gặp gỗ mềm (木) cũng dịu lại — 柔 là mềm mại, 温柔 là dịu dàng."], "听": ["tīng", "thính", "nghe; nghe ngóng", "口 — Khẩu (miệng)", "口 + 斤", "Gã kia nói năng điên rồ thật. Có nguy hiểm không? Mỗi khi ai đó nói lung tung mất cân bằng, tôi lắng nghe thật kỹ xem có cần biện pháp khẩn cấp không."], "微": ["wēi", "vi", "nhỏ, bé, tinh vi", "彳 — Xích (bước chân)", "彳 + 山 + 攵", "Đồng đô la Mỹ giờ không còn giá trị như trước. Các nền kinh tế nước ngoài đang đánh mạnh vào nó, hơn nữa nền kinh tế Mỹ đang bước từng bước nhỏ vào núi nợ — kết quả là sức mua của đồng đô la chỉ còn một phần rất nhỏ so với trước đây."], "风": ["fēng", "phong", "gió", "风 — Phong (gió)", "几 + 乂", "Đối với thủy thủ, không gì tốt hơn một cơn gió bình thường thổi con tàu nhanh chóng từ cảng này sang cảng khác trong một chuyến đi hài hòa."], "轻": ["qīng", "khinh", "nhẹ, trẻ trung", "车 — Xa (xe)", "车 + 又 + 工", "Nét ngang nhỏ trên đầu chữ 'người' là một ví dụ của nghệ thuật truyện tranh — nó tượng trưng cho sự nhanh nhẹn và tốc độ; một người đàn ông trong xe hơi có thể hoàn thành công việc một cách nhanh nhẹn vì công việc ấy thật nhẹ nhàng."], "吹": ["chuī", "xuy", "thổi", "口 — Khẩu (miệng)", "口 + 欠", "Miệng (口) há ra (欠) thổi hơi — 风吹 là gió thổi."], "河": ["hé", "hà", "sông", "氵 — Thủy (ba chấm thủy)", "氵 + 可", "Dòng nước (氵) có thể (可) chảy mãi về xuôi — 河 là sông, 河水 là nước sông."], "水": ["shuǐ", "thủy", "nước", "水 — Thủy (nước)", "水", "Những đường nét duyên dáng của chữ 水 gợi lên hình ảnh các dòng nước chảy hợp lại với nhau."], "慢": ["màn", "mạn", "chậm", "忄 — Tâm (tim)", "忄 + 曼", "Những người đàn ông đẹp trai thường làm tim cô đập nhanh, nhưng gã này thô lỗ, ích kỷ và dốt nát đến mức thực sự làm tim cô chậm lại. Tim cộng vẻ duyên dáng — đó là 'mạn', chậm."], "流": ["liú", "lưu", "chảy; lưu thông", "水 — Thủy (nước)", "氵 + 㐬", "Như Mô-sê trong bụi sậy, hãy tưởng tượng một em bé trong giỏ trôi theo dòng sông — cái giỏ tất nhiên cũng trôi theo dòng."], "聊": ["liáo", "liêu", "trò chuyện; buồn chán", "耳 — Nhĩ (tai)", "耳 + 卯", "Tai đóng vai trò lớn trong hoạt động nào? Khi bạn thân chuẩn bị kể chuyện tầm phào trong lúc trò chuyện, đó là lúc bạn dỏng hết cả tai lên!"], "前": ["qián", "tiền", "phía trước, trước", "刂 — Đao (dao)", "丷 + 月 + 刂", "Hồi nhỏ, tôi từng thử đi theo cầu vồng để tìm hũ vàng huyền thoại; đó là một đêm quang đãng, nên tôi đi theo ánh trăng rực rỡ, soi sáng con đường quang đãng mà mép đường sắc như lưỡi dao; cuối cùng, tôi phải dừng lại khi bức tường của thị trấn ở ngay trước mặt tôi, giữ tôi ở trong và vàng ở ngoài."], "日": ["rì", "nhật", "ngày; mặt trời", "日 — Nhật (mặt trời, ngày)", "囗 + 一", "Chữ tượng hình mặt trời được cách điệu: một ngày bao lấy một khoảng thời gian lớn."], "子": ["zǐ", "tử", "con, đứa trẻ", "子 — Tử (con)", "子", "Không có thay đổi nào trong đời đột ngột như sự ra đời của một đứa trẻ."], "谈": ["tán", "đàm", "nói chuyện; bàn luận", "讠 — Ngôn (lời nói)", "讠 + 炎", "Chúng ta trò chuyện về gì khi tán gẫu? Chẳng gì ngoài những chủ đề nóng hổi nhất."], "恋": ["liàn", "luyến", "yêu; lưu luyến", "心 — Tâm (tim)", "亦 + 心", "Người ta viết ngược chữ 'buôn bán', vì trái ngược với buôn bán là hưởng lạc; chấm một giọt keo dán niềm vui ấy vào trái tim — đó là lưu luyến."], "时": ["shí", "thời", "thời gian, lúc", "日 — Nhật (mặt trời, ngày)", "日 + 寸", "Khi mặt trời đi từ lúc mọc đến lúc lặn, đơn vị nào tương đương với tấc đo chiều dài? Câu trả lời là thời gian."], "候": ["hòu", "hậu", "chờ đợi; lúc, thời điểm", "亻 — Nhân (người)", "亻 + 侯", "'Thời gian trôi nhanh như mũi tên.' Đây là đường bay của mũi tên ấy, tiếc thay rất ngắn, bị cắt ngắn bởi bia bắn cung — có lẽ là ẩn dụ cho cái chết."], "都": ["dōu", "đô", "đều; tất cả", "阝 — Ấp (thành ấp)", "者 + 阝", "Đủ mọi loại người, làm đủ mọi việc, luôn có thể tìm thấy trong các thành phố lớn."], "已": ["yǐ", "dĩ", "đã; mà thôi", "己 — Kỷ (bản thân)", "己 (biến thể)", "Khoảng trống trên cùng sắp khép lại — đường đời đã được vạch sẵn, mọi chuyện đã rồi."], "白": ["bái", "bạch", "trắng", "白 — Bạch (trắng)", "丿 + 日", "Thật nên thơ khi nghĩ màu trắng như một chút ánh nắng!"], "头": ["tóu", "đầu", "đầu", "大 — Đại (lớn)", "丶 + 丶 + 大", "Để nhớ chữ này, hãy tưởng tượng xoay hình vẽ này khoảng 45 độ sang phải (theo chiều kim đồng hồ). Hãy nhìn kỹ các nét chéo lớn. Chẳng phải chúng trông giống bốn chân của một con thú rừng lớn sao? Nét nhỏ ở góc dưới bên phải là đuôi của con vật, còn hai chấm còn lại trở thành đôi mắt. Phần này của con vật, cái đầu, là phần nổi bật nhất của bức phác họa gợi ý này."], "想": ["xiǎng", "tưởng", "nghĩ; muốn", "心 — Tâm (tim)", "相 + 心", "Thật kỳ diệu khi tiếng Hán hay nhúng ẩn dụ duyên dáng vào chữ: ở đây ta thấy hình dáng (ẩn dụ) của trái tim như một suy nghĩ hay niềm tin."], "叫": ["jiào", "khiếu", "gọi; kêu; tên là", "口 — Khẩu (miệng)", "口 + 丩", "Người có cái miệng (bên trái) đang gọi to với người bạn kém thính, người này đứng chăm chú, tay trái ôm tai để nghe rõ hơn."], "丫": ["yā", "nha", "chạc cây; (trong 丫头: cách gọi cô gái)", "丶 — Chủ (chấm)", "丫", "Chữ trông như cái chạc cây chẻ làm hai — 丫头 là cách gọi yêu cô gái nhỏ."], "牵": ["qiān", "khiên", "dắt; kéo", "牛 — Ngưu (trâu bò)", "大 + 冖 + 牛", "Tấm phủ lớn trùm lên con bò — có lẽ là yên ngựa — thì ai cũng có thể dắt nó đi."], "手": ["shǒu", "thủ", "tay", "手 — Thủ (tay)", "手", "Chiếc gậy có móc là hình ảnh rút gọn của cả một cánh tay; phần móc là khuỷu tay, nhưng chỉ cẳng tay được vẽ rõ. Ba nét ngang là những ngón tay được cách điệu của bàn tay, cách điệu đến mức không ai để ý rằng ta vẽ tới sáu ngón tay!"], "静": ["jìng", "tĩnh", "yên tĩnh", "青 — Thanh (màu xanh)", "青 + 争", "Khi thiên nhiên thắng được sự vùng vẫy của muôn loài, cảnh tĩnh lặng mới hiện ra, dù chỉ chốc lát."], "靠": ["kào", "kháo", "dựa vào", "非 — Phi (không phải)", "告 + 非", "Nếu tôi dựa vào bạn để đổ rác, tôi không cần phải bảo bạn tới hai lần."], "胸": ["xiōng", "hung", "ngực", "月 — Nhục (thịt)", "月 + 匈", "Hãy tưởng tượng gói hết những ý nghĩ hung dữ vào trong lồng ngực — ngực là nơi chứa những điều dữ dằn nhất."], "口": ["kǒu", "khẩu", "miệng", "口 — Khẩu (miệng)", "口", "Hầu như ai cũng biết đây là hình vẽ cách điệu của một cái miệng thật. Nó có hình vuông chứ không tròn vì bút lông khó vẽ đường cong tròn, nhưng nó tượng trưng cho một cái miệng nhỏ khép kín. Thường thì nên tưởng tượng 口 là một người đang nói, hoặc đôi khi chỉ là một người."], "画": ["huà", "họa", "vẽ, tranh", "田 — Điền (ruộng)", "一 + 田 + 凵", "Có gì tượng trưng cho phong cảnh bạn đang vẽ hơn một cánh đồng (田)? Bức vẽ của bạn lớn hơn cả khung tranh — thật là một kiệt tác."], "面": ["miàn", "diện", "mặt; bề mặt", "面 — Diện (mặt)", "面", "Hãy coi chữ này như ba tấm gương trên bàn trang điểm của một quý bà. Nét ngang trên cùng là thanh đèn nối với đỉnh các tấm gương. Bà chủ đối diện với gương và có thể xem xét ba khía cạnh của hình ảnh phản chiếu của mình."], "做": ["zuò", "tố", "làm; làm việc", "亻 — Nhân (người)", "亻 + 故", "Những người đàn ông có mục đích mãnh liệt tìm thấy cảm hứng để nỗ lực lớn lao đạt mục tiêu."], "长": ["cháng", "trưởng", "lớn lên, trưởng thành; người đứng đầu", "长 — Trường (dài, lớn lên)", "丿 + 匕", "Cây quyền trượng là bức tường sau của căn phòng, đường ngang là tấm gương dài chia đôi nó; tia sáng từ gương đi lên phía trên bên phải, nửa dưới là hình ảnh phản chiếu của nửa trên — ai cũng biết gương trong phòng làm căn phòng trông dài ra, cũng như người ta lớn lên (zhǎng) là 'dài' ra, trưởng thành."], "厮": ["sī", "tư", "lẫn nhau, gắn bó (trong 长相厮守)", "厂 — Hán (vách núi)", "厂 + 斯", "Dưới vách núi (厂) này (斯) hai người nương nhau — 厮守 là gắn bó không rời."], "守": ["shǒu", "thủ", "giữ; canh giữ", "宀 — Miên (mái nhà)", "宀 + 寸", "Người lùn sống trong nhà nhỏ — mái nhà chỉ cao một tấc. Họ dùng phép thuật canh giữ và bảo vệ chúng ta."]};
+const COMPONENTS={"止": ["zhǐ", "chỉ", "dừng"], "匕": ["bǐ", "chủy", "muỗng, thìa"], "生": ["shēng", "sinh", "sinh ra, sống"], "日": ["rì", "nhật", "mặt trời, ngày"], "取": ["qǔ", "thủ", "lấy, được"], "女": ["nǚ", "nữ", "phụ nữ"], "子": ["zǐ", "tử", "con"], "白": ["bái", "bạch", "trắng"], "勺": ["sháo", "chước", "thìa"], "云": ["yún", "vân", "mây"], "辶": ["chuò", "sước", "đi, bước"], "丿": ["piě", "phiết", "nét phẩy"], "米": ["mǐ", "mễ", "gạo"], "京": ["jīng", "kinh", "kinh đô"], "尤": ["yóu", "vưu", "lỗi, trách"], "正": ["zhèng", "chính", "đúng, chính"], "禺": ["yú", "ngu", "khỉ; dấu vết thú"], "目": ["mù", "mục", "mắt"], "儿": ["ér", "nhi", "người đi"], "亅": ["jué", "quyết", "nét móc"], "亻": ["rén", "nhân", "người"], "尔": ["ěr", "nhĩ", "ngươi, bạn"], "冈": ["gāng", "cương", "gò núi"], "刂": ["dāo", "đao", "dao"], "也": ["yě", "dã", "cũng"], "爫": ["zhǎo", "trảo", "móng vuốt"], "冖": ["mì", "mịch", "mái che"], "心": ["xīn", "tâm", "tim"], "友": ["yǒu", "hữu", "bạn"], "手": ["shǒu", "thủ", "tay"], "戈": ["gē", "qua", "giáo dài"], "羊": ["yáng", "dương", "cừu"], "才": ["cái", "tài", "mới; tài"], "土": ["tǔ", "thổ", "đất"], "文": ["wén", "văn", "ngôn ngữ, văn hóa"], "人": ["rén", "nhân", "người"], "千": ["qiān", "thiên", "nghìn"], "纟": ["sī", "mịch", "tơ"], "己": ["jǐ", "kỷ", "mình, bản thân"], "一": ["yī", "nhất", "một"], "卜": ["bǔ", "bốc", "bói, xem bói"], "冉": ["", "", ""], "夕": ["xī", "tịch", "chiều tối, hoàng hôn"], "丷": ["bā", "bát", "tám"], "干": ["gān", "can", "khô"], "厶": ["sī", "tư", "riêng tư"], "月": ["yuè", "nguyệt", "tháng; thịt"], "禾": ["hé", "hòa", "lúa"], "口": ["kǒu", "khẩu", "miệng"], "走": ["zǒu", "tẩu", "đi, bước đi"], "大": ["dà", "đại", "lớn"], "又": ["yòu", "hựu", "tay phải; lại"], "欠": ["qiàn", "khiếm", "ngáp, thiếu"], "壴": ["zhù", "trú", "trống"], "⺮": ["zhú", "trúc", "tre"], "寺": ["sì", "tự", "chùa"], "至": ["zhì", "chí", "đến, tới"], "巾": ["jīn", "cân", "khăn, vải"], "山": ["shān", "sơn", "núi"], "冄": ["rǎn", "nhiễm", "phần trên (biến thể)"], "阝": ["fù", "phụ", "đồi"], "片": ["piàn", "phiến", "mảnh"], "门": ["mén", "môn", "cửa"], "六": ["liù", "lục", "sáu"], "乂": ["yì", "nghệ", "giao nhau"], "扌": ["shǒu", "thủ", "tay"], "奂": ["huàn", "hoán", "rực rỡ; nhiều"], "言": ["yán", "ngôn", "lời nói"], "牛": ["niú", "ngưu", "trâu, bò"], "勿": ["wù", "vật", "đừng, chớ"], "氵": ["shuǐ", "thủy", "nước"], "罙": ["shēn", "thâm", "sâu"], "忄": ["xīn", "tâm", "tim, tình cảm"], "青": ["qīng", "thanh", "màu xanh non"], "木": ["mù", "mộc", "cây"], "亡": ["wáng", "vong", "mất, chết"], "王": ["wáng", "vương", "vua"], "亥": ["hài", "hợi", "giờ Hợi, gần nửa đêm"], "亼": ["jí", "tập", "tụ họp"], "朩": ["", "tần", "cây gỗ xẻ dọc (phần dưới của 余/茶)"], "五": ["wǔ", "ngũ", "năm"], "丨": ["gǔn", "cổn", "nét sổ"], "丶": ["zhǔ", "chủ", "chấm, giọt"], "厂": ["chǎng", "xưởng", "vách núi"], "不": ["bù", "bất", "không"], "𠂇": ["zuǒ", "tả", "tay trái"], "工": ["gōng", "công", "việc"], "缶": ["fǒu", "phẫu", "bình sành"], "咸": ["xián", "hàm", "mặn"], "昷": ["wēn", "ôn", "ấm"], "斤": ["jīn", "cân", "rìu"], "彳": ["chì", "xích", "bước chân"], "攵": ["pū", "phộc", "đánh, đập"], "几": ["jī", "kỉ", "cái bàn nhỏ; thường"], "车": ["chē", "xa", "xe"], "水": ["shuǐ", "thủy", "nước"], "曼": ["màn", "mạn", "đẹp, duyên dáng, thướt tha"], "㐬": ["liú", "lưu", "dòng chảy"], "耳": ["ěr", "nhĩ", "tai"], "卯": ["mǎo", "mão", "giờ Mão"], "囗": ["wéi", "vi", "bao quanh"], "讠": ["yán", "ngôn", "lời nói"], "炎": ["yán", "viêm", "nóng, cháy"], "亦": ["yì", "diệc", "cũng"], "寸": ["cùn", "thốn", "tấc"], "侯": ["hòu", "hầu", "chư hầu, chờ đợi"], "者": ["zhě", "giả", "người (hậu tố -er)"], "相": ["xiāng", "tương", "hình dáng, vẻ ngoài"], "丩": ["jiū", "cưu", "quấn, xoắn"], "争": ["zhēng", "tranh", "tranh giành"], "告": ["gào", "cáo", "nói, bảo"], "非": ["fēi", "phi", "không phải"], "匈": ["xiōng", "hung", "hung dữ"], "田": ["tián", "điền", "ruộng"], "凵": ["kǎn", "khảm", "vật đựng"], "面": ["miàn", "diện", "mặt"], "故": ["gù", "cố", "lý do; cũ"], "宀": ["mián", "miên", "mái nhà"]};
+const PHONETIC={"的": "勺", "运": "云", "遇": "禺", "你": "尔", "刚": "冈", "纪": "己", "起": "己", "欢": "又", "喜": "壴", "等": "寺", "到": "刂", "那": "阝", "地": "也", "们": "门", "换": "奂", "物": "勿", "深": "罙", "情": "青", "刻": "亥", "还": "不", "摇": "爫", "温": "昷", "听": "斤", "微": "攵", "轻": "又", "慢": "曼", "流": "㐬", "聊": "卯", "谈": "炎", "恋": "亦", "时": "寸", "候": "侯", "叫": "丩", "静": "青", "胸": "匈", "做": "故"};
+const TYPES={"此": "Hội ý — 止 + 匕 hợp lại thành nghĩa “này; đây”.", "生": "Tượng hình — 生.", "最": "Hội ý — 日 + 取 hợp lại thành nghĩa “nhất, nhất”.", "好": "Hội ý — 女 + 子 hợp lại thành nghĩa “tốt; hay”.", "的": "Hình thanh — 白 gợi nghĩa, 勺 sháo gợi âm.", "运": "Hình thanh — 辶 gợi nghĩa, 云 yún gợi âm.", "气": "Tượng hình — 丿 + 米.", "就": "Hội ý — 京 + 尤 hợp lại thành nghĩa “thì, liền, ngay”.", "是": "Hội ý — 日 + 正 hợp lại thành nghĩa “là, đúng”.", "遇": "Hình thanh — 辶 gợi nghĩa, 禺 yú gợi âm.", "见": "Hội ý — 目 + 儿 hợp lại thành nghĩa “thấy; gặp”.", "了": "Chỉ sự — 丿 + 亅.", "你": "Hình thanh — 亻 gợi nghĩa, 尔 ěr gợi âm.", "刚": "Hình thanh — 刂 gợi nghĩa, 冈 gāng gợi âm.", "也": "Chỉ sự — 也.", "爱": "Hội ý — 爫 + 冖 + 心 + 友 hợp lại thành nghĩa “yêu; thích”.", "我": "Hội ý — 手 + 戈 hợp lại thành nghĩa “tôi; ta”.", "着": "Hình thanh — 羊 + 目.", "在": "Hội ý — 才 + 土 hợp lại thành nghĩa “ở; tại; đang”.", "这": "Hình thanh — 文 + 辶.", "个": "Hội ý — 人 + 丿 hợp lại thành nghĩa “cái, chiếc (lượng từ)”.", "尴": "Hình thanh — 尢 gợi nghĩa (đi đứng lúng túng), 监 jiān gợi âm theo âm cổ.", "尬": "Hình thanh — 尢 gợi nghĩa, 介 jiè gợi âm theo âm cổ.", "年": "Hội ý — 丿 + 千 hợp lại thành nghĩa “năm”.", "纪": "Hình thanh — 纟 gợi nghĩa, 己 jǐ gợi âm.", "不": "Chỉ sự — 一 + 卜.", "再": "Hội ý — 一 + 冉 hợp lại thành nghĩa “lại; nữa”.", "一": "Chỉ sự — 一.", "人": "Tượng hình — 人 (chữ đơn, bộ thủ 人).", "多": "Hội ý — 夕 + 夕 hợp lại thành nghĩa “nhiều”.", "幸": "Hội ý — 土 + 丷 + 干 hợp lại thành nghĩa “may mắn; hạnh phúc”.", "能": "Hội ý — 厶 + 月 + 匕 + 匕 hợp lại thành nghĩa “có thể, có khả năng”.", "和": "Hội ý — 禾 + 口 hợp lại thành nghĩa “hòa; ấm áp”.", "起": "Hình thanh — 走 gợi nghĩa, 己 jǐ gợi âm.", "大": "Tượng hình — 大.", "欢": "Hình thanh — 欠 gợi nghĩa, 又 yòu gợi âm.", "喜": "Hình thanh — 口 gợi nghĩa, 壴 zhù gợi âm.", "等": "Hình thanh — 竹 gợi nghĩa, 寺 sì gợi âm.", "到": "Hình thanh — 刂 gợi nghĩa, 刂 dāo gợi âm.", "带": "Hội ý — 巾 + 巾 hợp lại thành nghĩa “mang theo; thắt lưng”.", "走": "Hội ý — 止 + 土 hợp lại thành nghĩa “đi; đi bộ”.", "出": "Hội ý — 山 + 山 hợp lại thành nghĩa “ra; xuất”.", "那": "Hình thanh — 阝 gợi nghĩa, 阝 fù gợi âm.", "片": "Tượng hình — 片.", "沼": "Hình thanh — 氵 gợi nghĩa (nước, đầm), 召 zhào gợi âm (zhào gần zhǎo).", "泽": "Hình thanh — 氵 gợi nghĩa (nước), 睪 yì/zhái gợi âm theo âm cổ.", "地": "Hình thanh — 土 gợi nghĩa, 也 yě gợi âm.", "从": "Hội ý — 人 + 人 hợp lại thành nghĩa “từ; theo; đi theo”.", "们": "Hình thanh — 亻 gợi nghĩa, 门 mén gợi âm.", "交": "Hội ý — 六 + 乂 hợp lại thành nghĩa “giao nhau, gặp gỡ, giao”.", "换": "Hình thanh — 扌 gợi nghĩa, 奂 huàn gợi âm.", "信": "Hội ý — 亻 + 言 hợp lại thành nghĩa “tin, thư, tin tưởng”.", "物": "Hình thanh — 牛 gợi nghĩa, 勿 wù gợi âm.", "深": "Hình thanh — 氵 gợi nghĩa, 罙 shēn gợi âm.", "情": "Hình thanh — 忄 gợi nghĩa, 青 qīng gợi âm.", "相": "Hội ý — 木 + 目 hợp lại thành nghĩa “lẫn nhau; dáng vẻ”.", "望": "Hội ý — 亡 + 月 + 王 hợp lại thành nghĩa “trông; ngắm; hy vọng”.", "刻": "Hình thanh — 刂 gợi nghĩa, 亥 hài gợi âm.", "余": "Hội ý — 亼 + 朩 hợp lại thành nghĩa “thừa; dư”.", "希": "Hội ý — 乂 + 巾 hợp lại thành nghĩa “hy vọng; hiếm”.", "五": "Chỉ sự — 五.", "十": "Chỉ sự — 一 + 丨.", "以": "Hội ý — 丶 + 人 hợp lại thành nghĩa “dùng, lấy; để”.", "后": "Hội ý — 厂 + 丿 + 口 hợp lại thành nghĩa “phía sau, sau”.", "还": "Hình thanh — 辶 gợi nghĩa, 不 bù gợi âm.", "左": "Hội ý — 𠂇 + 工 hợp lại thành nghĩa “trái”.", "右": "Hội ý — 𠂇 + 口 hợp lại thành nghĩa “phải”.", "坐": "Hội ý — 人 + 人 + 土 hợp lại thành nghĩa “ngồi; đi (xe)”.", "摇": "Hình thanh — 扌 gợi nghĩa, 爫 zhǎo gợi âm.", "椅": "Hình thanh — 木 gợi nghĩa (gỗ, ghế), 奇 qí gợi âm theo âm cổ.", "里": "Hội ý — 日 + 土 hợp lại thành nghĩa “trong; dặm”.", "感": "Hội ý — 咸 + 心 hợp lại thành nghĩa “cảm thấy, cảm giác”.", "受": "Hội ý — 爫 + 冖 + 又 hợp lại thành nghĩa “nhận; chịu; cảm nhận”.", "夕": "Tượng hình — 夕.", "阳": "Hình thanh — 阝 + 日.", "温": "Hình thanh — 氵 gợi nghĩa, 昷 wēn gợi âm.", "柔": "Hội ý — 矛 (giáo) + 木 (gỗ): vật cứng gặp chất mềm thành dịu dàng.", "听": "Hình thanh — 口 gợi nghĩa, 斤 jīn gợi âm.", "微": "Hội ý — 彳 + 山 + 攵 hợp lại thành nghĩa “nhỏ, bé, tinh vi”.", "风": "Hội ý — 几 + 乂 hợp lại thành nghĩa “gió”.", "轻": "Hình thanh — 车 gợi nghĩa, 又 yòu gợi âm.", "吹": "Hội ý — 口 (miệng) + 欠 (há miệng): há miệng thổi hơi ra.", "河": "Hình thanh — 氵 gợi nghĩa (nước), 可 kě gợi âm theo âm cổ.", "水": "Tượng hình — 水.", "慢": "Hình thanh — 忄 gợi nghĩa, 曼 màn gợi âm.", "流": "Hình thanh — 水 gợi nghĩa, 㐬 liú gợi âm.", "聊": "Hình thanh — 耳 gợi nghĩa, 卯 mǎo gợi âm.", "前": "Hội ý — 丷 + 月 + 刂 hợp lại thành nghĩa “phía trước, trước”.", "日": "Tượng hình — 囗 + 一.", "子": "Tượng hình — 子.", "谈": "Hình thanh — 讠 gợi nghĩa, 炎 yán gợi âm.", "恋": "Hình thanh — 心 gợi nghĩa, 亦 yì gợi âm.", "时": "Hình thanh — 日 gợi nghĩa, 寸 cùn gợi âm.", "候": "Hình thanh — 亻 gợi nghĩa, 侯 hòu gợi âm.", "都": "Hình thanh — 者 + 阝.", "已": "Chỉ sự — 己 (biến thể).", "白": "Hội ý — 丿 + 日 hợp lại thành nghĩa “trắng”.", "头": "Hội ý — 丶 + 丶 + 大 hợp lại thành nghĩa “đầu”.", "想": "Hình thanh — 相 + 心.", "叫": "Hình thanh — 口 gợi nghĩa, 丩 jiū gợi âm.", "丫": "Tượng hình — hình cái chạc cây chẻ đôi.", "牵": "Hội ý — 大 + 冖 + 牛 hợp lại thành nghĩa “dắt; kéo”.", "手": "Tượng hình — 手.", "静": "Hình thanh — 青 gợi nghĩa, 青 qīng gợi âm.", "靠": "Hội ý — 告 + 非 hợp lại thành nghĩa “dựa vào”.", "胸": "Hình thanh — 月 gợi nghĩa, 匈 xiōng gợi âm.", "口": "Tượng hình — 口.", "画": "Hội ý — 一 + 田 + 凵 hợp lại thành nghĩa “vẽ, tranh”.", "面": "Tượng hình — 面.", "做": "Hình thanh — 亻 gợi nghĩa, 故 gù gợi âm.", "长": "Tượng hình — 丿 + 匕.", "厮": "Hình thanh — 厂 gợi nghĩa (nơi nương náu), 斯 sī gợi âm đúng luôn.", "守": "Hội ý — 宀 + 寸 hợp lại thành nghĩa “giữ; canh giữ”."};
+const WORDS={"左右": ["zuǒyòu", "tả hữu", "khoảng, chừng; trái phải"], "以后": ["yǐhòu", "dĩ hậu", "sau này, về sau"], "运气": ["yùnqi", "vận khí", "vận may, may rủi"], "希望": ["xīwàng", "hi vọng", "hy vọng"], "夕阳": ["xīyáng", "tịch dương", "nắng chiều, hoàng hôn"], "感受": ["gǎnshòu", "cảm thụ", "cảm nhận; cảm thấy"], "交换": ["jiāohuàn", "giao hoán", "trao đổi, trao cho nhau"], "胸口": ["xiōngkǒu", "hung khẩu", "ngực, lồng ngực"], "一起": ["yìqǐ", "nhất khởi", "cùng nhau"], "时候": ["shíhou", "thời hậu", "lúc; khi; thời gian"], "日子": ["rìzi", "nhật tử", "ngày tháng; cuộc sống"], "幸运": ["xìngyùn", "hạnh vận", "may mắn"], "尴尬": ["gāngà", "giam giới", "lúng túng; dở dang, ngượng ngùng"], "年纪": ["niánjì", "niên kỷ", "tuổi tác"], "沼泽": ["zhǎozé", "chiểu trạch", "đầm lầy"], "信物": ["xìnwù", "tín vật", "vật làm tin, tín vật"], "余生": ["yúshēng", "dư sinh", "quãng đời còn lại"], "摇椅": ["yáoyǐ", "diêu ỷ", "ghế xích đu, ghế bập bênh"], "温柔": ["wēnróu", "ôn nhu", "dịu dàng, ấm áp"], "微风": ["wēifēng", "vi phong", "gió nhẹ"], "丫头": ["yātou", "nha đầu", "“nha đầu” — cách gọi yêu cô gái"], "画面": ["huàmiàn", "họa diện", "khung cảnh, hình ảnh"], "长相厮守": ["cháng xiāng sī shǒu", "trường tương tư thủ", "bên nhau trọn đời, mãi mãi không rời"], "刚好": ["gānghǎo", "cương hảo", "vừa khéo, vừa đúng lúc"], "深情": ["shēnqíng", "thâm tình", "tình cảm sâu đậm"], "相望": ["xiāng wàng", "tương vọng", "nhìn nhau đắm đuối"], "在一起": ["zài yìqǐ", "tại nhất khởi", "ở bên nhau"], "五十年": ["wǔshí nián", "ngũ thập niên", "năm mươi năm"]};
+function toggleOpt(cls,btn){document.body.classList.toggle(cls);var on=!document.body.classList.contains(cls);btn.setAttribute('aria-pressed',on?'true':'false');}
+const POS={"此": "Đại từ", "生": "Danh từ", "最": "Phó từ", "好": "Tính từ", "的": "Trợ từ", "运": "Danh từ", "气": "Danh từ", "就": "Phó từ", "是": "Động từ", "遇": "Động từ", "见": "Động từ", "了": "Trợ từ", "你": "Đại từ", "刚": "Phó từ", "也": "Phó từ", "爱": "Động từ", "我": "Đại từ", "着": "Trợ từ", "在": "Giới từ", "这": "Đại từ", "个": "Lượng từ", "尴": "Tính từ", "尬": "Tính từ", "年": "Danh từ", "纪": "Danh từ", "再": "Phó từ", "一": "Số từ", "人": "Danh từ", "多": "Phó từ", "幸": "Tính từ", "能": "Động từ", "和": "Liên từ", "起": "Động từ", "大": "Tính từ", "欢": "Tính từ", "喜": "Tính từ", "等": "Động từ", "到": "Động từ", "带": "Động từ", "走": "Động từ", "出": "Động từ", "那": "Đại từ", "片": "Lượng từ", "沼": "Danh từ", "泽": "Danh từ", "地": "Danh từ", "从": "Giới từ", "们": "Trợ từ", "交": "Động từ", "换": "Động từ", "信": "Danh từ", "物": "Danh từ", "深": "Tính từ", "情": "Danh từ", "相": "Phó từ", "望": "Động từ", "刻": "Danh từ", "余": "Tính từ", "希": "Động từ", "五": "Số từ", "十": "Số từ", "以": "Giới từ", "后": "Danh từ", "还": "Phó từ", "左": "Danh từ", "右": "Danh từ", "坐": "Động từ", "摇": "Động từ", "椅": "Danh từ", "里": "Danh từ", "感": "Động từ", "受": "Động từ", "夕": "Danh từ", "阳": "Danh từ", "温": "Tính từ", "柔": "Tính từ", "听": "Động từ", "微": "Tính từ", "风": "Danh từ", "轻": "Tính từ", "吹": "Động từ", "河": "Danh từ", "水": "Danh từ", "慢": "Tính từ", "流": "Động từ", "聊": "Động từ", "前": "Danh từ", "日": "Danh từ", "子": "Danh từ", "谈": "Động từ", "恋": "Động từ", "时": "Danh từ", "候": "Danh từ", "都": "Phó từ", "已": "Phó từ", "白": "Tính từ", "头": "Danh từ", "想": "Động từ", "叫": "Động từ", "丫": "Danh từ", "牵": "Động từ", "手": "Danh từ", "静": "Tính từ", "靠": "Động từ", "胸": "Danh từ", "口": "Danh từ", "画": "Danh từ", "面": "Danh từ", "做": "Động từ", "长": "Tính từ", "厮": "Phó từ", "守": "Động từ", "不": "Phó từ"};
+const GLOSS={"此": "này; đây", "生": "sinh ra; sống; sinh", "最": "nhất, nhất", "好": "tốt; hay", "的": "(trong 打的) xe taxi; của", "运": "vận chuyển; vận may; vận", "气": "khí, hơi", "就": "thì, liền, ngay", "是": "là, đúng", "遇": "gặp; đối xử", "见": "thấy; gặp", "了": "trợ từ hoàn thành: đã, rồi — 遇见了 (đã gặp), 等到了 (đã chờ được)", "你": "bạn; anh; chị", "刚": "cứng, chắc; vừa mới", "也": "cũng; vậy", "爱": "yêu; thích", "我": "tôi; ta", "着": "trợ từ tiếp diễn: đang — 爱着 (đang yêu), 牵着 (đang nắm)", "在": "ở; tại; đang", "这": "này; đây", "个": "cái, chiếc (lượng từ)", "尴": "lúng túng, ngượng ngùng", "尬": "lúng túng (chỉ dùng trong 尴尬)", "年": "năm", "纪": "thế kỷ; ghi chép", "不": "không", "再": "lại; nữa", "一": "một", "人": "người", "多": "nhiều", "幸": "may mắn; hạnh phúc", "能": "có thể, có khả năng", "和": "hòa; ấm áp", "起": "đứng dậy; bắt đầu", "大": "lớn; to", "欢": "vui vẻ; hoan hỉ", "喜": "vui; thích", "等": "đợi; bằng nhau", "到": "đến; tới", "带": "mang theo; thắt lưng", "走": "đi; đi bộ", "出": "ra; xuất", "那": "đó; kia", "片": "tấm; mảnh; danh thiếp (trong 名片)", "沼": "đầm lầy, ao bùn", "泽": "đầm nước; ân trạch", "地": "đất; mặt đất; địa", "从": "từ; theo; đi theo", "们": "hậu tố số nhiều (chỉ người)", "交": "giao nhau, gặp gỡ, giao", "换": "đổi, thay; hoán", "信": "tin, thư, tin tưởng", "物": "vật, đồ vật", "深": "sâu; thâm", "情": "tình cảm; cảm xúc", "相": "lẫn nhau; dáng vẻ", "望": "trông; ngắm; hy vọng", "刻": "khắc, chạm; giờ khắc", "余": "thừa; dư", "希": "hy vọng; hiếm", "五": "năm (số 5)", "十": "mười", "以": "dùng, lấy; để", "后": "phía sau, sau", "还": "vẫn; còn (đọc hái; nghĩa “trả lại” đọc huán)", "左": "trái", "右": "phải", "坐": "ngồi; đi (xe)", "摇": "lắc; vẫy", "椅": "ghế", "里": "trong; dặm", "感": "cảm thấy, cảm giác", "受": "nhận; chịu; cảm nhận", "夕": "chiều tối", "阳": "mặt trời, phía nắng", "温": "ấm, nhiệt độ", "柔": "mềm mại, dịu dàng", "听": "nghe; nghe ngóng", "微": "nhỏ, bé, tinh vi", "风": "gió", "轻": "nhẹ, trẻ trung", "吹": "thổi", "河": "sông", "水": "nước", "慢": "chậm", "流": "chảy; lưu thông", "聊": "trò chuyện; buồn chán", "前": "phía trước, trước", "日": "ngày; mặt trời", "子": "con, đứa trẻ", "谈": "nói chuyện; bàn luận", "恋": "yêu; lưu luyến", "时": "thời gian, lúc", "候": "chờ đợi; lúc, thời điểm", "都": "đều; tất cả (đọc dōu; nghĩa “thủ đô” đọc dū)", "已": "đã; mà thôi", "白": "trắng", "头": "đầu", "想": "nghĩ; muốn", "叫": "gọi; kêu; tên là", "丫": "chạc cây; (trong 丫头: cách gọi cô gái)", "牵": "dắt; kéo", "手": "tay", "静": "yên tĩnh", "靠": "dựa vào", "胸": "ngực", "口": "miệng", "画": "vẽ, tranh", "面": "mặt; bề mặt", "做": "làm; làm việc", "长": "dài lâu (đọc cháng trong 长相厮守; nghĩa “lớn lên, trưởng” đọc zhǎng)", "厮": "lẫn nhau, gắn bó (trong 长相厮守)", "守": "giữ; canh giữ"};
+const NOTE={"此": "此生 = đời này, kiếp này — từ mở đầu lời thề nguyện của bài.", "生": "此生 là cả đời này; về sau còn có 余生 = quãng đời còn lại.", "最": "最好的、最大的 — mức cao nhất: vận may và niềm vui lớn nhất đời.", "好": "最好的运气 = vận may tốt nhất đời người.", "的": "Trợ từ nối định ngữ: “vận may tốt nhất của đời này”, “quãng đời còn lại của anh”.", "运": "运气 = vận may, cái may rủi của đời người.", "气": "Đi với 运 thành 运气 — vận khí, sự may mắn.", "就": "就是 = chính là — khẳng định chắc nịch, không do dự.", "是": "是你带我走出… = chính em là người đưa anh ra; 我的余生就是你 = đời anh là em.", "遇": "遇见 = gặp gỡ, gặp được — cuộc gặp đổi cả cuộc đời.", "见": "Đi sau 遇 thành 遇见: trông thấy và gặp được.", "了": "Trợ từ hoàn thành: 遇见了、等到了 — những việc chờ cả đời cuối cùng đã thành.", "你": "Người thương được nói tới trong suốt bài.", "刚": "刚好 = vừa khéo, vừa đúng lúc; 刚谈恋爱 = thuở mới bắt đầu yêu.", "也": "你也爱我，我也爱着你 — hai phía cùng yêu nhau, không phải tình đơn phương.", "爱": "Động từ trung tâm của bài: 爱我、爱着你、谈恋爱 đều là yêu.", "我": "Người hát — người kể lại vận may của đời mình.", "着": "Trợ từ tiếp diễn: 爱着 = đang yêu (vẫn yêu), 牵着 = đang nắm chặt tay.", "在": "在这个年纪 = ở tuổi này; 在一起 = ở bên nhau; 在我左右 = ở cạnh anh.", "这": "这个画面 = khung cảnh này; 这个年纪 = cái tuổi này.", "个": "一个人 = một người (một mình); 这个画面 — 个 là lượng từ phổ biến nhất.", "尴": "Chỉ xuất hiện trong 尴尬 = lúng túng, dở dang.", "尬": "Đi cùng 尴 thành 尴尬 — cái tuổi không trẻ cũng chưa già, nhiều ngượng ngùng.", "年": "年纪 = tuổi tác; 五十年 = năm mươi năm — hai mốc thời gian đối nhau của bài.", "纪": "Đi với 年 thành 年纪 = tuổi.", "再": "我不再是一个人 = anh không còn một mình nữa; 再聊聊 = lại ngồi kể nhau nghe.", "一": "一个人 = một mình; 在一起 = ở bên nhau — từ “một mình” thành “bên nhau”.", "人": "一个人 là hình ảnh cô đơn trước khi gặp được người thương.", "多": "多幸运 = may mắn biết bao — 多 ở đây là câu cảm thán, không phải “nhiều”.", "幸": "幸运 = may mắn; chữ này là chìa khóa của khổ đầu.", "能": "能和你在一起 = được ở bên em — điều tưởng nhỏ mà là cả vận may.", "和": "和你在一起 = cùng với em; 和 nối hai người lại với nhau.", "起": "在一起 = ở cùng nhau; 那刻起 = kể từ khoảnh khắc ấy.", "大": "最大的欢喜 = niềm vui lớn nhất đời.", "欢": "欢喜 = hoan hỉ, vui mừng khôn xiết.", "喜": "欢喜 — vui và cũng là yêu thích; niềm vui vì chờ được người mình yêu.", "等": "等到了你 = chờ mãi cuối cùng cũng đợi được em.", "到": "到 là đạt được kết quả: 等到 = chờ đến lúc gặp được.", "带": "带我走出 = dẫn anh bước ra, cứu anh ra khỏi.", "走": "走出 = bước ra khỏi nơi tối tăm.", "出": "走出那片沼泽地 — ra khỏi vũng lầy của cuộc đời trước kia.", "那": "那片、那时、那刻 — “ấy, đó”: những thứ thuộc về quá khứ và kỷ niệm.", "片": "那片沼泽地 — 片 là lượng từ chỉ cả một vùng, một mảng đất.", "沼": "沼泽 = đầm lầy, vùng đất sình lầy khó thoát ra.", "泽": "沼泽地 là ẩn dụ quãng đời sa sút, bế tắc trước khi gặp em.", "地": "沼泽地 = vùng đất đầm lầy (đọc dì, là đất); còn trong 轻轻地、慢慢地 thì 地 đọc nhẹ “de”, là trợ từ chỉ cách thức (nhẹ nhàng mà, chậm rãi mà).", "从": "从我们交换信物…起 = kể từ khi ta trao tín vật; 从前 = ngày xưa.", "们": "我们 = chúng ta — hai người đã thành một đôi.", "交": "交换 = trao đổi, trao cho nhau.", "换": "交换信物 = trao nhau vật làm tin của tình yêu.", "信": "信物 = tín vật — vật giữ lòng tin, lời hẹn ước.", "物": "信物 = vật làm tin; 物 là đồ vật nói chung.", "深": "深情 = tình cảm sâu đậm, đắm đuối.", "情": "深情相望 = đắm đuối nhìn nhau bằng cả tấm tình sâu.", "相": "相望 = nhìn nhau; 长相厮守 = mãi mãi bên nhau.", "望": "相望 = hai người nhìn nhau không rời, ngay khoảnh khắc trao tín vật.", "刻": "那刻 = khoảnh khắc ấy — mốc thời gian bắt đầu của “quãng đời còn lại”.", "余": "余生 = quãng đời còn lại, phần đời từ nay về sau.", "希": "希望 = hy vọng, mong ước — động từ mở đầu điệp khúc.", "五": "五十年 = năm mươi năm — con số của cả một đời người.", "十": "Năm mươi là 五十: năm lần mười năm chồng lên thành nửa thế kỷ.", "以": "以后 = về sau, từ nay trở đi.", "后": "五十年以后 = năm mươi năm sau — tương lai xa mà người hát hướng tới.", "还": "还能 = vẫn còn có thể; 还想 = vẫn còn muốn — dù tóc đã bạc.", "左": "左右 = hai bên; 在我左右 = ở ngay bên cạnh anh.", "右": "左右 gọi chung là xung quanh, bên cạnh — không phân trái phải.", "坐": "坐在摇椅里 = ngồi trong ghế xích đu — hình ảnh tuổi già an nhàn.", "摇": "摇椅 = ghế xích đu, ghế bập bênh đu đưa.", "椅": "摇椅里 — chiếc ghế của hai ông bà ngồi ngắm hoàng hôn.", "里": "摇椅里 = trong ghế; 里 là bên trong.", "感": "感受 = cảm nhận, tận hưởng bằng cả người.", "受": "感受夕阳的温柔 = đón nhận, tận hưởng ánh hoàng hôn dịu dàng.", "夕": "夕阳 = nắng chiều tà, hoàng hôn của buổi chiều và của cuộc đời.", "阳": "夕阳 là mặt trời lúc xế chiều — đẹp và dịu như tuổi già bên nhau.", "温": "温柔 = ấm áp, dịu dàng.", "柔": "温柔 — mềm mại, dịu dàng; tính chất của hoàng hôn và của tình già.", "听": "听微风、听河水、听你叫 — lắng nghe: cả bài hát khép lại bằng những âm thanh khẽ.", "微": "微风 = cơn gió nhẹ, gió hiu hiu.", "风": "微风轻轻地吹 = gió nhẹ khẽ thổi qua hai người già.", "轻": "轻轻 = khẽ khàng, nhẹ nhàng — từ lặp tả sự êm ái của tuổi già.", "吹": "风吹 = gió thổi; 吹 là thổi, đưa hơi ra.", "河": "河水 = nước sông quê, chảy chậm như thời gian.", "水": "河水慢慢地流 — nước là hình ảnh của năm tháng trôi.", "慢": "慢慢 = chậm rãi, từ từ — nhịp sống khi đã già.", "流": "河水流 = nước chảy; cũng là thời gian lặng lẽ trôi qua.", "聊": "聊聊 = ngồi trò chuyện, kể lại — từ lặp cho thân mật, thong thả.", "前": "从前 = ngày xưa, thuở trước còn trẻ.", "日": "日子 = ngày tháng, tháng ngày đã sống cùng nhau.", "子": "日子 — 子 là hậu tố nhẹ đi sau 日, không dịch riêng.", "谈": "谈恋爱 = yêu đương, hẹn hò thuở ban đầu.", "恋": "恋爱 = tình yêu đôi lứa.", "时": "时候 = lúc, khi; 那时 = vào lúc ấy (năm mươi năm sau).", "候": "Đi cùng 时 thành 时候 = thời điểm, lúc nào đó.", "都": "都已白了头 = (tóc) đều đã bạc cả rồi.", "已": "都已 = đều đã — việc đã thành sự thật ở tương lai ấy.", "白": "白了头 = tóc bạc trắng — dấu hiệu của tuổi già.", "头": "白了头 = bạc cả đầu; 丫头 lại là tên gọi thân mật — hai 头 đối nhau rất thú vị.", "想": "还想听 = vẫn còn muốn nghe — mong ước nhỏ bé mà cảm động nhất bài.", "叫": "叫我丫头 = gọi anh bằng cái tên thân mật “nha đầu” như thuở còn trẻ.", "丫": "丫头 = “nha đầu” — cách gọi yêu dành cho cô gái; ở đây là tên gọi riêng của hai người.", "牵": "牵着你的手 = nắm lấy tay em, dắt tay nhau đi hết đời.", "手": "你的手 — bàn tay đã nắm từ trẻ đến già không buông.", "静": "静静 = lặng lẽ, yên tĩnh — tựa vào nhau không cần nói gì.", "靠": "靠在你胸口 = tựa đầu vào ngực em/anh, nương tựa cả đời.", "胸": "胸口 = lồng ngực — nơi bình yên nhất để tựa vào.", "口": "胸口 — 口 ở đây là vùng, cửa ngõ của lồng ngực, không phải cái miệng.", "画": "画面 = khung cảnh, bức tranh hiện ra trước mắt.", "面": "画面 = cảnh tượng trọn vẹn của hai người già bên nhau.", "做": "叫做 = được gọi là, có tên là.", "长": "长相厮守 — 长 đọc cháng: dài lâu, mãi mãi (không phải zhǎng “lớn lên”).", "厮": "厮守 = gắn bó, kề cận nhau; 长相厮守 = bên nhau trọn đời.", "守": "厮守 = giữ gìn và ở cạnh nhau không rời nửa bước.", "不": "不再是一个人 = không còn là một người (một mình) nữa — 不 phủ định một trạng thái đã thay đổi."};
+var currentChar=null,writer=null;
+
+function compInfo(tok){
+  if(DATA[tok]) return [DATA[tok][0], DATA[tok][1], DATA[tok][2]];
+  if(COMPONENTS[tok]) return COMPONENTS[tok];
+  return ["—","","thành phần hình, ít dùng độc lập"];
+}
+function renderParts(ch,d){
+  var radTok=(d[3]||"").split("—")[0].trim();
+  var toks=[];
+  (d[4]||"").split("+").forEach(function(raw){
+    var cleaned=raw.replace(/\([^)]*\)/g,"").replace("biến thể","").trim();
+    var first=cleaned.split(/\s+/)[0]||"";
+    if(first && toks.indexOf(first)===-1) toks.push(first);
+  });
+  var rows=toks.map(function(tok){
+    var info=compInfo(tok);
+    var role=(tok===radTok)?"Gợi nghĩa (bộ thủ)":(PHONETIC[ch]===tok?"Gợi âm (hình thanh)":"Thành phần hình / nghĩa");
+    return "<tr><td><b>"+tok+"</b></td><td>"+info[0]+" · "+info[1]+"</td><td>"+info[2]+"</td><td>"+role+"</td></tr>";
+  }).join("");
+  var note=PHONETIC[ch]?"<p class=\"foot\" style=\"text-align:left\">Trong chữ hình thanh, một bên gợi nghĩa, một bên gợi âm. Âm cổ có thể khác âm Quan thoại hiện đại, nên thành phần gợi âm đôi khi không đọc giống hệt chữ ngày nay — đó là bình thường, không phải bạn nhớ sai.</p>":"";
+  return "<table class=\"parts\"><tr><th>Thành phần</th><th>Cách đọc · Hán Việt</th><th>Nghĩa riêng</th><th>Vai trò trong chữ này</th></tr>"+rows+"</table>"+note;
+}
+function renderWords(ch){
+  var list=Object.keys(WORDS).filter(function(w){return w.indexOf(ch)>-1;});
+  if(!list.length) return "<p>Chữ này đứng một mình trong câu, không nằm trong cụm ghép riêng của bài.</p>";
+  return "<ul class=\"words\">"+list.map(function(w){var wd=WORDS[w];return "<li><b>"+w+"</b> — "+wd[0]+" · "+wd[1]+" — "+wd[2]+"</li>";}).join("")+"</ul>";
+}
+
+function makeClickable(){
+  document.querySelectorAll('.line').forEach(function(lineEl){
+    var cnEl=lineEl.querySelector('.cn'); if(!cnEl) return;
+    var pyEl=lineEl.querySelector('.py');
+    var hvEl=lineEl.querySelector('.hv');
+    var pyTokens=pyEl?pyEl.textContent.split(/[\s,\uFF0C\u3001\u3002.]+/).filter(function(s){return s; }):[];
+    var hvTokens=hvEl?hvEl.textContent.split(/[\s,\uFF0C\u3001\u3002.]+/).filter(function(s){return s; }):[];
+    var text=cnEl.textContent;
+    lineEl.setAttribute('data-cn',text);
+    if(hvEl) lineEl.setAttribute('data-hv',hvEl.textContent);
+    cnEl.textContent='';
+    var idx=0;
+    Array.from(text).forEach(function(ch){
+      if(!/[\u4e00-\u9fff]/.test(ch)){
+        var unitP=document.createElement('span'); unitP.className='char-unit';
+        var pyS=document.createElement('span'); pyS.className='ruby-py'; pyS.innerHTML='&nbsp;';
+        var pS=document.createElement('span'); pS.className='punct'; pS.textContent=ch;
+        var hvS=document.createElement('span'); hvS.className='ruby-hv'; hvS.innerHTML='&nbsp;';
+        unitP.appendChild(pyS); unitP.appendChild(pS); unitP.appendChild(hvS); cnEl.appendChild(unitP); return;
+      }
+      var py=pyTokens[idx]||(DATA[ch]?DATA[ch][0]:'');
+      var hv=hvTokens[idx]||(DATA[ch]?DATA[ch][1]:''); idx++;
+      var unit=document.createElement('span'); unit.className='char-unit';
+      var pySpan=document.createElement('span'); pySpan.className='ruby-py'; pySpan.textContent=py;
+      var b=document.createElement('button'); b.className='hz'; b.textContent=ch; b.setAttribute('data-ch',ch);
+      b.onclick=(function(cc,line){return function(){openPopup(cc,line);};})(ch,lineEl);
+      var hvSpan=document.createElement('span'); hvSpan.className='ruby-hv'; hvSpan.textContent=hv;
+      unit.appendChild(pySpan); unit.appendChild(b); unit.appendChild(hvSpan); cnEl.appendChild(unit);
+    });
+  });
+}
+function openPopup(ch,line){
+  var d=DATA[ch];if(!d)return;currentChar=ch;
+  document.getElementById('pop-char').textContent=ch;
+  
+  var tradWrap = document.getElementById('pop-trad-wrap');
+  if(TRADITIONAL[ch]) {
+      document.getElementById('pop-trad-char').textContent = TRADITIONAL[ch];
+      tradWrap.style.display = 'flex';
+  } else {
+      tradWrap.style.display = 'none';
+  }
+  
+  document.getElementById('pop-title').textContent=ch+' — '+d[0]+' · '+d[1]+(POS[ch]?' · '+POS[ch]:'');
+  document.getElementById('pop-py').innerHTML='<b>Pinyin:</b> '+d[0]+' &nbsp;·&nbsp; <b>Hán Việt:</b> '+d[1]+(POS[ch]?' &nbsp;·&nbsp; <b>Từ loại:</b> '+POS[ch]:'');
+  document.getElementById('pop-vi').innerHTML='<b>Nghĩa:</b> '+(GLOSS[ch]||d[2]);
+  document.getElementById('pop-note').innerHTML=NOTE[ch]?('<b>Nghĩa trong bài:</b> '+NOTE[ch]):'';
+  document.getElementById('pop-rad').textContent=d[3];
+  document.getElementById('pop-comp').textContent=d[4];
+  document.getElementById('pop-memo').textContent=d[5];
+  document.getElementById('pop-line').textContent=line?(line.getAttribute('data-cn')||line.querySelector('.cn').textContent)+' — '+(line.getAttribute('data-hv')||'')+' — '+line.querySelector('.vi').textContent:'';
+  document.getElementById('pop-type').textContent=TYPES[ch]||'Xem bảng thành phần bên dưới.';
+  document.getElementById('pop-parts').innerHTML=renderParts(ch,d);
+  document.getElementById('pop-words').innerHTML=renderWords(ch);
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('stroke-note').textContent='';
+  loadWriter(ch);
+}
+function closePopup(){document.getElementById('overlay').classList.remove('open');}
+function loadWriter(ch){
+  var box=document.getElementById('stroke');box.innerHTML='';writer=null;
+  if(typeof HanziWriter==='undefined'){document.getElementById('stroke-note').textContent='Cần mạng để xem nét chạy.';return;}
+  try{
+    writer=HanziWriter.create('stroke',ch,{width:190,height:190,padding:5,showOutline:true,strokeAnimationSpeed:1,delayBetweenStrokes:250, strokeColor: '#16324f'});
+    writer.animateCharacter();
+  }catch(e){document.getElementById('stroke-note').textContent='Không tải được thứ tự nét cho chữ này.';}
+}
+function playStrokes(){if(writer)writer.animateCharacter();else if(currentChar)loadWriter(currentChar);}
+function showAllStrokes(){if(writer)writer.showCharacter();else if(currentChar)loadWriter(currentChar);}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closePopup();});
+makeClickable();
+</script>
+
+<script>
+/* ---- Hoàng hôn: hạt nắng vàng trôi chậm + một hàng mây trên cao ---- */
+(function(){
+  var canvas = document.getElementById('rain');
+  var ctx = canvas.getContext('2d');
+  var W = 0, H = 0, drops = [], clouds = [], raf = null, running = false, tick = 0;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    var n = Math.max(40, Math.min(110, Math.floor(W / 13)));
+    drops = [];
+    for (var i = 0; i < n; i++) drops.push(newMote(true));
+    clouds = [];
+    for (var j = 0; j < 6; j++) clouds.push(newCloud(true));
+  }
+  function newMote(anywhere){
+    return { x: Math.random() * W, y: anywhere ? Math.random() * H : -10,
+             r: 0.8 + Math.random() * 1.6, speed: 0.25 + Math.random() * 0.6,
+             sway: 10 + Math.random() * 24, phase: Math.random() * Math.PI * 2,
+             op: 0.15 + Math.random() * 0.4 };
+  }
+  function newCloud(anywhere){
+    var r = 70 + Math.random() * 95;
+    var blobs = [];
+    var nb = 5 + Math.floor(Math.random() * 3);
+    for (var k = 0; k < nb; k++) blobs.push({
+      dx: (k / (nb - 1) - 0.5) * 2.4 * r + (Math.random() - 0.5) * 0.4 * r,
+      dy: (Math.random() - 0.5) * 0.35 * r,
+      br: (0.5 + Math.random() * 0.4) * r,
+      op: 0.13 + Math.random() * 0.08
+    });
+    return { x: anywhere ? Math.random() * (W + 600) - 300 : -380,
+             y: Math.max(64, H * 0.13), r: r,
+             speed: 0.20 + Math.random() * 0.25, blobs: blobs };
+  }
+  function drawClouds(){
+    for (var i = 0; i < clouds.length; i++){
+      var c = clouds[i];
+      for (var k = 0; k < c.blobs.length; k++){
+        var b = c.blobs[k], bx = c.x + b.dx, by = c.y + b.dy;
+        var g = ctx.createRadialGradient(bx, by, 0, bx, by, b.br);
+        g.addColorStop(0, 'rgba(216,231,243,' + b.op + ')');
+        g.addColorStop(1, 'rgba(216,231,243,0)');
+        ctx.fillStyle = g;
+        ctx.save(); ctx.translate(bx, by); ctx.scale(1.9, 0.62); ctx.translate(-bx, -by);
+        ctx.beginPath(); ctx.arc(bx, by, b.br, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      }
+      c.x += c.speed;
+      if (c.x - c.r * 2.6 > W) clouds[i] = newCloud(false);
+    }
+  }
+  function frame(){
+    tick++;
+    ctx.clearRect(0, 0, W, H);
+    drawClouds();
+    for (var i = 0; i < drops.length; i++){
+      var d = drops[i];
+      var x = d.x + Math.sin(tick / 60 + d.phase) * d.sway * 0.15;
+      ctx.fillStyle = 'rgba(238,205,140,' + d.op + ')';
+      ctx.beginPath(); ctx.arc(x, d.y, d.r, 0, Math.PI * 2); ctx.fill();
+      d.y += d.speed; d.x += 0.08;
+      if (d.y > H + 8) drops[i] = newMote(false);
+    }
+    if (running) raf = requestAnimationFrame(frame);
+  }
+  function start(){ if (!running){ running = true; raf = requestAnimationFrame(frame); } }
+  function stop(){ running = false; if (raf) cancelAnimationFrame(raf); ctx.clearRect(0, 0, W, H); }
+
+  window.toggleRain = function(btn){
+    var off = document.body.classList.toggle('rain-off');
+    btn.setAttribute('aria-pressed', off ? 'false' : 'true');
+    if (off) stop(); else start();
+  };
+
+  resize();
+  window.addEventListener('resize', resize);
+  var btn = document.getElementById('btn-rain');
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.body.classList.add('rain-off');
+    if (btn) btn.setAttribute('aria-pressed', 'false');
+  } else {
+    start();
+  }
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden) { if (raf) cancelAnimationFrame(raf); }
+    else if (running) raf = requestAnimationFrame(frame);
+  });
+})();
+</script>
+
+</body>
+</html>
