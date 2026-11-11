@@ -402,7 +402,7 @@ makeClickable();
     });
     return {
       x: anywhere ? Math.random() * (W + 600) - 300 : -380,
-      y: Math.random() * H * 0.40 + 16,
+      y: Math.max(64, H * 0.13), /* all clouds in ONE row near the top */
       r: r,
       speed: 0.20 + Math.random() * 0.25,
       blobs: blobs
