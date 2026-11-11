@@ -140,12 +140,14 @@ body.hide-vi .vi {display: none; border-top: none; margin-top: 0; padding-top: 0
     border-radius: 16px; background: #0c1a28; color: #e8ce8f;
     box-shadow: inset 0 0 0 1px rgba(201,168,106,0.4), 0 10px 24px rgba(0,0,0,0.45);
 }
-.trad-badge {
-    background: transparent; border: 1px solid #c9a86a; color: #e8ce8f;
-    padding: 6px 16px; border-radius: 99px;
-    font-size: 16px; font-family: "Noto Serif SC", serif; font-weight: 600;
-    display: none; letter-spacing: 0.05em;
+.char-wrap {display: flex; flex-direction: column; align-items: center; gap: 8px;}
+.char-label {font-size: 12px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: #8e9ca7;}
+.trad-wrap {display: none;}
+.popup .big.trad {
+    color: #b9d2e2;
+    box-shadow: inset 0 0 0 1px rgba(147,188,205,0.5), 0 10px 24px rgba(0,0,0,0.45);
 }
+.trad-badge {display: none;}
 .popup .close {
     border: none; background: rgba(255,255,255,0.07); border-radius: 50%;
     width: 40px; height: 40px; cursor: pointer; font-size: 24px;
@@ -192,7 +194,7 @@ body.hide-vi .vi {display: none; border-top: none; margin-top: 0; padding-top: 0
     h1{font-size:36px;} .subtitle{letter-spacing:0.28em; font-size:13px;} .verse{font-size:15px;}
     .cn,.hz,.punct{font-size:32px;}
     .popup .big{font-size:52px; width:80px; height:80px;}
-    .popup .header-left{flex-direction: column; align-items: flex-start; gap: 12px;}
+    .popup .header-left{flex-direction: row; flex-wrap: wrap; align-items: flex-start; gap: 12px;}
 }
 @media (prefers-reduced-motion: reduce) { html {scroll-behavior: auto;} }
 
@@ -228,8 +230,8 @@ body.hide-vi .vi {display: none; border-top: none; margin-top: 0; padding-top: 0
 <div class="popup" role="dialog" aria-modal="true" aria-labelledby="pop-title">
 <div class="top">
     <div class="header-left">
-        <div class="big" id="pop-char"></div>
-        <div class="trad-badge" id="pop-trad"></div>
+        <div class="char-wrap"><div class="big" id="pop-char"></div><div class="char-label">Giản thể</div></div>
+        <div class="char-wrap trad-wrap" id="pop-trad-wrap"><div class="big trad" id="pop-trad-char"></div><div class="char-label">Phồn thể</div></div>
     </div>
     <button class="close" onclick="closePopup()" aria-label="Đóng">×</button>
 </div>
@@ -334,12 +336,12 @@ function openPopup(ch,line){
   var d=DATA[ch];if(!d)return;currentChar=ch;
   document.getElementById('pop-char').textContent=ch;
   
-  var tradBadge = document.getElementById('pop-trad');
+  var tradWrap = document.getElementById('pop-trad-wrap');
   if(TRADITIONAL[ch]) {
-      tradBadge.textContent = 'Phồn thể: ' + TRADITIONAL[ch];
-      tradBadge.style.display = 'block';
+      document.getElementById('pop-trad-char').textContent = TRADITIONAL[ch];
+      tradWrap.style.display = 'flex';
   } else {
-      tradBadge.style.display = 'none';
+      tradWrap.style.display = 'none';
   }
   
   document.getElementById('pop-title').textContent=ch+' — '+d[0]+' · '+d[1]+(POS[ch]?' · '+POS[ch]:'');
