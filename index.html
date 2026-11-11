@@ -59,26 +59,29 @@ a.song.rain::after {
 }
 @keyframes cardClouds {from {transform: translateX(-10px);} to {transform: translateX(16px);}}
 
-/* ===== Thẻ 2 — Năm Mươi Năm Sau: hoàng hôn + sông trôi ở chân thẻ ===== */
+/* ===== Thẻ 2 — Năm Mươi Năm Sau: bình minh tươi sáng + sông trôi ở chân thẻ ===== */
 a.song.sunset {
     background:
-        radial-gradient(520px 240px at 82% -60px, rgba(246,178,92,0.28), transparent 62%),
-        linear-gradient(165deg, #2b1e22 0%, #1a1626 52%, #121a29 100%);
+        radial-gradient(520px 240px at 82% -60px, rgba(255,196,102,0.55), transparent 62%),
+        linear-gradient(165deg, #fff7e8 0%, #fdeeda 45%, #e2f0f8 100%);
 }
-a.song.sunset:hover {border-color: rgba(246,178,92,0.45);}
-/* mặt trời lặn ở góc trên phải */
+a.song.sunset:hover {border-color: rgba(232,147,12,0.55);}
+a.song.sunset .cn {color: #43302a;}
+a.song.sunset .vn {color: #b07d2b;}
+a.song.sunset .desc {color: #6d5b49;}
+/* mặt trời mọc ở góc trên phải */
 a.song.sunset::before {
     content: ""; position: absolute; z-index: 0; pointer-events: none;
     width: 150px; height: 150px; border-radius: 50%; right: 34px; top: -52px;
-    background: radial-gradient(circle, rgba(255,203,120,0.55) 0%, rgba(246,150,80,0.22) 52%, transparent 72%);
+    background: radial-gradient(circle, rgba(255,214,130,0.85) 0%, rgba(246,170,80,0.35) 52%, transparent 72%);
 }
 /* sông lăn tăn chảy ở chân thẻ */
 a.song.sunset::after {
     content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 44px; z-index: 1; pointer-events: none;
     background:
-        repeating-linear-gradient(93deg, rgba(150,200,220,0.20) 0 22px, transparent 22px 46px),
-        repeating-linear-gradient(88deg, rgba(150,200,220,0.10) 0 14px, transparent 14px 34px),
-        linear-gradient(to top, rgba(90,140,170,0.20), transparent);
+        repeating-linear-gradient(93deg, rgba(38,116,148,0.25) 0 22px, transparent 22px 46px),
+        repeating-linear-gradient(88deg, rgba(38,116,148,0.13) 0 14px, transparent 14px 34px),
+        linear-gradient(to top, rgba(90,160,190,0.22), transparent);
     background-size: 200px 100%, 150px 100%, 100% 100%;
     animation: cardRiver 6.5s linear infinite;
 }
