@@ -3,72 +3,108 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0a141f">
+<meta name="theme-color" content="#0d1420">
 <title>Bài hát — Song</title>
 <style>
 * {box-sizing: border-box;}
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     margin: 0; min-height: 100vh; color: #dfe3e6;
-    background:
-        radial-gradient(1100px 480px at 50% -120px, rgba(147,188,205,0.16), transparent 60%),
-        linear-gradient(168deg, #0a141f 0%, #10222f 42%, #16303f 78%, #0d1a27 100%);
+    /* nền chung trung tính — mỗi bài hát mang phong cảnh riêng trong thẻ của nó */
+    background: linear-gradient(170deg, #0d1420 0%, #101a29 55%, #0b1220 100%);
     background-attachment: fixed;
 }
-#rain {position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2;}
 .wrap {max-width: 860px; margin: 0 auto; padding: 56px 24px 90px; position: relative; z-index: 1;}
 h1 {text-align: center; font-size: 40px; margin: 10px 0 6px; color: #f0ead9; letter-spacing: 0.06em;}
 .sub {text-align: center; color: #c9a86a; letter-spacing: 0.34em; text-transform: uppercase; font-size: 13px; font-weight: 600;}
 a.song {
-    display: block; text-decoration: none; margin-top: 40px;
-    background: linear-gradient(160deg, rgba(23,42,60,0.82), rgba(11,22,34,0.86));
+    display: block; text-decoration: none; margin-top: 40px; position: relative; overflow: hidden;
     border: 1px solid rgba(147,188,205,0.16); border-radius: 18px;
     padding: 28px 32px; box-shadow: 0 14px 34px rgba(0,0,0,0.38);
-    transition: all .2s ease;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
 }
-a.song:hover {transform: translateY(-2px); border-color: rgba(201,168,106,0.4);}
+a.song:hover {transform: translateY(-2px); box-shadow: 0 20px 44px rgba(0,0,0,0.5);}
+a.song .cn, a.song .vn, a.song .desc {position: relative; z-index: 2;}
 a.song .cn {font-size: 30px; color: #f0ead9; letter-spacing: 0.08em;}
 a.song .vn {display: block; margin-top: 6px; font-size: 18px; color: #c9a86a; font-weight: 600;}
-a.song .desc {display: block; margin-top: 8px; font-size: 15px; color: #9db2bf; font-style: italic;}
+a.song .desc {display: block; margin-top: 8px; font-size: 15px; color: #b6c3cc; font-style: italic;}
+
+/* ===== Thẻ 1 — Tân Dòng Sông Ly Biệt: mưa rơi + một hàng mây ===== */
+a.song.rain {
+    background: linear-gradient(160deg, rgba(23,42,60,0.92), rgba(11,22,34,0.95));
+}
+a.song.rain:hover {border-color: rgba(201,168,106,0.4);}
+/* lớp mưa xiên trượt xuống */
+a.song.rain::before {
+    content: ""; position: absolute; inset: -160px -40px; z-index: 0; pointer-events: none;
+    background-image:
+        repeating-linear-gradient(100deg, rgba(174,199,216,0.13) 0 1px, transparent 1px 16px),
+        repeating-linear-gradient(100deg, rgba(174,199,216,0.07) 0 1px, transparent 1px 27px);
+    background-size: 190px 190px, 260px 260px;
+    animation: cardRain 0.85s linear infinite;
+}
+@keyframes cardRain {
+    from {background-position: 0 -190px, 0 -260px;}
+    to   {background-position: -32px 0, -46px 0;}
+}
+/* một hàng mây ngang trên cùng của thẻ */
+a.song.rain::after {
+    content: ""; position: absolute; left: -30px; right: -30px; top: -14px; height: 64px; z-index: 1; pointer-events: none;
+    background:
+        radial-gradient(130px 36px at 14% 60%, rgba(216,231,243,0.30), transparent 70%),
+        radial-gradient(170px 44px at 44% 45%, rgba(216,231,243,0.34), transparent 70%),
+        radial-gradient(140px 38px at 74% 58%, rgba(216,231,243,0.28), transparent 70%),
+        radial-gradient(110px 32px at 94% 48%, rgba(216,231,243,0.24), transparent 70%);
+    animation: cardClouds 24s ease-in-out infinite alternate;
+}
+@keyframes cardClouds {from {transform: translateX(-10px);} to {transform: translateX(16px);}}
+
+/* ===== Thẻ 2 — Năm Mươi Năm Sau: hoàng hôn + sông trôi ở chân thẻ ===== */
+a.song.sunset {
+    background:
+        radial-gradient(520px 240px at 82% -60px, rgba(246,178,92,0.28), transparent 62%),
+        linear-gradient(165deg, #2b1e22 0%, #1a1626 52%, #121a29 100%);
+}
+a.song.sunset:hover {border-color: rgba(246,178,92,0.45);}
+/* mặt trời lặn ở góc trên phải */
+a.song.sunset::before {
+    content: ""; position: absolute; z-index: 0; pointer-events: none;
+    width: 150px; height: 150px; border-radius: 50%; right: 34px; top: -52px;
+    background: radial-gradient(circle, rgba(255,203,120,0.55) 0%, rgba(246,150,80,0.22) 52%, transparent 72%);
+}
+/* sông lăn tăn chảy ở chân thẻ */
+a.song.sunset::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 44px; z-index: 1; pointer-events: none;
+    background:
+        repeating-linear-gradient(93deg, rgba(150,200,220,0.20) 0 22px, transparent 22px 46px),
+        repeating-linear-gradient(88deg, rgba(150,200,220,0.10) 0 14px, transparent 14px 34px),
+        linear-gradient(to top, rgba(90,140,170,0.20), transparent);
+    background-size: 200px 100%, 150px 100%, 100% 100%;
+    animation: cardRiver 6.5s linear infinite;
+}
+@keyframes cardRiver {from {background-position: 0 0, 0 0, 0 0;} to {background-position: 200px 0, -150px 0, 0 0;}}
+
+@media (prefers-reduced-motion: reduce) {
+    a.song.rain::before, a.song.rain::after, a.song.sunset::after {animation: none;}
+}
 </style>
 </head>
 <body>
-<canvas id="rain" aria-hidden="true"></canvas>
 <div class="wrap">
 <h1>🎵 Bài hát</h1>
 <div class="sub">Song · Học tiếng Trung qua lời bài hát</div>
 
-<a class="song" href="Tan-Dong-Song-Ly-Biet.html">
+<a class="song rain" href="Tan-Dong-Song-Ly-Biet.html">
   <span class="cn">情深深雨濛濛</span>
   <span class="vn">Tân Dòng Sông Ly Biệt</span>
   <span class="desc">“Tình sâu sâu, mưa mờ mờ — biết bao lầu đài chìm trong mưa khói” · Bấm vào từng chữ để xem pinyin, Hán Việt, bộ thủ, chiết tự và thứ tự nét viết.</span>
 </a>
 
-<a class="song" href="Nam-Muoi-Nam-Sau.html">
+<a class="song sunset" href="Nam-Muoi-Nam-Sau.html">
   <span class="cn">五十年以后</span>
   <span class="vn">Năm Mươi Năm Sau — Hải Lai A Mộc</span>
   <span class="desc">Mong năm mươi năm sau vẫn còn ở bên nhau · 32 câu · Bấm vào từng chữ để xem pinyin, Hán Việt, bộ thủ, chiết tự và thứ tự nét viết.</span>
 </a>
 </div>
-<script>
-(function(){
-  var c = document.getElementById('rain'), x = c.getContext('2d'), W, H, drops = [], clouds = [];
-  function rs(){ W = c.width = innerWidth; H = c.height = innerHeight;
-    drops = Array.from({length: Math.min(130, Math.floor(W/10))}, () => ({x: Math.random()*(W+100)-50, y: Math.random()*H, l: 11+Math.random()*14, s: 9+Math.random()*9, d: -1.2, o: 0.08+Math.random()*0.26}));
-    clouds = Array.from({length: 7}, () => ({x: Math.random()*(W+500)-250, y: Math.max(64, H*0.13), r: 80+Math.random()*115, s: 0.25+Math.random()*0.25, o: 0.16+Math.random()*0.09})); }
-  function fr(){ x.clearRect(0,0,W,H);
-    for (var cl of clouds){ var g = x.createRadialGradient(cl.x, cl.y, 0, cl.x, cl.y, cl.r);
-      g.addColorStop(0, 'rgba(206,222,235,'+cl.o+')'); g.addColorStop(1, 'rgba(206,222,235,0)');
-      x.fillStyle = g; x.save(); x.translate(cl.x, cl.y); x.scale(2.3, 0.6); x.translate(-cl.x, -cl.y);
-      x.beginPath(); x.arc(cl.x, cl.y, cl.r, 0, Math.PI*2); x.fill(); x.restore();
-      cl.x += cl.s; if (cl.x - cl.r*2.4 > W){ cl.x = -340; cl.y = Math.max(64, H*0.13); } }
-    x.lineWidth = 1; x.lineCap = 'round';
-    for (var d of drops){ x.strokeStyle = 'rgba(174,199,216,'+d.o+')'; x.beginPath(); x.moveTo(d.x, d.y); x.lineTo(d.x + d.d*1.6, d.y + d.l); x.stroke();
-      d.y += d.s; d.x += d.d; if (d.y > H){ d.y = -30; d.x = Math.random()*(W+100)-50; } }
-    requestAnimationFrame(fr); }
-  rs(); addEventListener('resize', rs);
-  if (!(matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) fr();
-})();
-</script>
 </body>
 </html>
