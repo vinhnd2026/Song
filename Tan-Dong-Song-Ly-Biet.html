@@ -389,25 +389,37 @@ makeClickable();
     for (var j = 0; j < 6; j++) clouds.push(newCloud(true));
   }
   function newCloud(anywhere){
+    var r = 120 + Math.random() * 170;
+    var blobs = [];
+    var nb = 5 + Math.floor(Math.random() * 3);
+    for (var k = 0; k < nb; k++) blobs.push({
+      dx: (k / (nb - 1) - 0.5) * 2.4 * r + (Math.random() - 0.5) * 0.4 * r,
+      dy: (Math.random() - 0.5) * 0.35 * r,
+      br: (0.5 + Math.random() * 0.4) * r,
+      op: 0.13 + Math.random() * 0.08
+    });
     return {
-      x: anywhere ? Math.random() * (W + 500) - 250 : -340,
-      y: Math.random() * H * 0.36 + 10,
-      r: 130 + Math.random() * 210,
-      speed: 0.12 + Math.random() * 0.22,
-      op: 0.05 + Math.random() * 0.05
+      x: anywhere ? Math.random() * (W + 600) - 300 : -380,
+      y: Math.random() * H * 0.40 + 16,
+      r: r,
+      speed: 0.20 + Math.random() * 0.25,
+      blobs: blobs
     };
   }
   function drawClouds(){
     for (var i = 0; i < clouds.length; i++){
       var c = clouds[i];
-      var g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.r);
-      g.addColorStop(0, 'rgba(206,222,235,' + c.op + ')');
-      g.addColorStop(1, 'rgba(206,222,235,0)');
-      ctx.fillStyle = g;
-      ctx.save(); ctx.translate(c.x, c.y); ctx.scale(2.3, 0.6); ctx.translate(-c.x, -c.y);
-      ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      for (var k = 0; k < c.blobs.length; k++){
+        var b = c.blobs[k], bx = c.x + b.dx, by = c.y + b.dy;
+        var g = ctx.createRadialGradient(bx, by, 0, bx, by, b.br);
+        g.addColorStop(0, 'rgba(216,231,243,' + b.op + ')');
+        g.addColorStop(1, 'rgba(216,231,243,0)');
+        ctx.fillStyle = g;
+        ctx.save(); ctx.translate(bx, by); ctx.scale(1.9, 0.62); ctx.translate(-bx, -by);
+        ctx.beginPath(); ctx.arc(bx, by, b.br, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      }
       c.x += c.speed;
-      if (c.x - c.r * 2.4 > W) clouds[i] = newCloud(false);
+      if (c.x - c.r * 2.6 > W) clouds[i] = newCloud(false);
     }
   }
   function newDrop(anywhere){
