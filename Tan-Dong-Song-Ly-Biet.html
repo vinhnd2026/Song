@@ -31,7 +31,7 @@ body::after {
 }
 #rain {
     position: fixed; inset: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 0;
+    pointer-events: none; z-index: 12; /* above content: rain falls over the whole screen */
 }
 body.rain-off #rain {display: none;}
 
@@ -100,7 +100,7 @@ h1::after {
     font-family: "Noto Serif SC", serif; border-radius: 8px; transition: all 0.2s ease;
 }
 .ruby-hv {display: block; font-size: 14px; color: #8e9ca7; line-height: 1; margin-top: 2px; white-space: nowrap;}
-.punct {display: inline-block; vertical-align: top; padding-top: 15px; font-size: 42px; color: #aeb9c1; margin-bottom: 24px;}
+.punct {display: block; font-size: 42px; line-height: 1; color: #aeb9c1; font-family: "Noto Serif SC", serif; text-align: center;}
 .hz:hover {background: rgba(201,168,106,0.16); color: #e8ce8f; transform: scale(1.05);}
 .hz:focus {outline: 2px solid #c9a86a; outline-offset: 4px;}
 
@@ -155,6 +155,15 @@ body.hide-vi .vi {display: none; border-top: none; margin-top: 0; padding-top: 0
 .popup .close:hover {background: #c9a86a; color: #131f2a; transform: rotate(90deg);}
 .popup h2 {font-size: 24px; margin: 16px 0 6px; font-family: "Noto Serif SC", serif; color: #f0ead9;}
 .popup p {margin: 8px 0; font-size: 16px; color: #cdd6dc;}
+#pop-vi {
+    background: rgba(201,168,106,0.10); border: 1px solid rgba(201,168,106,0.28);
+    padding: 10px 14px; border-radius: 10px; font-size: 17px; color: #efe9d8;
+}
+#pop-note {
+    background: rgba(147,188,205,0.08); border: 1px solid rgba(147,188,205,0.20);
+    padding: 10px 14px; border-radius: 10px;
+}
+#pop-note:empty {display: none;}
 .popup .label {
     color: #c9a86a; font-size: 13px; font-weight: 700; text-transform: uppercase;
     letter-spacing: 0.1em; margin-top: 24px; display: inline-block;
@@ -227,6 +236,7 @@ body.hide-vi .vi {display: none; border-top: none; margin-top: 0; padding-top: 0
 <h2 id="pop-title"></h2>
 <p id="pop-py"></p>
 <p id="pop-vi"></p>
+<p id="pop-note"></p>
 <p class="label">Thứ tự nét</p>
 <div id="stroke"></div>
 <div class="stroke-btns"><button onclick="playStrokes()">▶ Chạy thứ tự nét</button><button onclick="showAllStrokes()">Hiện tất cả nét</button></div>
@@ -257,6 +267,9 @@ const TYPES={"情":"Hình thanh — 忄 gợi nghĩa (cảm xúc, tim), 青 qīn
 const WORDS={"情深深":["qíng shēn shēn","tình thâm thâm","tình rất sâu"],"雨濛濛":["yǔ méng méng","vũ mông mông","mưa bụi mờ mịt"],"多少":["duō shǎo","đa thiểu","biết bao"],"楼台":["lóu tái","lâu đài","lầu đài"],"烟雨":["yān yǔ","yên vũ","mưa khói, sương khói mưa"],"记得":["jì de","ký đắc","nhớ được, nhớ"],"当初":["dāng chū","đương sơ","thuở ban đầu, lúc đầu"],"你侬我侬":["nǐ nóng wǒ nóng","nễ nông ngã nông","anh anh em em quấn quýt"],"车如流水":["chē rú liú shuǐ","xa như lưu thủy","xe như nước chảy"],"马如龙":["mǎ rú lóng","mã như long","ngựa như rồng"],"尽管":["jǐn guǎn","tận quản","dù cho, mặc dù"],"狂风":["kuáng fēng","cuồng phong","gió dữ"],"平地":["píng dì","bình địa","đất bằng"],"美人":["měi rén","mỹ nhân","người đẹp"],"如玉":["rú yù","như ngọc","như ngọc"],"剑如虹":["jiàn rú hóng","kiếm như hồng","kiếm như cầu vồng"],"世界":["shì jiè","thế giới","thế giới"],"眼中":["yǎn zhōng","nhãn trung","trong mắt"],"相逢":["xiāng féng","tương phùng","gặp gỡ"],"不晚":["bù wǎn","bất vãn","chưa muộn"],"为何":["wèi hé","vi hà","vì sao"],"匆匆":["cōng cōng","thông thông","vội vã"],"山山水水":["shān shān shuǐ shuǐ","sơn sơn thủy thủy","núi non sông nước"],"几万重":["jǐ wàn chóng","kỷ vạn trùng","muôn trùng"],"一曲":["yì qǔ","nhất khúc","một khúc hát"],"高歌":["gāo gē","cao ca","hát cao vút"],"千行泪":["qiān háng lèi","thiên hàng lệ","nghìn hàng lệ"],"回肠荡气":["huí cháng dàng qì","hồi trường đãng khí","lòng quặn thắt, khí dâng trào; xúc động nghẹn ngào"],"天也无尽":["tiān yě wú jìn","thiên dã vô tận","trời cũng vô tận"],"地无穷":["dì wú qióng","địa vô cùng","đất cũng vô cùng"],"高楼":["gāo lóu","cao lâu","lầu cao"],"望断":["wàng duàn","vọng đoạn","trông đến mỏi mắt, đứt tầm mắt"],"情有独钟":["qíng yǒu dú zhōng","tình hữu độc chung","tình chỉ dành cho một người"],"盼过":["pàn guò","phán quá","mong qua, đã mong qua"],"春夏":["chūn xià","xuân hạ","xuân và hạ"],"秋冬":["qiū dōng","thu đông","thu và đông"],"盼来盼去":["pàn lái pàn qù","phán lai phán khứ","mong tới mong lui"],"盼不尽":["pàn bú jìn","phán bất tận","mong không hết"],"天涯":["tiān yá","thiên nhai","chân trời"],"何处":["hé chù","hà xứ","nơi nào"],"归鸿":["guī hóng","quy hồng","chim hồng trở về"]};
 
 function toggleOpt(cls,btn){document.body.classList.toggle(cls);var on=!document.body.classList.contains(cls);btn.setAttribute('aria-pressed',on?'true':'false');}
+const POS={"情": "Danh từ", "深": "Tính từ", "雨": "Danh từ", "濛": "Tính từ", "多": "Tính từ", "少": "Tính từ", "楼": "Danh từ", "台": "Danh từ", "烟": "Danh từ", "中": "Danh từ · Giới từ", "记": "Động từ", "得": "Trợ từ", "当": "Giới từ", "初": "Danh từ", "你": "Đại từ", "侬": "Đại từ", "我": "Đại từ", "车": "Danh từ", "如": "Động từ", "流": "Động từ", "水": "Danh từ", "马": "Danh từ", "龙": "Danh từ", "尽": "Phó từ", "管": "Động từ", "狂": "Tính từ", "风": "Danh từ", "平": "Tính từ", "地": "Danh từ", "起": "Động từ", "美": "Tính từ", "人": "Danh từ", "玉": "Danh từ", "剑": "Danh từ", "虹": "Danh từ", "世": "Danh từ", "界": "Danh từ", "只": "Phó từ", "在": "Giới từ", "眼": "Danh từ", "相": "Phó từ", "逢": "Động từ", "不": "Phó từ", "晚": "Tính từ", "为": "Giới từ", "何": "Đại từ", "匆": "Tính từ", "山": "Danh từ", "几": "Đại từ", "万": "Số từ", "重": "Lượng từ", "一": "Số từ", "曲": "Lượng từ", "高": "Tính từ", "歌": "Danh từ", "千": "Số từ", "行": "Lượng từ", "泪": "Danh từ", "回": "Động từ", "肠": "Danh từ", "荡": "Động từ", "气": "Danh từ", "天": "Danh từ", "也": "Phó từ", "无": "Động từ", "穷": "Tính từ", "望": "Động từ", "断": "Động từ", "有": "Động từ", "独": "Phó từ", "钟": "Động từ", "盼": "Động từ", "过": "Động từ", "春": "Danh từ", "夏": "Danh từ", "和": "Liên từ", "秋": "Danh từ", "冬": "Danh từ", "来": "Động từ", "去": "Động từ", "涯": "Danh từ", "处": "Danh từ", "是": "Động từ", "归": "Động từ", "鸿": "Danh từ"};
+const GLOSS={"情": "tình cảm; tình yêu; cảm xúc; tình ý", "深": "sâu; sâu sắc; đậm (về tình cảm, màu sắc)", "雨": "mưa", "濛": "mờ mịt; mưa bụi lất phất, nhòe cảnh vật", "多": "nhiều; biết bao (trong câu cảm thán)", "少": "ít; thiếu", "楼": "lầu; tòa nhà cao tầng", "台": "đài; bệ cao; lầu ngắm cảnh", "烟": "khói; sương khói", "中": "trong; giữa; ở trong", "记": "nhớ; ghi nhớ; ghi lại", "得": "được (đặt sau động từ: làm được, nhớ được)", "当": "lúc; khi; vào thời điểm", "初": "ban đầu; đầu tiên; lúc mới bắt đầu", "你": "bạn; anh; em (ngôi thứ hai, người đối diện)", "侬": "anh; em — cách gọi thân mật trong tiếng Ngô (vùng Giang Nam)", "我": "tôi; ta; mình (ngôi thứ nhất)", "车": "xe; xe cộ", "如": "như; giống như", "流": "chảy; trôi; lưu chuyển", "水": "nước; sông nước", "马": "ngựa", "龙": "rồng", "尽": "hết; tận — riêng 尽管 (jǐnguǎn) là “dù cho, mặc kệ”", "管": "quản; lo — riêng 尽管 là “dù cho, bất chấp”", "狂": "dữ dội; cuồng; mãnh liệt", "风": "gió", "平": "bằng phẳng; yên ổn, bình thường", "地": "đất; mặt đất", "起": "nổi lên; bốc lên; bắt đầu", "美": "đẹp; mỹ lệ", "人": "người", "玉": "ngọc; đá quý", "剑": "kiếm; gươm", "虹": "cầu vồng", "世": "đời; thế gian; đời người", "界": "giới; cõi; ranh giới — 世界 là “thế giới”", "只": "chỉ; chỉ có", "在": "ở; tại; đang ở", "眼": "mắt; ánh mắt", "相": "lẫn nhau; qua lại với nhau", "逢": "gặp; gặp gỡ; tình cờ gặp", "不": "không; chưa (phủ định)", "晚": "muộn; chậm; về tối", "为": "vì — 为何 (wèihé) là “vì sao, cớ sao”", "何": "gì; sao; nào (từ để hỏi)", "匆": "vội vàng; hấp tấp", "山": "núi; dãy núi", "几": "mấy; vài; bao nhiêu (hỏi số lượng nhỏ)", "万": "vạn; mười nghìn; muôn (số lượng rất lớn)", "重": "lớp; trùng; chồng lên nhau (đọc chóng; nghĩa “nặng” đọc zhòng)", "一": "một", "曲": "khúc; bản nhạc — 一曲 là “một khúc hát”", "高": "cao; vang xa (âm thanh)", "歌": "bài hát; ca khúc; hát", "千": "nghìn; ngàn", "行": "hàng; dòng (đọc háng; nghĩa “đi, được” đọc xíng)", "泪": "nước mắt; lệ", "回": "quay về; vòng lại — 回肠 là “ruột quặn thắt vì xúc động”", "肠": "ruột; lòng dạ", "荡": "lay động; lan tỏa; dạt dào", "气": "khí; hơi; khí thế, cảm xúc dâng trào", "天": "trời; bầu trời", "也": "cũng; cũng vậy", "无": "không có; vô (không) — 无尽 “vô tận”, 无穷 “vô cùng”", "穷": "cùng tận; đến hết; kiệt (trong 无穷 không phải là “nghèo”)", "望": "trông; ngóng; nhìn ra xa", "断": "đứt; cắt đứt; đến cùng, tuyệt (về mức độ)", "有": "có; sở hữu", "独": "chỉ một; duy nhất; một mình", "钟": "tập trung vào; dành riêng cho — 情有独钟 là “tình chỉ dành cho một người” (không phải cái chuông)", "盼": "mong; ngóng trông; chờ đợi tha thiết", "过": "qua; trải qua; đã từng", "春": "mùa xuân", "夏": "mùa hè", "和": "và; cùng; với", "秋": "mùa thu", "冬": "mùa đông", "来": "đến; lại; tới (hướng về người nói)", "去": "đi; qua đi (hướng ra xa người nói)", "涯": "bờ; bến; nơi tận cùng — 天涯 là “chân trời góc bể”", "处": "chỗ; nơi; chốn", "是": "là; phải; đúng là", "归": "trở về; quay về", "鸿": "chim hồng; ngỗng trời lớn (鸿雁, chim mang tin trong thơ ca xưa)"};
+const NOTE={"情": "Điệp khúc của bài: 情深深 — mối tình sâu đậm, da diết; chữ này là trục cảm xúc của toàn bài.", "深": "Trong 情深深， chữ 深 lặp lại để nhấn mức độ: tình sâu đến không đo được.", "雨": "雨濛濛 — mưa bụi mờ mịt; hình ảnh lãng mạn trung tâm, đối xứng với 情深深.", "濛": "Đi sau 雨 thành mưa phùn làm nhòe mọi cảnh vật, như nhìn qua màn nước mắt.", "多": "多少 ở đây là câu cảm thán “biết bao”, không phải câu hỏi số lượng.", "少": "Ghép với 多 thành 多少 = biết bao; đừng tách ra hiểu là “ít”.", "楼": "楼台 = lầu đài, nhà cao ven sông — phông nền Thượng Hải xưa trong mưa khói.", "台": "Trong 楼台 chỉ lầu các, đài cao để ở và ngắm cảnh.", "烟": "烟雨 = mưa quyện sương khói, cảnh Giang Nam mờ ảo.", "中": "烟雨中 = ở trong mưa khói; về sau còn có 眼中 = trong ánh mắt.", "记": "记得 = nhớ, còn nhớ rõ — động từ mở đầu đoạn hồi tưởng.", "得": "Đứng sau 记 bổ sung kết quả: nhớ được, nhớ rõ chứ không phải quên.", "当": "当初 = lúc đầu, thuở ban đầu — mốc thời gian của kỷ niệm.", "初": "当初 chỉ thời hai người mới quen, mới yêu nhau.", "你": "Trong 你侬我侬， 你 là người thương ở phía đối diện.", "侬": "你侬我侬 là cách nói Giang Nam: anh anh em em quấn quýt, thân mật.", "我": "Cặp với 你： hai phía của một cuộc tình — anh và em.", "车": "车如流水 = xe cộ qua lại tấp nập như nước chảy, tả phố phồn hoa xưa.", "如": "Bài dùng loạt so sánh 如…: xe như nước, ngựa như rồng, người như ngọc, kiếm như cầu vồng.", "流": "流水 = dòng nước chảy không ngừng; xe đông đến mức trông như dòng nước.", "水": "Ở khổ sau 山山水水 là núi non sông nước trải dài muôn trùng, chia cách hai người.", "马": "马如龙 = ngựa phi nhanh, mạnh như rồng.", "龙": "Con vật thần thoại dùng để ví sức phi của ngựa: vừa nhanh vừa oai.", "尽": "Ở đây chỉ nằm trong 尽管 = dù cho; đừng hiểu là “hết”.", "管": "Cùng 尽 thành 尽管: dù cho, bất chấp — mở đầu một ý nhượng bộ.", "狂": "狂风 = gió dữ, gió cuồng — biến cố bất ngờ ập đến giữa cuộc tình.", "风": "狂风平地起: gió dữ nổi lên từ đất bằng — chuyện không hay đến bất ngờ.", "平": "平地 = đất bằng; càng bằng lặng, gió nổi lên càng bất ngờ.", "地": "平地 là mặt đất; ở câu sau 天…地… thì 地 là đất đối xứng với trời.", "起": "Gió 起 là nổi lên, bốc lên từ mặt đất.", "美": "美人 = người đẹp — hình ảnh người thương lý tưởng trong thơ ca xưa.", "人": "美人 chỉ người đẹp; trong câu này là người thương của người hát.", "玉": "如玉 = trong trẻo, quý phái như ngọc — ví vẻ đẹp của người thương.", "剑": "剑如虹 = kiếm sáng như cầu vồng; vẻ đẹp có phần kiêu hùng, cổ phong.", "虹": "Cầu vồng sau mưa: cong, sáng và nhiều màu — vật dùng để ví lưỡi kiếm.", "世": "世界 = thế giới, toàn bộ cuộc đời và vạn vật xung quanh.", "界": "Cùng 世 thành 世界 — mà cả thế giới ấy “chỉ ở trong mắt em”.", "只": "只在 = chỉ ở tại; cả thế giới thu gọn vào một nơi duy nhất.", "在": "在你眼中 = ở trong mắt em — điểm hội tụ của cả thế giới.", "眼": "眼中 = trong ánh mắt; ánh mắt người thương chứa cả thế giới của người hát.", "相": "相逢 = gặp nhau; 相 nhấn hai phía cùng gặp gỡ.", "逢": "相逢不晚 = gặp nhau chưa muộn — cuộc gặp này đến đúng lúc, không hề trễ.", "不": "不晚 = chưa muộn; ở khổ cuối 不尽 = không hết, mong mãi không nguôi.", "晚": "Muộn về thời gian; 相逢不晚 là lời tự an ủi: vẫn còn kịp cho cuộc tình.", "为": "为何 = vì sao, cớ sao — câu hỏi tu từ: gặp chưa muộn, sao đã vội xa?", "何": "Xuất hiện trong 为何 (vì sao) và 何处 (nơi nào) — hai câu hỏi lớn của bài.", "匆": "匆匆 lặp lại: vội vội vàng vàng — trách nhẹ sự chia xa quá nhanh.", "山": "山山水水: núi chồng núi — chặng đường xa cách giữa hai người.", "几": "几万重 = biết mấy vạn lớp; 几 ở đây là số lượng lớn không đếm xuể.", "万": "Vạn = mười nghìn; dùng khoa trương: núi sông nhiều đến muôn trùng.", "重": "Mỗi 重 là một lớp; 几万重 = lớp lớp chồng nhau đến vạn lớp.", "一": "一曲 = một khúc; chỉ cần một khúc hát mà rơi nghìn hàng lệ.", "曲": "一曲高歌 = một khúc hát cất cao; nhạc mở đầu cho dòng lệ.", "高": "高歌 là hát vang, cất cao giọng; ở câu sau 高楼 lại là lầu cao.", "歌": "Hát ở đây không vui: hát càng vang, lệ rơi càng nhiều.", "千": "千行泪 = nghìn hàng lệ; số nghìn dùng khoa trương nỗi xúc động.", "行": "行 là hàng, dòng lệ chảy thành hàng; đọc háng, đừng đọc xíng.", "泪": "Lệ rơi vì tình: hát một khúc mà nước mắt thành nghìn hàng.", "回": "回肠 = ruột gan quặn lại, vòng đi vòng lại vì xúc động mạnh.", "肠": "回肠荡气 là thành ngữ: tình cảm quặn thắt ruột gan, khí dâng nghẹn ngào.", "荡": "荡气 = cảm xúc lan tỏa, dạt dào, lay động cả người hát lẫn người nghe.", "气": "Khí ở đây là luồng cảm xúc dâng trào trong lồng ngực khi hát, khi nhớ.", "天": "天也无尽 = trời cũng vô tận — lấy trời đất làm thước đo mối tình.", "也": "天也…地也…: cả hai vế đều “cũng” vô tận, như tình không bờ bến.", "无": "无尽 (vô tận), 无穷 (vô cùng) — tình và trời đất đều không có điểm kết thúc.", "穷": "Trong 无穷 nghĩa là cùng tận, hết mức — ý là mãi không hết, không phải nghèo.", "望": "高楼望断 = đứng trên lầu cao ngóng trông ra xa, đợi người trở về.", "断": "望断 = trông đến đứt cả tầm mắt: nhìn mãi đến mỏi mòn mà người chưa về.", "有": "情有独钟 = có một mối tình chỉ dành riêng cho một người duy nhất.", "独": "Độc nhất: tấm tình này không chia cho ai khác ngoài một người.", "钟": "独钟 = chỉ rung động vì một; đừng hiểu 钟 ở đây là cái chuông.", "盼": "Động từ chính của khổ cuối: mong ngóng qua hết bốn mùa, năm này qua năm khác.", "过": "盼过 = đã mong chờ trải qua; xuân hạ thu đông đều đã qua trong chờ đợi.", "春": "春夏秋冬 = bốn mùa nối tiếp: thời gian chờ đợi kéo dài cả năm, nhiều năm.", "夏": "Một trong bốn mùa của vòng chờ đợi 春夏和秋冬.", "和": "Nối 春夏 với 秋冬： gom cả bốn mùa vào một chuỗi ngày mong ngóng.", "秋": "Mùa thu — mùa của chia ly trong thơ ca, vẫn nằm trong chuỗi ngày đợi chờ.", "冬": "Mùa đông, mùa cuối của vòng bốn mùa; mong hết đông mà người chưa về.", "来": "盼来盼去 = mong nó đến; 来 hướng về phía người đang ngóng đợi.", "去": "盼去 = mong nó qua đi; cặp 来/去 tả sự chờ đợi triền miên, hết đến lại đi.", "涯": "天涯 = chân trời, nơi xa nhất của đất trời — người thương ở tận nơi ấy.", "处": "何处 = nơi nào; câu hỏi không có trả lời: biết tìm người ở chốn nao?", "是": "天涯何处是归鸿 = nơi nào mới là chốn chim hồng trở về — 是 là “là, chính là”.", "归": "归鸿 = chim hồng bay về tổ, về quê — hình ảnh người xa được trở về.", "鸿": "Chim hồng (ngỗng trời) trong thơ xưa chuyên chở thư từ và nỗi nhớ của người đi xa."};
 var currentChar=null,writer=null;
 
 function compInfo(tok){
@@ -300,7 +313,11 @@ function makeClickable(){
     var idx=0;
     Array.from(text).forEach(function(ch){
       if(!/[\u4e00-\u9fff]/.test(ch)){
-        var ps=document.createElement('span'); ps.className='punct'; ps.textContent=ch; cnEl.appendChild(ps); return;
+        var unitP=document.createElement('span'); unitP.className='char-unit';
+        var pyS=document.createElement('span'); pyS.className='ruby-py'; pyS.innerHTML='&nbsp;';
+        var pS=document.createElement('span'); pS.className='punct'; pS.textContent=ch;
+        var hvS=document.createElement('span'); hvS.className='ruby-hv'; hvS.innerHTML='&nbsp;';
+        unitP.appendChild(pyS); unitP.appendChild(pS); unitP.appendChild(hvS); cnEl.appendChild(unitP); return;
       }
       var py=pyTokens[idx]||(DATA[ch]?DATA[ch][0]:'');
       var hv=hvTokens[idx]||(DATA[ch]?DATA[ch][1]:''); idx++;
@@ -325,9 +342,10 @@ function openPopup(ch,line){
       tradBadge.style.display = 'none';
   }
   
-  document.getElementById('pop-title').textContent=ch+' — '+d[1];
-  document.getElementById('pop-py').innerHTML='<b>Pinyin:</b> '+d[0]+' &nbsp;·&nbsp; <b>Hán Việt:</b> '+d[1];
-  document.getElementById('pop-vi').innerHTML='<b>Nghĩa:</b> '+d[2];
+  document.getElementById('pop-title').textContent=ch+' — '+d[0]+' · '+d[1]+(POS[ch]?' · '+POS[ch]:'');
+  document.getElementById('pop-py').innerHTML='<b>Pinyin:</b> '+d[0]+' &nbsp;·&nbsp; <b>Hán Việt:</b> '+d[1]+(POS[ch]?' &nbsp;·&nbsp; <b>Từ loại:</b> '+POS[ch]:'');
+  document.getElementById('pop-vi').innerHTML='<b>Nghĩa:</b> '+(GLOSS[ch]||d[2]);
+  document.getElementById('pop-note').innerHTML=NOTE[ch]?('<b>Nghĩa trong bài:</b> '+NOTE[ch]):'';
   document.getElementById('pop-rad').textContent=d[3];
   document.getElementById('pop-comp').textContent=d[4];
   document.getElementById('pop-memo').textContent=d[5];
@@ -359,7 +377,7 @@ makeClickable();
 (function(){
   var canvas = document.getElementById('rain');
   var ctx = canvas.getContext('2d');
-  var W = 0, H = 0, drops = [], splashes = [], raf = null, running = false;
+  var W = 0, H = 0, drops = [], splashes = [], clouds = [], raf = null, running = false;
 
   function resize(){
     W = canvas.width = window.innerWidth;
@@ -367,6 +385,30 @@ makeClickable();
     var n = Math.max(50, Math.min(150, Math.floor(W / 9)));
     drops = [];
     for (var i = 0; i < n; i++) drops.push(newDrop(true));
+    clouds = [];
+    for (var j = 0; j < 6; j++) clouds.push(newCloud(true));
+  }
+  function newCloud(anywhere){
+    return {
+      x: anywhere ? Math.random() * (W + 500) - 250 : -340,
+      y: Math.random() * H * 0.36 + 10,
+      r: 130 + Math.random() * 210,
+      speed: 0.12 + Math.random() * 0.22,
+      op: 0.05 + Math.random() * 0.05
+    };
+  }
+  function drawClouds(){
+    for (var i = 0; i < clouds.length; i++){
+      var c = clouds[i];
+      var g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.r);
+      g.addColorStop(0, 'rgba(206,222,235,' + c.op + ')');
+      g.addColorStop(1, 'rgba(206,222,235,0)');
+      ctx.fillStyle = g;
+      ctx.save(); ctx.translate(c.x, c.y); ctx.scale(2.3, 0.6); ctx.translate(-c.x, -c.y);
+      ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      c.x += c.speed;
+      if (c.x - c.r * 2.4 > W) clouds[i] = newCloud(false);
+    }
   }
   function newDrop(anywhere){
     return {
@@ -380,6 +422,7 @@ makeClickable();
   }
   function frame(){
     ctx.clearRect(0, 0, W, H);
+    drawClouds();
     ctx.lineWidth = 1; ctx.lineCap = 'round';
     for (var i = 0; i < drops.length; i++){
       var d = drops[i];

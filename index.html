@@ -15,7 +15,7 @@ body {
         linear-gradient(168deg, #0a141f 0%, #10222f 42%, #16303f 78%, #0d1a27 100%);
     background-attachment: fixed;
 }
-#rain {position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;}
+#rain {position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2;}
 .wrap {max-width: 860px; margin: 0 auto; padding: 56px 24px 90px; position: relative; z-index: 1;}
 h1 {text-align: center; font-size: 40px; margin: 10px 0 6px; color: #f0ead9; letter-spacing: 0.06em;}
 .sub {text-align: center; color: #c9a86a; letter-spacing: 0.34em; text-transform: uppercase; font-size: 13px; font-weight: 600;}
@@ -46,10 +46,17 @@ a.song .desc {display: block; margin-top: 8px; font-size: 15px; color: #9db2bf; 
 </div>
 <script>
 (function(){
-  var c = document.getElementById('rain'), x = c.getContext('2d'), W, H, drops = [];
+  var c = document.getElementById('rain'), x = c.getContext('2d'), W, H, drops = [], clouds = [];
   function rs(){ W = c.width = innerWidth; H = c.height = innerHeight;
-    drops = Array.from({length: Math.min(130, Math.floor(W/10))}, () => ({x: Math.random()*(W+100)-50, y: Math.random()*H, l: 11+Math.random()*14, s: 9+Math.random()*9, d: -1.2, o: 0.08+Math.random()*0.26})); }
-  function fr(){ x.clearRect(0,0,W,H); x.lineWidth = 1; x.lineCap = 'round';
+    drops = Array.from({length: Math.min(130, Math.floor(W/10))}, () => ({x: Math.random()*(W+100)-50, y: Math.random()*H, l: 11+Math.random()*14, s: 9+Math.random()*9, d: -1.2, o: 0.08+Math.random()*0.26}));
+    clouds = Array.from({length: 6}, () => ({x: Math.random()*(W+500)-250, y: Math.random()*H*0.36+10, r: 130+Math.random()*210, s: 0.12+Math.random()*0.22, o: 0.05+Math.random()*0.05})); }
+  function fr(){ x.clearRect(0,0,W,H);
+    for (var cl of clouds){ var g = x.createRadialGradient(cl.x, cl.y, 0, cl.x, cl.y, cl.r);
+      g.addColorStop(0, 'rgba(206,222,235,'+cl.o+')'); g.addColorStop(1, 'rgba(206,222,235,0)');
+      x.fillStyle = g; x.save(); x.translate(cl.x, cl.y); x.scale(2.3, 0.6); x.translate(-cl.x, -cl.y);
+      x.beginPath(); x.arc(cl.x, cl.y, cl.r, 0, Math.PI*2); x.fill(); x.restore();
+      cl.x += cl.s; if (cl.x - cl.r*2.4 > W){ cl.x = -340; cl.y = Math.random()*H*0.36+10; } }
+    x.lineWidth = 1; x.lineCap = 'round';
     for (var d of drops){ x.strokeStyle = 'rgba(174,199,216,'+d.o+')'; x.beginPath(); x.moveTo(d.x, d.y); x.lineTo(d.x + d.d*1.6, d.y + d.l); x.stroke();
       d.y += d.s; d.x += d.d; if (d.y > H){ d.y = -30; d.x = Math.random()*(W+100)-50; } }
     requestAnimationFrame(fr); }
