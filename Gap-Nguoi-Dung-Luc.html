@@ -218,8 +218,9 @@ body.hide-vi .vi {display: none; border-top: none; margin-top: 0; padding-top: 0
 }
 .phrase {border-radius: 10px; padding: 2px 1px; cursor: pointer;}
 .phrase .hz {pointer-events: none;}
-.phrase.ph-a {box-shadow: inset 0 -3px 0 rgba(201,168,106,0.55);}
-.phrase.ph-b {box-shadow: inset 0 -3px 0 rgba(120,180,220,0.55);}
+/* gạch chân cụm chỉ nằm ngay dưới CHỮ HÁN — không đè xuống hàng Hán Việt bên dưới */
+.phrase.ph-a .hz {box-shadow: inset 0 -3px 0 rgba(201,168,106,0.6);}
+.phrase.ph-b .hz {box-shadow: inset 0 -3px 0 rgba(120,180,220,0.6);}
 .phrase:hover {background: rgba(201,168,106,0.12);}
 .phrase-popup {text-align: center; max-width: 420px;}
 .phrase-word {font-family: "Noto Serif SC", serif; font-size: 44px; color: #f0ead9;}

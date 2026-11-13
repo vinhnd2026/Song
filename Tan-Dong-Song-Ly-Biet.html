@@ -217,8 +217,9 @@ body.hide-vi .vi {display: none; border-top: none; margin-top: 0; padding-top: 0
 }
 .phrase {border-radius: 10px; padding: 2px 1px; cursor: pointer;}
 .phrase .hz {pointer-events: none;}
-.phrase.ph-a {box-shadow: inset 0 -3px 0 rgba(201,168,106,0.55);}
-.phrase.ph-b {box-shadow: inset 0 -3px 0 rgba(120,180,220,0.55);}
+/* gạch chân cụm chỉ nằm ngay dưới CHỮ HÁN — không đè xuống hàng Hán Việt bên dưới */
+.phrase.ph-a .hz {box-shadow: inset 0 -3px 0 rgba(201,168,106,0.6);}
+.phrase.ph-b .hz {box-shadow: inset 0 -3px 0 rgba(120,180,220,0.6);}
 .phrase:hover {background: rgba(201,168,106,0.12);}
 .phrase-popup {text-align: center; max-width: 420px;}
 .phrase-word {font-family: "Noto Serif SC", serif; font-size: 44px; color: #f0ead9;}
@@ -492,7 +493,7 @@ makeClickable();
 (function(){
   var canvas = document.getElementById('rain');
   var ctx = canvas.getContext('2d');
-  var W = 0, H = 0, drops = [], splashes = [], clouds = [], raf = null, running = false;
+  var W = 0, H = 0, drops = [], splashes = [], raf = null, running = false;
 
   function resize(){
     W = canvas.width = window.innerWidth;
@@ -500,42 +501,6 @@ makeClickable();
     var n = Math.max(50, Math.min(150, Math.floor(W / 9)));
     drops = [];
     for (var i = 0; i < n; i++) drops.push(newDrop(true));
-    clouds = [];
-    for (var j = 0; j < 6; j++) clouds.push(newCloud(true));
-  }
-  function newCloud(anywhere){
-    var r = 70 + Math.random() * 95;
-    var blobs = [];
-    var nb = 5 + Math.floor(Math.random() * 3);
-    for (var k = 0; k < nb; k++) blobs.push({
-      dx: (k / (nb - 1) - 0.5) * 2.4 * r + (Math.random() - 0.5) * 0.4 * r,
-      dy: (Math.random() - 0.5) * 0.35 * r,
-      br: (0.5 + Math.random() * 0.4) * r,
-      op: 0.13 + Math.random() * 0.08
-    });
-    return {
-      x: anywhere ? Math.random() * (W + 600) - 300 : -380,
-      y: Math.max(64, H * 0.13), /* all clouds in ONE row near the top */
-      r: r,
-      speed: 0.20 + Math.random() * 0.25,
-      blobs: blobs
-    };
-  }
-  function drawClouds(){
-    for (var i = 0; i < clouds.length; i++){
-      var c = clouds[i];
-      for (var k = 0; k < c.blobs.length; k++){
-        var b = c.blobs[k], bx = c.x + b.dx, by = c.y + b.dy;
-        var g = ctx.createRadialGradient(bx, by, 0, bx, by, b.br);
-        g.addColorStop(0, 'rgba(216,231,243,' + b.op + ')');
-        g.addColorStop(1, 'rgba(216,231,243,0)');
-        ctx.fillStyle = g;
-        ctx.save(); ctx.translate(bx, by); ctx.scale(1.9, 0.62); ctx.translate(-bx, -by);
-        ctx.beginPath(); ctx.arc(bx, by, b.br, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-      }
-      c.x += c.speed;
-      if (c.x - c.r * 2.6 > W) clouds[i] = newCloud(false);
-    }
   }
   function newDrop(anywhere){
     return {
@@ -549,7 +514,6 @@ makeClickable();
   }
   function frame(){
     ctx.clearRect(0, 0, W, H);
-    drawClouds();
     ctx.lineWidth = 1; ctx.lineCap = 'round';
     for (var i = 0; i < drops.length; i++){
       var d = drops[i];

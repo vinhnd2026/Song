@@ -29,7 +29,7 @@ a.song .cn {font-size: 30px; color: #f0ead9; letter-spacing: 0.08em;}
 a.song .vn {display: block; margin-top: 6px; font-size: 18px; color: #c9a86a; font-weight: 600;}
 a.song .desc {display: block; margin-top: 8px; font-size: 15px; color: #b6c3cc; font-style: italic;}
 
-/* ===== Thẻ 1 — Tân Dòng Sông Ly Biệt: mưa rơi + một hàng mây ===== */
+/* ===== Thẻ 1 — Tân Dòng Sông Ly Biệt: chỉ mưa rơi (đã bỏ mây) ===== */
 a.song.rain {
     background: linear-gradient(160deg, rgba(23,42,60,0.92), rgba(11,22,34,0.95));
 }
@@ -47,17 +47,7 @@ a.song.rain::before {
     from {background-position: 0 -190px, 0 -260px;}
     to   {background-position: -32px 0, -46px 0;}
 }
-/* một hàng mây ngang trên cùng của thẻ */
-a.song.rain::after {
-    content: ""; position: absolute; left: -30px; right: -30px; top: -14px; height: 64px; z-index: 1; pointer-events: none;
-    background:
-        radial-gradient(130px 36px at 14% 60%, rgba(216,231,243,0.30), transparent 70%),
-        radial-gradient(170px 44px at 44% 45%, rgba(216,231,243,0.34), transparent 70%),
-        radial-gradient(140px 38px at 74% 58%, rgba(216,231,243,0.28), transparent 70%),
-        radial-gradient(110px 32px at 94% 48%, rgba(216,231,243,0.24), transparent 70%);
-    animation: cardClouds 24s ease-in-out infinite alternate;
-}
-@keyframes cardClouds {from {transform: translateX(-10px);} to {transform: translateX(16px);}}
+/* (đã bỏ mây khỏi bài Tân Dòng theo yêu cầu — thẻ chỉ còn mưa rơi) */
 
 /* ===== Thẻ 2 — Năm Mươi Năm Sau: bình minh tươi sáng + sông trôi ở chân thẻ ===== */
 a.song.sunset {
@@ -120,7 +110,7 @@ a.song.stars::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    a.song.rain::before, a.song.rain::after, a.song.sunset::after, a.song.stars::before {animation: none;}
+    a.song.rain::before, a.song.sunset::after, a.song.stars::before {animation: none;}
 }
 </style>
 </head>
