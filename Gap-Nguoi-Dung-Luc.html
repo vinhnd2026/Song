@@ -216,11 +216,11 @@ body.hide-vi .vi {display: none; border-top: none; margin-top: 0; padding-top: 0
     border: 1px solid rgba(201,168,106,0.28); background: rgba(13,26,39,0.72); color: #c3ced6;
     border-radius: 999px; padding: 10px 14px; font-size: 15px; font-weight: 600; cursor: pointer;
 }
-.phrase {border-radius: 10px; padding: 2px 1px; cursor: pointer;}
+.phrase {border-radius: 10px; padding: 2px 2px 9px; cursor: pointer;}
 .phrase .hz {pointer-events: none;}
-/* gạch chân cụm chỉ nằm ngay dưới CHỮ HÁN — không đè xuống hàng Hán Việt bên dưới */
-.phrase.ph-a .hz {box-shadow: inset 0 -3px 0 rgba(201,168,106,0.6);}
-.phrase.ph-b .hz {box-shadow: inset 0 -3px 0 rgba(120,180,220,0.6);}
+/* dấu ngoặc cụm như cũ (gạch dưới cả cụm) — đệm 9px phía dưới để gạch nằm hẳn dưới hàng Hán Việt, không đè chữ */
+.phrase.ph-a {box-shadow: inset 0 -3px 0 rgba(201,168,106,0.55);}
+.phrase.ph-b {box-shadow: inset 0 -3px 0 rgba(120,180,220,0.55);}
 .phrase:hover {background: rgba(201,168,106,0.12);}
 .phrase-popup {text-align: center; max-width: 420px;}
 .phrase-word {font-family: "Noto Serif SC", serif; font-size: 44px; color: #f0ead9;}
