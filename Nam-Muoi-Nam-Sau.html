@@ -240,7 +240,7 @@ h1 {color: #43302a; text-shadow: 0 2px 18px rgba(255,180,90,0.5);}
 .line {position: relative;}
 .line.playing {border-color: rgba(201,168,106,0.75); box-shadow: 0 0 0 2px rgba(201,168,106,0.35), 0 20px 44px rgba(0,0,0,0.5);}
 .listen-btn {
-    position: absolute; top: 12px; right: 14px; z-index: 3;
+    display: block; margin: 0 0 12px auto;
     border: 1px solid rgba(201,168,106,0.4); background: rgba(13,26,39,0.8);
     color: #e8ce8f; border-radius: 999px; padding: 5px 13px; font-size: 13px; font-weight: 600; cursor: pointer;
 }
@@ -697,7 +697,7 @@ function playAllNext(){
     var btn = document.createElement('button');
     btn.className = 'listen-btn'; btn.type = 'button'; btn.textContent = '🔊 Nghe câu';
     btn.onclick = function(){ playLine(line); };
-    line.appendChild(btn);
+    line.insertBefore(btn, line.firstChild);
   });
   if (!toolbar) return;
   var sel = document.createElement('select'); sel.id = 'tts-speed'; sel.className = 'tts-speed';
