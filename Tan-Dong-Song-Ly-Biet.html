@@ -200,6 +200,83 @@ body.hide-vi .vi {display: none; border-top: none; margin-top: 0; padding-top: 0
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+
+<style>
+/* ===== 4 cách học chủ động ===== */
+.line {position: relative;}
+.line.playing {border-color: rgba(201,168,106,0.75); box-shadow: 0 0 0 2px rgba(201,168,106,0.35), 0 20px 44px rgba(0,0,0,0.5);}
+.listen-btn {
+    position: absolute; top: 12px; right: 14px; z-index: 3;
+    border: 1px solid rgba(201,168,106,0.4); background: rgba(13,26,39,0.8);
+    color: #e8ce8f; border-radius: 999px; padding: 5px 13px; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.listen-btn:hover {background: rgba(201,168,106,0.25);}
+.tts-speed {
+    border: 1px solid rgba(201,168,106,0.28); background: rgba(13,26,39,0.72); color: #c3ced6;
+    border-radius: 999px; padding: 10px 14px; font-size: 15px; font-weight: 600; cursor: pointer;
+}
+.phrase {border-radius: 10px; padding: 2px 1px; cursor: pointer;}
+.phrase .hz {pointer-events: none;}
+.phrase.ph-a {box-shadow: inset 0 -3px 0 rgba(201,168,106,0.55);}
+.phrase.ph-b {box-shadow: inset 0 -3px 0 rgba(120,180,220,0.55);}
+.phrase:hover {background: rgba(201,168,106,0.12);}
+.phrase-popup {text-align: center; max-width: 420px;}
+.phrase-word {font-family: "Noto Serif SC", serif; font-size: 44px; color: #f0ead9;}
+.phrase-py {color: #8fbccd; font-size: 17px; margin-top: 4px;}
+.phrase-vi {color: #d8dde0; font-size: 19px; margin-top: 12px;}
+.study-sec {
+    background: linear-gradient(160deg, rgba(23,42,60,0.82), rgba(11,22,34,0.86));
+    border: 1px solid rgba(147,188,205,0.16); border-radius: 18px;
+    padding: 28px 32px; margin-bottom: 20px; box-shadow: 0 14px 34px rgba(0,0,0,0.38);
+}
+.study-h {text-align: center; color: #f0ead9; font-size: 24px; margin: 4px 0 6px;}
+.study-note {text-align: center; color: #9db2bf; font-size: 14px; margin: 0 0 18px;}
+.fc-stage {display: flex; justify-content: center; perspective: 900px;}
+.fc-card {position: relative; width: min(430px, 88vw); height: 210px; cursor: pointer; transform-style: preserve-3d; transition: transform 0.45s ease;}
+.fc-card.flipped {transform: rotateY(180deg);}
+.fc-face {
+    position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: 16px; border: 1px solid rgba(201,168,106,0.35);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 18px;
+    background: linear-gradient(150deg, #1b3448, #122636);
+}
+.fc-back {transform: rotateY(180deg); background: linear-gradient(150deg, #2a2118, #1d2a1a);}
+.fc-word {font-family: "Noto Serif SC", serif; font-size: 52px; color: #f0ead9;}
+.fc-py {color: #8fbccd; font-size: 17px;}
+.fc-hint {color: #7e8d99; font-size: 12px;}
+.fc-vi {color: #e8ce8f; font-size: 21px; font-weight: 600; text-align: center;}
+.fc-ex {color: #b6c3cc; font-size: 16px; font-family: "Noto Serif SC", serif;}
+.fc-nav {display: flex; gap: 12px; justify-content: center; align-items: center; margin-top: 18px; flex-wrap: wrap;}
+.fc-nav button {
+    border: 1px solid rgba(201,168,106,0.3); background: rgba(13,26,39,0.72); color: #c3ced6;
+    border-radius: 999px; padding: 8px 18px; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.fc-nav button:hover {background: rgba(201,168,106,0.22); color: #eef2f4;}
+.fc-nav span {color: #9db2bf; font-size: 14px; min-width: 52px; text-align: center;}
+.fill-line {text-align: center; padding: 12px 6px; border-bottom: 1px dashed rgba(147,188,205,0.14);}
+.fill-cn {font-family: "Noto Serif SC", serif; font-size: 27px; color: #f0ead9;}
+.fill-py {color: #8fbccd; font-size: 15px; margin-left: 10px;}
+.fill-vi {color: #9db2bf; font-size: 14px; font-style: italic; margin-top: 2px;}
+.blank {
+    font-family: inherit; font-size: 27px; color: #e8ce8f; background: rgba(201,168,106,0.12);
+    border: 1px dashed rgba(201,168,106,0.65); border-radius: 8px; padding: 0 12px; cursor: pointer; margin: 0 2px;
+}
+.blank.revealed {border-style: solid; background: rgba(201,168,106,0.22); color: #ffe9ad;}
+.quiz-q {padding: 12px 4px; border-bottom: 1px dashed rgba(147,188,205,0.14);}
+.q-text {color: #dfe3e6; font-size: 17px; margin-bottom: 8px;}
+.q-text b {font-family: "Noto Serif SC", serif; color: #f0ead9; font-size: 20px;}
+.q-py {color: #8fbccd; font-size: 14px;}
+.q-opts {display: flex; flex-wrap: wrap; gap: 8px;}
+.q-opt {
+    border: 1px solid rgba(147,188,205,0.3); background: rgba(13,26,39,0.6); color: #c3ced6;
+    border-radius: 10px; padding: 8px 14px; font-size: 15px; cursor: pointer;
+}
+.q-opt:hover:not(:disabled) {border-color: rgba(201,168,106,0.6); color: #eef2f4;}
+.q-opt.right {background: rgba(74,160,90,0.35); border-color: #4aa05a; color: #dff5e2;}
+.q-opt.wrong {background: rgba(190,70,60,0.32); border-color: #be463c; color: #fbe3e0;}
+.q-opt:disabled {cursor: default; opacity: 0.92;}
+</style>
+
 </head>
 <body>
 <canvas id="rain" aria-hidden="true"></canvas>
@@ -224,6 +301,42 @@ body.hide-vi .vi {display: none; border-top: none; margin-top: 0; padding-top: 0
 <div class="line"><div class="cn">情深深雨濛濛，天也无尽地无穷。</div><div class="py">Qíng shēn shēn yǔ méng méng, tiān yě wú jìn dì wú qióng.</div><div class="hv">Tình thâm thâm vũ mông mông, thiên dã vô tận địa vô cùng.</div><div class="vi">Tình sâu sâu, mưa mờ mờ; trời cũng vô tận, đất cũng vô cùng.</div></div>
 <div class="line"><div class="cn">高楼望断，情有独钟。</div><div class="py">Gāo lóu wàng duàn, qíng yǒu dú zhōng.</div><div class="hv">Cao lâu vọng đoạn, tình hữu độc chung.</div><div class="vi">Lầu cao trông đến mỏi mắt, tình chỉ dành riêng cho một người.</div></div>
 <div class="line"><div class="cn">盼过春夏和秋冬，盼来盼去盼不尽，天涯何处是归鸿。</div><div class="py">Pàn guò chūn xià hé qiū dōng, pàn lái pàn qù pàn bú jìn, tiān yá hé chù shì guī hóng.</div><div class="hv">Phán quá xuân hạ hòa thu đông, phán lai phán khứ phán bất tận, thiên nhai hà xứ thị quy hồng.</div><div class="vi">Mong qua xuân, hạ cùng thu, đông; mong tới mong lui mong không hết; chân trời nơi nào là chim hồng trở về?</div></div>
+
+<div class="study-sec" id="sec-flash">
+  <h2 class="study-h">🃏 Flashcard — từ vựng của bài</h2>
+  <p class="study-note">Chạm giữa thẻ để lật · chạm góc trái/phải (hoặc nút ‹ ›) để chuyển thẻ</p>
+  <div class="fc-stage">
+    <div class="fc-card" id="fc-card">
+      <div class="fc-face fc-front"><div class="fc-word" id="fc-word"></div><div class="fc-py" id="fc-py"></div><div class="fc-hint">chạm để lật thẻ</div></div>
+      <div class="fc-face fc-back"><div class="fc-vi" id="fc-vi"></div><div class="fc-ex" id="fc-ex"></div></div>
+    </div>
+  </div>
+  <div class="fc-nav"><button id="fc-prev">‹ Trước</button><span id="fc-count"></span><button id="fc-shuffle">🔀 Xáo thẻ</button><button id="fc-next">Sau ›</button></div>
+</div>
+
+<div class="study-sec" id="sec-fill">
+  <h2 class="study-h">✍️ Điền khuyết — đoán từ còn thiếu</h2>
+  <p class="study-note">Bấm vào ô …… để xem đáp án</p>
+  <div class="fill-line"><span class="fill-cn">情深深雨濛濛，多少<button class="blank" data-py="lóu tái" data-word="楼台">……</button>烟雨中。</span><span class="fill-py"></span><div class="fill-vi">Tình sâu sâu, mưa mờ mờ; biết bao lầu đài chìm trong mưa khói.</div></div><div class="fill-line"><span class="fill-cn"><button class="blank" data-py="jì dé" data-word="记得">……</button>当初你侬我侬，车如流水马如龙。</span><span class="fill-py"></span><div class="fill-vi">Nhớ thuở ban đầu anh anh em em quấn quýt; xe như nước chảy, ngựa như rồng.</div></div><div class="fill-line"><span class="fill-cn">尽管<button class="blank" data-py="kuáng fēng" data-word="狂风">……</button>平地起，美人如玉剑如虹。</span><span class="fill-py"></span><div class="fill-vi">Dù cuồng phong nổi lên từ mặt đất bằng, người đẹp như ngọc, kiếm như cầu vồng.</div></div><div class="fill-line"><span class="fill-cn">情深深雨濛濛，<button class="blank" data-py="shì jiè" data-word="世界">……</button>只在你眼中。</span><span class="fill-py"></span><div class="fill-vi">Tình sâu sâu, mưa mờ mờ; thế giới chỉ ở trong mắt em.</div></div><div class="fill-line"><span class="fill-cn"><button class="blank" data-py="xiāng féng" data-word="相逢">……</button>不晚，为何匆匆，山山水水几万重。</span><span class="fill-py"></span><div class="fill-vi">Gặp nhau chưa muộn, cớ sao vội vã? Núi núi, nước nước muôn trùng.</div></div><div class="fill-line"><span class="fill-cn"><button class="blank" data-py="yī qǔ" data-word="一曲">……</button>高歌千行泪，情在回肠荡气中。</span><span class="fill-py"></span><div class="fill-vi">Một khúc cao ca, nghìn hàng lệ; tình ở trong lòng quặn thắt, dạt dào.</div></div><div class="fill-line"><span class="fill-cn">情深深雨濛濛，天也无尽地<button class="blank" data-py="wú qióng" data-word="无穷">……</button>。</span><span class="fill-py"></span><div class="fill-vi">Tình sâu sâu, mưa mờ mờ; trời cũng vô tận, đất cũng vô cùng.</div></div><div class="fill-line"><span class="fill-cn">盼过春夏和秋冬，盼来盼去盼不尽，<button class="blank" data-py="tiān yá" data-word="天涯">……</button>何处是归鸿。</span><span class="fill-py"></span><div class="fill-vi">Mong qua xuân, hạ cùng thu, đông; mong tới mong lui mong không hết; chân trời nơi nào là chim hồng trở về?</div></div>
+  <div class="fc-nav"><button id="fill-show">Hiện tất cả đáp án</button><button id="fill-hide">Ẩn lại</button></div>
+</div>
+
+<div class="study-sec" id="sec-quiz">
+  <h2 class="study-h">🎯 Trắc nghiệm — kiểm tra từ vựng</h2>
+  <p class="study-note">Chọn nghĩa đúng của từng từ. Điểm: <b id="quiz-score">0 / 10</b></p>
+  <div class="quiz-q"><div class="q-text">1. Từ <b>楼台</b> <span class="q-py">(lóu tái)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">thuở ban đầu</button><button class="q-opt" data-correct="0">gặp gỡ</button><button class="q-opt" data-correct="1">lầu đài</button><button class="q-opt" data-correct="0">vội vã</button></div></div><div class="quiz-q"><div class="q-text">2. Từ <b>烟雨</b> <span class="q-py">(yān yǔ)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="1">mưa khói</button><button class="q-opt" data-correct="0">vì sao</button><button class="q-opt" data-correct="0">vội vã</button><button class="q-opt" data-correct="0">lầu đài</button></div></div><div class="quiz-q"><div class="q-text">3. Từ <b>记得</b> <span class="q-py">(jì de)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">lầu đài</button><button class="q-opt" data-correct="1">nhớ được</button><button class="q-opt" data-correct="0">thế giới</button><button class="q-opt" data-correct="0">người đẹp</button></div></div><div class="quiz-q"><div class="q-text">4. Từ <b>当初</b> <span class="q-py">(dāng chū)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="1">thuở ban đầu</button><button class="q-opt" data-correct="0">mưa khói</button><button class="q-opt" data-correct="0">gió dữ</button><button class="q-opt" data-correct="0">lầu đài</button></div></div><div class="quiz-q"><div class="q-text">5. Từ <b>相逢</b> <span class="q-py">(xiāng féng)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">lầu đài</button><button class="q-opt" data-correct="0">người đẹp</button><button class="q-opt" data-correct="1">gặp gỡ</button><button class="q-opt" data-correct="0">thuở ban đầu</button></div></div><div class="quiz-q"><div class="q-text">6. Từ <b>为何</b> <span class="q-py">(wèi hé)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">mưa khói</button><button class="q-opt" data-correct="0">nhớ được</button><button class="q-opt" data-correct="1">vì sao</button><button class="q-opt" data-correct="0">gặp gỡ</button></div></div><div class="quiz-q"><div class="q-text">7. Từ <b>匆匆</b> <span class="q-py">(cōng cōng)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">thuở ban đầu</button><button class="q-opt" data-correct="1">vội vã</button><button class="q-opt" data-correct="0">nhớ được</button><button class="q-opt" data-correct="0">mưa khói</button></div></div><div class="quiz-q"><div class="q-text">8. Từ <b>世界</b> <span class="q-py">(shì jiè)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">lầu đài</button><button class="q-opt" data-correct="0">gió dữ</button><button class="q-opt" data-correct="0">thuở ban đầu</button><button class="q-opt" data-correct="1">thế giới</button></div></div><div class="quiz-q"><div class="q-text">9. Từ <b>狂风</b> <span class="q-py">(kuáng fēng)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="1">gió dữ</button><button class="q-opt" data-correct="0">nhớ được</button><button class="q-opt" data-correct="0">thế giới</button><button class="q-opt" data-correct="0">vì sao</button></div></div><div class="quiz-q"><div class="q-text">10. Từ <b>美人</b> <span class="q-py">(měi rén)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">mưa khói</button><button class="q-opt" data-correct="0">thế giới</button><button class="q-opt" data-correct="0">gặp gỡ</button><button class="q-opt" data-correct="1">người đẹp</button></div></div>
+  <div class="fc-nav"><button id="quiz-reset">Làm lại từ đầu</button></div>
+</div>
+
+<div class="overlay" id="phrase-overlay">
+  <div class="popup phrase-popup">
+    <button class="pop-close" onclick="closePhrase()">×</button>
+    <div class="phrase-word" id="phrase-word"></div>
+    <div class="phrase-py" id="phrase-py"></div>
+    <div class="phrase-vi" id="phrase-vi"></div>
+  </div>
+</div>
+
 </div>
 
 <div class="overlay" id="overlay" onclick="if(event.target===this)closePopup()">
@@ -479,6 +592,201 @@ makeClickable();
     else if (running) raf = requestAnimationFrame(frame);
   });
 })();
+</script>
+
+
+<script>
+/* ================= 4 cách học chủ động ================= */
+var FLASH = [{"w": "情深深", "py": "qíng shēn shēn", "hv": "tình thâm thâm", "vi": "tình rất sâu", "ex": "情深深雨濛濛，多少楼台烟雨中"}, {"w": "雨濛濛", "py": "yǔ méng méng", "hv": "vũ mông mông", "vi": "mưa bụi mờ mịt", "ex": "情深深雨濛濛，多少楼台烟雨中"}, {"w": "多少", "py": "duō shǎo", "hv": "đa thiểu", "vi": "biết bao", "ex": "情深深雨濛濛，多少楼台烟雨中"}, {"w": "楼台", "py": "lóu tái", "hv": "lâu đài", "vi": "lầu đài", "ex": "情深深雨濛濛，多少楼台烟雨中"}, {"w": "烟雨", "py": "yān yǔ", "hv": "yên vũ", "vi": "mưa khói, sương khói mưa", "ex": "情深深雨濛濛，多少楼台烟雨中"}, {"w": "记得", "py": "jì de", "hv": "ký đắc", "vi": "nhớ được, nhớ", "ex": "记得当初你侬我侬，车如流水马如龙"}, {"w": "当初", "py": "dāng chū", "hv": "đương sơ", "vi": "thuở ban đầu, lúc đầu", "ex": "记得当初你侬我侬，车如流水马如龙"}, {"w": "你侬我侬", "py": "nǐ nóng wǒ nóng", "hv": "nễ nông ngã nông", "vi": "anh anh em em quấn quýt", "ex": "记得当初你侬我侬，车如流水马如龙"}, {"w": "车如流水", "py": "chē rú liú shuǐ", "hv": "xa như lưu thủy", "vi": "xe như nước chảy", "ex": "记得当初你侬我侬，车如流水马如龙"}, {"w": "马如龙", "py": "mǎ rú lóng", "hv": "mã như long", "vi": "ngựa như rồng", "ex": "记得当初你侬我侬，车如流水马如龙"}, {"w": "尽管", "py": "jǐn guǎn", "hv": "tận quản", "vi": "dù cho, mặc dù", "ex": "尽管狂风平地起，美人如玉剑如虹"}, {"w": "狂风", "py": "kuáng fēng", "hv": "cuồng phong", "vi": "gió dữ", "ex": "尽管狂风平地起，美人如玉剑如虹"}, {"w": "平地", "py": "píng dì", "hv": "bình địa", "vi": "đất bằng", "ex": "尽管狂风平地起，美人如玉剑如虹"}, {"w": "美人", "py": "měi rén", "hv": "mỹ nhân", "vi": "người đẹp", "ex": "尽管狂风平地起，美人如玉剑如虹"}, {"w": "如玉", "py": "rú yù", "hv": "như ngọc", "vi": "như ngọc", "ex": "尽管狂风平地起，美人如玉剑如虹"}, {"w": "剑如虹", "py": "jiàn rú hóng", "hv": "kiếm như hồng", "vi": "kiếm như cầu vồng", "ex": "尽管狂风平地起，美人如玉剑如虹"}, {"w": "世界", "py": "shì jiè", "hv": "thế giới", "vi": "thế giới", "ex": "情深深雨濛濛，世界只在你眼中"}, {"w": "眼中", "py": "yǎn zhōng", "hv": "nhãn trung", "vi": "trong mắt", "ex": "情深深雨濛濛，世界只在你眼中"}, {"w": "相逢", "py": "xiāng féng", "hv": "tương phùng", "vi": "gặp gỡ", "ex": "相逢不晚，为何匆匆，山山水水几万重"}, {"w": "不晚", "py": "bù wǎn", "hv": "bất vãn", "vi": "chưa muộn", "ex": "相逢不晚，为何匆匆，山山水水几万重"}, {"w": "为何", "py": "wèi hé", "hv": "vi hà", "vi": "vì sao", "ex": "相逢不晚，为何匆匆，山山水水几万重"}, {"w": "匆匆", "py": "cōng cōng", "hv": "thông thông", "vi": "vội vã", "ex": "相逢不晚，为何匆匆，山山水水几万重"}, {"w": "山山水水", "py": "shān shān shuǐ shuǐ", "hv": "sơn sơn thủy thủy", "vi": "núi non sông nước", "ex": "相逢不晚，为何匆匆，山山水水几万重"}, {"w": "几万重", "py": "jǐ wàn chóng", "hv": "kỷ vạn trùng", "vi": "muôn trùng", "ex": "相逢不晚，为何匆匆，山山水水几万重"}, {"w": "一曲", "py": "yì qǔ", "hv": "nhất khúc", "vi": "một khúc hát", "ex": "一曲高歌千行泪，情在回肠荡气中"}, {"w": "高歌", "py": "gāo gē", "hv": "cao ca", "vi": "hát cao vút", "ex": "一曲高歌千行泪，情在回肠荡气中"}, {"w": "千行泪", "py": "qiān háng lèi", "hv": "thiên hàng lệ", "vi": "nghìn hàng lệ", "ex": "一曲高歌千行泪，情在回肠荡气中"}, {"w": "回肠荡气", "py": "huí cháng dàng qì", "hv": "hồi trường đãng khí", "vi": "lòng quặn thắt, khí dâng trào; xúc động nghẹn ngào", "ex": "一曲高歌千行泪，情在回肠荡气中"}, {"w": "天也无尽", "py": "tiān yě wú jìn", "hv": "thiên dã vô tận", "vi": "trời cũng vô tận", "ex": "情深深雨濛濛，天也无尽地无穷"}, {"w": "地无穷", "py": "dì wú qióng", "hv": "địa vô cùng", "vi": "đất cũng vô cùng", "ex": "情深深雨濛濛，天也无尽地无穷"}, {"w": "高楼", "py": "gāo lóu", "hv": "cao lâu", "vi": "lầu cao", "ex": "高楼望断，情有独钟"}, {"w": "望断", "py": "wàng duàn", "hv": "vọng đoạn", "vi": "trông đến mỏi mắt, đứt tầm mắt", "ex": "高楼望断，情有独钟"}, {"w": "情有独钟", "py": "qíng yǒu dú zhōng", "hv": "tình hữu độc chung", "vi": "tình chỉ dành cho một người", "ex": "高楼望断，情有独钟"}, {"w": "盼过", "py": "pàn guò", "hv": "phán quá", "vi": "mong qua, đã mong qua", "ex": "盼过春夏和秋冬，盼来盼去盼不尽，天涯何处是归鸿"}, {"w": "春夏", "py": "chūn xià", "hv": "xuân hạ", "vi": "xuân và hạ", "ex": "盼过春夏和秋冬，盼来盼去盼不尽，天涯何处是归鸿"}, {"w": "秋冬", "py": "qiū dōng", "hv": "thu đông", "vi": "thu và đông", "ex": "盼过春夏和秋冬，盼来盼去盼不尽，天涯何处是归鸿"}, {"w": "盼来盼去", "py": "pàn lái pàn qù", "hv": "phán lai phán khứ", "vi": "mong tới mong lui", "ex": "盼过春夏和秋冬，盼来盼去盼不尽，天涯何处是归鸿"}, {"w": "盼不尽", "py": "pàn bú jìn", "hv": "phán bất tận", "vi": "mong không hết", "ex": "盼过春夏和秋冬，盼来盼去盼不尽，天涯何处是归鸿"}, {"w": "天涯", "py": "tiān yá", "hv": "thiên nhai", "vi": "chân trời", "ex": "盼过春夏和秋冬，盼来盼去盼不尽，天涯何处是归鸿"}, {"w": "何处", "py": "hé chù", "hv": "hà xứ", "vi": "nơi nào", "ex": "盼过春夏和秋冬，盼来盼去盼不尽，天涯何处是归鸿"}, {"w": "归鸿", "py": "guī hóng", "hv": "quy hồng", "vi": "chim hồng trở về", "ex": "盼过春夏和秋冬，盼来盼去盼不尽，天涯何处是归鸿"}];
+var TTS_OK = ('speechSynthesis' in window);
+
+/* ---------- 1) NGHE TỪNG CÂU ---------- */
+function ttsRate(){ var s = document.getElementById('tts-speed'); return s ? parseFloat(s.value) : 0.85; }
+function zhVoice(){ try { var vs = speechSynthesis.getVoices(); for (var i = 0; i < vs.length; i++) if (/^zh/i.test(vs[i].lang)) return vs[i]; } catch(e){} return null; }
+var playingLine = null, playAllIdx = -1, playAllLines = [];
+function clearPlaying(){ if (playingLine) playingLine.classList.remove('playing'); playingLine = null; }
+function speakText(text, onend){
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN'; u.rate = ttsRate();
+  var v = zhVoice(); if (v) u.voice = v;
+  u.onend = function(){ if (onend) onend(); };
+  u.onerror = function(){ if (onend) onend(); };
+  speechSynthesis.speak(u);
+}
+function stopSpeech(){ if (TTS_OK) speechSynthesis.cancel(); playAllIdx = -1; clearPlaying();
+  var b = document.getElementById('btn-playall'); if (b) b.textContent = '▶ Nghe cả bài'; }
+function playLine(line){
+  if (!TTS_OK) return;
+  speechSynthesis.cancel(); playAllIdx = -1;
+  clearPlaying(); playingLine = line; line.classList.add('playing');
+  speakText(line.dataset.text, function(){ if (playingLine === line) clearPlaying(); });
+}
+function playAllNext(){
+  if (playAllIdx < 0 || playAllIdx >= playAllLines.length) { stopSpeech(); return; }
+  var line = playAllLines[playAllIdx];
+  clearPlaying(); playingLine = line; line.classList.add('playing');
+  speakText(line.dataset.text, function(){ playAllIdx++; playAllNext(); });
+}
+(function initListen(){
+  var toolbar = document.querySelector('.toolbar');
+  document.querySelectorAll('.line').forEach(function(line){
+    line.dataset.text = [...line.querySelectorAll('.hz')].map(function(b){ return b.getAttribute('data-ch'); }).join('');
+    playAllLines.push(line);
+    var btn = document.createElement('button');
+    btn.className = 'listen-btn'; btn.type = 'button'; btn.textContent = '🔊 Nghe câu';
+    btn.onclick = function(){ playLine(line); };
+    line.appendChild(btn);
+  });
+  if (!toolbar) return;
+  var sel = document.createElement('select'); sel.id = 'tts-speed'; sel.className = 'tts-speed';
+  sel.innerHTML = '<option value="0.7">Chậm 0.7×</option><option value="0.85" selected>Vừa 0.85×</option><option value="1">Thường 1×</option>';
+  toolbar.appendChild(sel);
+  var pa = document.createElement('button'); pa.id = 'btn-playall'; pa.type = 'button'; pa.textContent = '▶ Nghe cả bài';
+  pa.setAttribute('aria-pressed', 'false');
+  pa.onclick = function(){
+    if (playAllIdx >= 0) { stopSpeech(); pa.setAttribute('aria-pressed', 'false'); return; }
+    if (!TTS_OK) return;
+    speechSynthesis.cancel(); playAllIdx = 0; pa.textContent = '⏹ Dừng nghe';
+    pa.setAttribute('aria-pressed', 'true'); playAllNext();
+  };
+  toolbar.appendChild(pa);
+  var ph = document.createElement('button'); ph.id = 'btn-phrase'; ph.type = 'button';
+  ph.textContent = '🧩 Học theo cụm'; ph.setAttribute('aria-pressed', 'false');
+  ph.onclick = function(){ togglePhrase(ph); };
+  toolbar.appendChild(ph);
+  if (!TTS_OK) { pa.style.display = 'none'; sel.style.display = 'none';
+    document.querySelectorAll('.listen-btn').forEach(function(b){ b.style.display = 'none'; }); }
+  if (TTS_OK && speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function(){};
+})();
+
+/* ---------- 2) HỌC THEO CỤM TỪ ---------- */
+var phraseOn = false, cnBackup = new Map();
+function segmentText(text){
+  var keys = Object.keys(WORDS).sort(function(a, b){ return b.length - a.length; });
+  var res = [], i = 0;
+  while (i < text.length){
+    var m = null;
+    for (var k = 0; k < keys.length; k++) if (text.indexOf(keys[k], i) === i) { m = keys[k]; break; }
+    if (m) { res.push(m); i += m.length; } else { res.push(text[i]); i++; }
+  }
+  return res;
+}
+function togglePhrase(btn){
+  phraseOn = !phraseOn;
+  btn.setAttribute('aria-pressed', phraseOn ? 'true' : 'false');
+  document.querySelectorAll('.line .cn').forEach(function(cn){
+    if (phraseOn) { if (!cnBackup.has(cn)) cnBackup.set(cn, cn.innerHTML); buildPhrases(cn); }
+    else if (cnBackup.has(cn)) { cn.innerHTML = cnBackup.get(cn); }
+  });
+}
+function buildPhrases(cn){
+  var units = [...cn.children];
+  var items = units.map(function(u){
+    var hz = u.querySelector('.hz');
+    return { u: u, ch: hz ? hz.getAttribute('data-ch') : null };
+  });
+  var text = items.filter(function(x){ return x.ch; }).map(function(x){ return x.ch; }).join('');
+  var segs = segmentText(text).slice();
+  var frag = document.createDocumentFragment(), buffer = [], flip = false;
+  function flush(){
+    if (!buffer.length) return;
+    var span = document.createElement('span');
+    span.className = 'phrase ' + (flip ? 'ph-b' : 'ph-a');
+    var w = buffer.map(function(u){ return u.querySelector('.hz').getAttribute('data-ch'); }).join('');
+    buffer.forEach(function(u){ span.appendChild(u); });
+    span.dataset.word = w;
+    span.addEventListener('click', function(ev){ ev.stopPropagation(); openPhrase(w); });
+    frag.appendChild(span); buffer = []; flip = !flip;
+  }
+  items.forEach(function(it){
+    if (!it.ch) { flush(); frag.appendChild(it.u); return; }
+    buffer.push(it.u);
+    var cur = buffer.map(function(u){ return u.querySelector('.hz').getAttribute('data-ch'); }).join('');
+    if (segs.length && cur === segs[0]) { segs.shift(); flush(); }
+  });
+  flush();
+  cn.innerHTML = ''; cn.appendChild(frag);
+}
+function openPhrase(w){
+  var py, hv, vi;
+  if (WORDS[w]) { py = WORDS[w][0]; hv = WORDS[w][1]; vi = WORDS[w][2]; }
+  else if (DATA[w]) { py = DATA[w][0]; hv = DATA[w][1]; vi = GLOSS[w] || DATA[w][2]; }
+  else return;
+  document.getElementById('phrase-word').textContent = w;
+  document.getElementById('phrase-py').textContent = py + ' · ' + hv;
+  document.getElementById('phrase-vi').textContent = vi;
+  document.getElementById('phrase-overlay').classList.add('open');
+}
+function closePhrase(){ document.getElementById('phrase-overlay').classList.remove('open'); }
+document.getElementById('phrase-overlay').addEventListener('click', function(e){ if (e.target === this) closePhrase(); });
+
+/* ---------- 3) FLASHCARD ---------- */
+var fcIdx = 0, fcFlipped = false;
+function fcRender(){
+  var c = FLASH[fcIdx];
+  document.getElementById('fc-word').textContent = c.w;
+  document.getElementById('fc-py').textContent = c.py + ' · ' + c.hv;
+  document.getElementById('fc-vi').textContent = c.vi;
+  document.getElementById('fc-ex').textContent = 'Trong bài: ' + c.ex;
+  document.getElementById('fc-count').textContent = (fcIdx + 1) + ' / ' + FLASH.length;
+  fcFlipped = false;
+  document.getElementById('fc-card').classList.remove('flipped');
+}
+document.getElementById('fc-card').addEventListener('click', function(e){
+  var r = this.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
+  if (e.offsetX !== undefined && x < 0.22) { fcIdx = (fcIdx - 1 + FLASH.length) % FLASH.length; fcRender(); return; }
+  if (e.offsetX !== undefined && x > 0.78) { fcIdx = (fcIdx + 1) % FLASH.length; fcRender(); return; }
+  fcFlipped = !fcFlipped;
+  this.classList.toggle('flipped', fcFlipped);
+});
+document.getElementById('fc-prev').onclick = function(){ fcIdx = (fcIdx - 1 + FLASH.length) % FLASH.length; fcRender(); };
+document.getElementById('fc-next').onclick = function(){ fcIdx = (fcIdx + 1) % FLASH.length; fcRender(); };
+document.getElementById('fc-shuffle').onclick = function(){
+  for (var i = FLASH.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = FLASH[i]; FLASH[i] = FLASH[j]; FLASH[j] = t; }
+  fcIdx = 0; fcRender();
+};
+fcRender();
+
+/* ---------- 4a) ĐIỀN KHUYẾT ---------- */
+document.querySelectorAll('#sec-fill .blank').forEach(function(b){
+  b.addEventListener('click', function(){
+    if (b.classList.contains('revealed')) return;
+    b.classList.add('revealed'); b.textContent = b.dataset.word;
+    var py = b.closest('.fill-line').querySelector('.fill-py');
+    if (py) py.textContent = b.dataset.py;
+  });
+});
+document.getElementById('fill-show').onclick = function(){ document.querySelectorAll('#sec-fill .blank').forEach(function(b){ b.click(); }); };
+document.getElementById('fill-hide').onclick = function(){
+  document.querySelectorAll('#sec-fill .blank').forEach(function(b){
+    b.classList.remove('revealed'); b.textContent = '……';
+    var py = b.closest('.fill-line').querySelector('.fill-py'); if (py) py.textContent = '';
+  });
+};
+
+/* ---------- 4b) TRẮC NGHIỆM ---------- */
+var quizDone = 0, quizRight = 0;
+document.querySelectorAll('#sec-quiz .quiz-q').forEach(function(q){
+  q.querySelectorAll('.q-opt').forEach(function(opt){
+    opt.addEventListener('click', function(){
+      if (q.classList.contains('done')) return;
+      q.classList.add('done'); quizDone++;
+      if (opt.dataset.correct === '1') { opt.classList.add('right'); quizRight++; }
+      else { opt.classList.add('wrong');
+        q.querySelectorAll('.q-opt').forEach(function(o){ if (o.dataset.correct === '1') o.classList.add('right'); }); }
+      q.querySelectorAll('.q-opt').forEach(function(o){ o.disabled = true; });
+      document.getElementById('quiz-score').textContent = quizRight + ' / 10';
+    });
+  });
+});
+document.getElementById('quiz-reset').onclick = function(){
+  quizDone = 0; quizRight = 0;
+  document.getElementById('quiz-score').textContent = '0 / 10';
+  document.querySelectorAll('#sec-quiz .quiz-q').forEach(function(q){
+    q.classList.remove('done');
+    q.querySelectorAll('.q-opt').forEach(function(o){ o.classList.remove('right', 'wrong'); o.disabled = false; });
+  });
+};
 </script>
 
 </body>

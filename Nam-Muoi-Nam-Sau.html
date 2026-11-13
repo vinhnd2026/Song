@@ -234,6 +234,117 @@ h1 {color: #43302a; text-shadow: 0 2px 18px rgba(255,180,90,0.5);}
 .vi {color: #4c443c; border-top-color: rgba(176,125,43,0.30);}
 .foot {color: #93826c;}
 </style>
+
+<style>
+/* ===== 4 cách học chủ động ===== */
+.line {position: relative;}
+.line.playing {border-color: rgba(201,168,106,0.75); box-shadow: 0 0 0 2px rgba(201,168,106,0.35), 0 20px 44px rgba(0,0,0,0.5);}
+.listen-btn {
+    position: absolute; top: 12px; right: 14px; z-index: 3;
+    border: 1px solid rgba(201,168,106,0.4); background: rgba(13,26,39,0.8);
+    color: #e8ce8f; border-radius: 999px; padding: 5px 13px; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.listen-btn:hover {background: rgba(201,168,106,0.25);}
+.tts-speed {
+    border: 1px solid rgba(201,168,106,0.28); background: rgba(13,26,39,0.72); color: #c3ced6;
+    border-radius: 999px; padding: 10px 14px; font-size: 15px; font-weight: 600; cursor: pointer;
+}
+.phrase {border-radius: 10px; padding: 2px 1px; cursor: pointer;}
+.phrase .hz {pointer-events: none;}
+.phrase.ph-a {box-shadow: inset 0 -3px 0 rgba(201,168,106,0.55);}
+.phrase.ph-b {box-shadow: inset 0 -3px 0 rgba(120,180,220,0.55);}
+.phrase:hover {background: rgba(201,168,106,0.12);}
+.phrase-popup {text-align: center; max-width: 420px;}
+.phrase-word {font-family: "Noto Serif SC", serif; font-size: 44px; color: #f0ead9;}
+.phrase-py {color: #8fbccd; font-size: 17px; margin-top: 4px;}
+.phrase-vi {color: #d8dde0; font-size: 19px; margin-top: 12px;}
+.study-sec {
+    background: linear-gradient(160deg, rgba(23,42,60,0.82), rgba(11,22,34,0.86));
+    border: 1px solid rgba(147,188,205,0.16); border-radius: 18px;
+    padding: 28px 32px; margin-bottom: 20px; box-shadow: 0 14px 34px rgba(0,0,0,0.38);
+}
+.study-h {text-align: center; color: #f0ead9; font-size: 24px; margin: 4px 0 6px;}
+.study-note {text-align: center; color: #9db2bf; font-size: 14px; margin: 0 0 18px;}
+.fc-stage {display: flex; justify-content: center; perspective: 900px;}
+.fc-card {position: relative; width: min(430px, 88vw); height: 210px; cursor: pointer; transform-style: preserve-3d; transition: transform 0.45s ease;}
+.fc-card.flipped {transform: rotateY(180deg);}
+.fc-face {
+    position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: 16px; border: 1px solid rgba(201,168,106,0.35);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 18px;
+    background: linear-gradient(150deg, #1b3448, #122636);
+}
+.fc-back {transform: rotateY(180deg); background: linear-gradient(150deg, #2a2118, #1d2a1a);}
+.fc-word {font-family: "Noto Serif SC", serif; font-size: 52px; color: #f0ead9;}
+.fc-py {color: #8fbccd; font-size: 17px;}
+.fc-hint {color: #7e8d99; font-size: 12px;}
+.fc-vi {color: #e8ce8f; font-size: 21px; font-weight: 600; text-align: center;}
+.fc-ex {color: #b6c3cc; font-size: 16px; font-family: "Noto Serif SC", serif;}
+.fc-nav {display: flex; gap: 12px; justify-content: center; align-items: center; margin-top: 18px; flex-wrap: wrap;}
+.fc-nav button {
+    border: 1px solid rgba(201,168,106,0.3); background: rgba(13,26,39,0.72); color: #c3ced6;
+    border-radius: 999px; padding: 8px 18px; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.fc-nav button:hover {background: rgba(201,168,106,0.22); color: #eef2f4;}
+.fc-nav span {color: #9db2bf; font-size: 14px; min-width: 52px; text-align: center;}
+.fill-line {text-align: center; padding: 12px 6px; border-bottom: 1px dashed rgba(147,188,205,0.14);}
+.fill-cn {font-family: "Noto Serif SC", serif; font-size: 27px; color: #f0ead9;}
+.fill-py {color: #8fbccd; font-size: 15px; margin-left: 10px;}
+.fill-vi {color: #9db2bf; font-size: 14px; font-style: italic; margin-top: 2px;}
+.blank {
+    font-family: inherit; font-size: 27px; color: #e8ce8f; background: rgba(201,168,106,0.12);
+    border: 1px dashed rgba(201,168,106,0.65); border-radius: 8px; padding: 0 12px; cursor: pointer; margin: 0 2px;
+}
+.blank.revealed {border-style: solid; background: rgba(201,168,106,0.22); color: #ffe9ad;}
+.quiz-q {padding: 12px 4px; border-bottom: 1px dashed rgba(147,188,205,0.14);}
+.q-text {color: #dfe3e6; font-size: 17px; margin-bottom: 8px;}
+.q-text b {font-family: "Noto Serif SC", serif; color: #f0ead9; font-size: 20px;}
+.q-py {color: #8fbccd; font-size: 14px;}
+.q-opts {display: flex; flex-wrap: wrap; gap: 8px;}
+.q-opt {
+    border: 1px solid rgba(147,188,205,0.3); background: rgba(13,26,39,0.6); color: #c3ced6;
+    border-radius: 10px; padding: 8px 14px; font-size: 15px; cursor: pointer;
+}
+.q-opt:hover:not(:disabled) {border-color: rgba(201,168,106,0.6); color: #eef2f4;}
+.q-opt.right {background: rgba(74,160,90,0.35); border-color: #4aa05a; color: #dff5e2;}
+.q-opt.wrong {background: rgba(190,70,60,0.32); border-color: #be463c; color: #fbe3e0;}
+.q-opt:disabled {cursor: default; opacity: 0.92;}
+</style>
+
+<style>
+/* ===== 4 cách học — bản SÁNG (khớp nền bình minh của bài 五十年以后) ===== */
+.study-sec {background: linear-gradient(160deg, rgba(255,255,255,0.92), rgba(255,248,235,0.90)); border-color: rgba(190,150,90,0.35); box-shadow: 0 14px 34px rgba(150,110,50,0.14);}
+.study-h {color: #43302a;}
+.study-note {color: #7a6a58;}
+.fc-face {background: linear-gradient(150deg, #ffffff, #fdf3dd); border-color: rgba(176,125,43,0.4);}
+.fc-back {background: linear-gradient(150deg, #fff8ea, #e9f4ea);}
+.fc-word {color: #2e2a26;}
+.fc-py {color: #2f7ea6;}
+.fc-hint {color: #93826c;}
+.fc-vi {color: #9c5a12;}
+.fc-ex {color: #5c5348;}
+.fc-nav button {background: rgba(255,255,255,0.85); color: #6b543a; border-color: rgba(176,125,43,0.35); box-shadow: none;}
+.fc-nav button:hover {background: rgba(242,181,68,0.25); color: #4a3418;}
+.fc-nav span {color: #7a6a58;}
+.fill-line {border-bottom-color: rgba(120,90,40,0.18);}
+.fill-cn {color: #2e2a26;}
+.fill-py {color: #2f7ea6;}
+.fill-vi {color: #7a6a58;}
+.blank {background: rgba(242,181,68,0.15); color: #9c5a12; border-color: rgba(176,125,43,0.6);}
+.blank.revealed {background: rgba(242,181,68,0.32); color: #6e4206;}
+.q-text {color: #3a3f45;}
+.q-text b {color: #43302a;}
+.q-py {color: #2f7ea6;}
+.quiz-q {border-bottom-color: rgba(120,90,40,0.18);}
+.q-opt {background: rgba(255,255,255,0.8); color: #5c4a32; border-color: rgba(150,120,70,0.35);}
+.q-opt:hover:not(:disabled) {border-color: rgba(176,125,43,0.7); color: #4a3418;}
+.listen-btn {background: rgba(255,255,255,0.88); color: #9c5a12; border-color: rgba(176,125,43,0.45); box-shadow: 0 4px 10px rgba(150,110,50,0.15);}
+.listen-btn:hover {background: rgba(242,181,68,0.3);}
+.tts-speed {background: rgba(255,255,255,0.85); color: #6b543a; border-color: rgba(176,125,43,0.35);}
+.line.playing {border-color: rgba(232,147,12,0.75); box-shadow: 0 0 0 2px rgba(232,147,12,0.30), 0 20px 44px rgba(150,110,50,0.2);}
+.phrase.ph-b {box-shadow: inset 0 -3px 0 rgba(47,126,166,0.5);}
+</style>
+
 </head>
 <body>
 <canvas id="rain" aria-hidden="true"></canvas>
@@ -281,6 +392,42 @@ h1 {color: #43302a; text-shadow: 0 2px 18px rgba(255,180,90,0.5);}
 <div class="line"><div class="cn">那时都已白了头，还想听你叫我丫头。</div><div class="py">Nà shí dōu yǐ bái le tóu, hái xiǎng tīng nǐ jiào wǒ yā tóu.</div><div class="hv">Na thời đô dĩ bạch liễu đầu, hoàn tưởng thính nhĩ khiếu ngã nha đầu.</div><div class="vi">Khi ấy tóc đều đã bạc trắng, vẫn muốn nghe em gọi anh là “nha đầu”.</div></div>
 <div class="line"><div class="cn">轻轻牵着你的手，静静靠在你胸口。</div><div class="py">Qīng qīng qiān zhe nǐ de shǒu, jìng jìng kào zài nǐ xiōng kǒu.</div><div class="hv">Khinh khinh khiên trước nhĩ đích thủ, tĩnh tĩnh kháo tại nhĩ hung khẩu.</div><div class="vi">Khẽ nắm lấy tay em, lặng lẽ tựa vào ngực em.</div></div>
 <div class="line"><div class="cn">这个画面，是不是就叫做长相厮守。</div><div class="py">Zhè gè huà miàn, shì bù shì jiù jiào zuò cháng xiàng sī shǒu.</div><div class="hv">Giá cá họa diện, thị bất thị tựu khiếu tố trưởng tương tư thủ.</div><div class="vi">Khung cảnh ấy, có phải chính là “bên nhau trọn đời” không?</div></div>
+
+<div class="study-sec" id="sec-flash">
+  <h2 class="study-h">🃏 Flashcard — từ vựng của bài</h2>
+  <p class="study-note">Chạm giữa thẻ để lật · chạm góc trái/phải (hoặc nút ‹ ›) để chuyển thẻ</p>
+  <div class="fc-stage">
+    <div class="fc-card" id="fc-card">
+      <div class="fc-face fc-front"><div class="fc-word" id="fc-word"></div><div class="fc-py" id="fc-py"></div><div class="fc-hint">chạm để lật thẻ</div></div>
+      <div class="fc-face fc-back"><div class="fc-vi" id="fc-vi"></div><div class="fc-ex" id="fc-ex"></div></div>
+    </div>
+  </div>
+  <div class="fc-nav"><button id="fc-prev">‹ Trước</button><span id="fc-count"></span><button id="fc-shuffle">🔀 Xáo thẻ</button><button id="fc-next">Sau ›</button></div>
+</div>
+
+<div class="study-sec" id="sec-fill">
+  <h2 class="study-h">✍️ Điền khuyết — đoán từ còn thiếu</h2>
+  <p class="study-note">Bấm vào ô …… để xem đáp án</p>
+  <div class="fill-line"><span class="fill-cn">此生最好的<button class="blank" data-py="yùn qì" data-word="运气">……</button>，就是遇见了你。</span><span class="fill-py"></span><div class="fill-vi">Vận may lớn nhất đời này, chính là được gặp em.</div></div><div class="fill-line"><span class="fill-cn">从我们交换<button class="blank" data-py="xìn wù" data-word="信物">……</button>，深情相望那刻起。</span><span class="fill-py"></span><div class="fill-vi">Từ khoảnh khắc ta trao nhau tín vật, đắm đuối nhìn nhau ấy.</div></div><div class="fill-line"><span class="fill-cn">是你带我走出，那片<button class="blank" data-py="zhǎo zé" data-word="沼泽">……</button>地。</span><span class="fill-py"></span><div class="fill-vi">Là em đưa anh bước ra khỏi vũng lầy ấy.</div></div><div class="fill-line"><span class="fill-cn">和你坐在<button class="blank" data-py="yáo yǐ" data-word="摇椅">……</button>里，感受那夕阳的温柔。</span><span class="fill-py"></span><div class="fill-vi">Cùng em ngồi trong ghế xích đu, cảm nhận ánh hoàng hôn dịu dàng.</div></div><div class="fill-line"><span class="fill-cn">和你坐在摇椅里，感受那<button class="blank" data-py="xī yáng" data-word="夕阳">……</button>的温柔。</span><span class="fill-py"></span><div class="fill-vi">Cùng em ngồi trong ghế xích đu, cảm nhận ánh hoàng hôn dịu dàng.</div></div><div class="fill-line"><span class="fill-cn">听<button class="blank" data-py="wēi fēng" data-word="微风">……</button>轻轻地吹，听河水慢慢地流。</span><span class="fill-py"></span><div class="fill-vi">Nghe gió nhẹ khẽ thổi, nghe nước sông chậm rãi trôi.</div></div><div class="fill-line"><span class="fill-cn">那时都已白了头，还想听你叫我<button class="blank" data-py="yā tóu" data-word="丫头">……</button>。</span><span class="fill-py"></span><div class="fill-vi">Khi ấy tóc đều đã bạc trắng, vẫn muốn nghe em gọi anh là “nha đầu”.</div></div><div class="fill-line"><span class="fill-cn">这个画面，是不是就叫做<button class="blank" data-py="cháng xiàng sī shǒu" data-word="长相厮守">……</button>。</span><span class="fill-py"></span><div class="fill-vi">Khung cảnh ấy, có phải chính là “bên nhau trọn đời” không?</div></div>
+  <div class="fc-nav"><button id="fill-show">Hiện tất cả đáp án</button><button id="fill-hide">Ẩn lại</button></div>
+</div>
+
+<div class="study-sec" id="sec-quiz">
+  <h2 class="study-h">🎯 Trắc nghiệm — kiểm tra từ vựng</h2>
+  <p class="study-note">Chọn nghĩa đúng của từng từ. Điểm: <b id="quiz-score">0 / 10</b></p>
+  <div class="quiz-q"><div class="q-text">1. Từ <b>运气</b> <span class="q-py">(yùnqi)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">quãng đời còn lại</button><button class="q-opt" data-correct="0">ghế xích đu</button><button class="q-opt" data-correct="1">vận may</button><button class="q-opt" data-correct="0">dịu dàng</button></div></div><div class="quiz-q"><div class="q-text">2. Từ <b>尴尬</b> <span class="q-py">(gāngà)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="1">lúng túng</button><button class="q-opt" data-correct="0">nắng chiều</button><button class="q-opt" data-correct="0">dịu dàng</button><button class="q-opt" data-correct="0">vận may</button></div></div><div class="quiz-q"><div class="q-text">3. Từ <b>信物</b> <span class="q-py">(xìnwù)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">vận may</button><button class="q-opt" data-correct="1">vật làm tin</button><button class="q-opt" data-correct="0">gió nhẹ</button><button class="q-opt" data-correct="0">nhìn nhau đắm đuối</button></div></div><div class="quiz-q"><div class="q-text">4. Từ <b>余生</b> <span class="q-py">(yúshēng)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="1">quãng đời còn lại</button><button class="q-opt" data-correct="0">lúng túng</button><button class="q-opt" data-correct="0">“nha đầu” — cách gọi yêu cô gái</button><button class="q-opt" data-correct="0">vận may</button></div></div><div class="quiz-q"><div class="q-text">5. Từ <b>摇椅</b> <span class="q-py">(yáoyǐ)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">vận may</button><button class="q-opt" data-correct="0">nhìn nhau đắm đuối</button><button class="q-opt" data-correct="1">ghế xích đu</button><button class="q-opt" data-correct="0">quãng đời còn lại</button></div></div><div class="quiz-q"><div class="q-text">6. Từ <b>夕阳</b> <span class="q-py">(xīyáng)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">lúng túng</button><button class="q-opt" data-correct="0">vật làm tin</button><button class="q-opt" data-correct="1">nắng chiều</button><button class="q-opt" data-correct="0">ghế xích đu</button></div></div><div class="quiz-q"><div class="q-text">7. Từ <b>温柔</b> <span class="q-py">(wēnróu)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">quãng đời còn lại</button><button class="q-opt" data-correct="1">dịu dàng</button><button class="q-opt" data-correct="0">vật làm tin</button><button class="q-opt" data-correct="0">lúng túng</button></div></div><div class="quiz-q"><div class="q-text">8. Từ <b>微风</b> <span class="q-py">(wēifēng)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">vận may</button><button class="q-opt" data-correct="0">“nha đầu” — cách gọi yêu cô gái</button><button class="q-opt" data-correct="0">quãng đời còn lại</button><button class="q-opt" data-correct="1">gió nhẹ</button></div></div><div class="quiz-q"><div class="q-text">9. Từ <b>丫头</b> <span class="q-py">(yātou)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="1">“nha đầu” — cách gọi yêu cô gái</button><button class="q-opt" data-correct="0">vật làm tin</button><button class="q-opt" data-correct="0">gió nhẹ</button><button class="q-opt" data-correct="0">nắng chiều</button></div></div><div class="quiz-q"><div class="q-text">10. Từ <b>相望</b> <span class="q-py">(xiāng wàng)</span> nghĩa là gì?</div><div class="q-opts"><button class="q-opt" data-correct="0">lúng túng</button><button class="q-opt" data-correct="0">gió nhẹ</button><button class="q-opt" data-correct="0">ghế xích đu</button><button class="q-opt" data-correct="1">nhìn nhau đắm đuối</button></div></div>
+  <div class="fc-nav"><button id="quiz-reset">Làm lại từ đầu</button></div>
+</div>
+
+<div class="overlay" id="phrase-overlay">
+  <div class="popup phrase-popup">
+    <button class="pop-close" onclick="closePhrase()">×</button>
+    <div class="phrase-word" id="phrase-word"></div>
+    <div class="phrase-py" id="phrase-py"></div>
+    <div class="phrase-vi" id="phrase-vi"></div>
+  </div>
+</div>
+
 </div>
 
 <div class="overlay" id="overlay" onclick="if(event.target===this)closePopup()">
@@ -323,7 +470,7 @@ const DATA={"此": ["cǐ", "thử", "này; đây", "止 — Chỉ (dừng)", "�
 const COMPONENTS={"止": ["zhǐ", "chỉ", "dừng"], "匕": ["bǐ", "chủy", "muỗng, thìa"], "生": ["shēng", "sinh", "sinh ra, sống"], "日": ["rì", "nhật", "mặt trời, ngày"], "取": ["qǔ", "thủ", "lấy, được"], "女": ["nǚ", "nữ", "phụ nữ"], "子": ["zǐ", "tử", "con"], "白": ["bái", "bạch", "trắng"], "勺": ["sháo", "chước", "thìa"], "云": ["yún", "vân", "mây"], "辶": ["chuò", "sước", "đi, bước"], "丿": ["piě", "phiết", "nét phẩy"], "米": ["mǐ", "mễ", "gạo"], "京": ["jīng", "kinh", "kinh đô"], "尤": ["yóu", "vưu", "lỗi, trách"], "正": ["zhèng", "chính", "đúng, chính"], "禺": ["yú", "ngu", "khỉ; dấu vết thú"], "目": ["mù", "mục", "mắt"], "儿": ["ér", "nhi", "người đi"], "亅": ["jué", "quyết", "nét móc"], "亻": ["rén", "nhân", "người"], "尔": ["ěr", "nhĩ", "ngươi, bạn"], "冈": ["gāng", "cương", "gò núi"], "刂": ["dāo", "đao", "dao"], "也": ["yě", "dã", "cũng"], "爫": ["zhǎo", "trảo", "móng vuốt"], "冖": ["mì", "mịch", "mái che"], "心": ["xīn", "tâm", "tim"], "友": ["yǒu", "hữu", "bạn"], "手": ["shǒu", "thủ", "tay"], "戈": ["gē", "qua", "giáo dài"], "羊": ["yáng", "dương", "cừu"], "才": ["cái", "tài", "mới; tài"], "土": ["tǔ", "thổ", "đất"], "文": ["wén", "văn", "ngôn ngữ, văn hóa"], "人": ["rén", "nhân", "người"], "千": ["qiān", "thiên", "nghìn"], "纟": ["sī", "mịch", "tơ"], "己": ["jǐ", "kỷ", "mình, bản thân"], "一": ["yī", "nhất", "một"], "卜": ["bǔ", "bốc", "bói, xem bói"], "冉": ["", "", ""], "夕": ["xī", "tịch", "chiều tối, hoàng hôn"], "丷": ["bā", "bát", "tám"], "干": ["gān", "can", "khô"], "厶": ["sī", "tư", "riêng tư"], "月": ["yuè", "nguyệt", "tháng; thịt"], "禾": ["hé", "hòa", "lúa"], "口": ["kǒu", "khẩu", "miệng"], "走": ["zǒu", "tẩu", "đi, bước đi"], "大": ["dà", "đại", "lớn"], "又": ["yòu", "hựu", "tay phải; lại"], "欠": ["qiàn", "khiếm", "ngáp, thiếu"], "壴": ["zhù", "trú", "trống"], "⺮": ["zhú", "trúc", "tre"], "寺": ["sì", "tự", "chùa"], "至": ["zhì", "chí", "đến, tới"], "巾": ["jīn", "cân", "khăn, vải"], "山": ["shān", "sơn", "núi"], "冄": ["rǎn", "nhiễm", "phần trên (biến thể)"], "阝": ["fù", "phụ", "đồi"], "片": ["piàn", "phiến", "mảnh"], "门": ["mén", "môn", "cửa"], "六": ["liù", "lục", "sáu"], "乂": ["yì", "nghệ", "giao nhau"], "扌": ["shǒu", "thủ", "tay"], "奂": ["huàn", "hoán", "rực rỡ; nhiều"], "言": ["yán", "ngôn", "lời nói"], "牛": ["niú", "ngưu", "trâu, bò"], "勿": ["wù", "vật", "đừng, chớ"], "氵": ["shuǐ", "thủy", "nước"], "罙": ["shēn", "thâm", "sâu"], "忄": ["xīn", "tâm", "tim, tình cảm"], "青": ["qīng", "thanh", "màu xanh non"], "木": ["mù", "mộc", "cây"], "亡": ["wáng", "vong", "mất, chết"], "王": ["wáng", "vương", "vua"], "亥": ["hài", "hợi", "giờ Hợi, gần nửa đêm"], "亼": ["jí", "tập", "tụ họp"], "朩": ["", "tần", "cây gỗ xẻ dọc (phần dưới của 余/茶)"], "五": ["wǔ", "ngũ", "năm"], "丨": ["gǔn", "cổn", "nét sổ"], "丶": ["zhǔ", "chủ", "chấm, giọt"], "厂": ["chǎng", "xưởng", "vách núi"], "不": ["bù", "bất", "không"], "𠂇": ["zuǒ", "tả", "tay trái"], "工": ["gōng", "công", "việc"], "缶": ["fǒu", "phẫu", "bình sành"], "咸": ["xián", "hàm", "mặn"], "昷": ["wēn", "ôn", "ấm"], "斤": ["jīn", "cân", "rìu"], "彳": ["chì", "xích", "bước chân"], "攵": ["pū", "phộc", "đánh, đập"], "几": ["jī", "kỉ", "cái bàn nhỏ; thường"], "车": ["chē", "xa", "xe"], "水": ["shuǐ", "thủy", "nước"], "曼": ["màn", "mạn", "đẹp, duyên dáng, thướt tha"], "㐬": ["liú", "lưu", "dòng chảy"], "耳": ["ěr", "nhĩ", "tai"], "卯": ["mǎo", "mão", "giờ Mão"], "囗": ["wéi", "vi", "bao quanh"], "讠": ["yán", "ngôn", "lời nói"], "炎": ["yán", "viêm", "nóng, cháy"], "亦": ["yì", "diệc", "cũng"], "寸": ["cùn", "thốn", "tấc"], "侯": ["hòu", "hầu", "chư hầu, chờ đợi"], "者": ["zhě", "giả", "người (hậu tố -er)"], "相": ["xiāng", "tương", "hình dáng, vẻ ngoài"], "丩": ["jiū", "cưu", "quấn, xoắn"], "争": ["zhēng", "tranh", "tranh giành"], "告": ["gào", "cáo", "nói, bảo"], "非": ["fēi", "phi", "không phải"], "匈": ["xiōng", "hung", "hung dữ"], "田": ["tián", "điền", "ruộng"], "凵": ["kǎn", "khảm", "vật đựng"], "面": ["miàn", "diện", "mặt"], "故": ["gù", "cố", "lý do; cũ"], "宀": ["mián", "miên", "mái nhà"]};
 const PHONETIC={"的": "勺", "运": "云", "遇": "禺", "你": "尔", "刚": "冈", "纪": "己", "起": "己", "欢": "又", "喜": "壴", "等": "寺", "到": "刂", "那": "阝", "地": "也", "们": "门", "换": "奂", "物": "勿", "深": "罙", "情": "青", "刻": "亥", "还": "不", "摇": "爫", "温": "昷", "听": "斤", "微": "攵", "轻": "又", "慢": "曼", "流": "㐬", "聊": "卯", "谈": "炎", "恋": "亦", "时": "寸", "候": "侯", "叫": "丩", "静": "青", "胸": "匈", "做": "故"};
 const TYPES={"此": "Hội ý — 止 + 匕 hợp lại thành nghĩa “này; đây”.", "生": "Tượng hình — 生.", "最": "Hội ý — 日 + 取 hợp lại thành nghĩa “nhất, nhất”.", "好": "Hội ý — 女 + 子 hợp lại thành nghĩa “tốt; hay”.", "的": "Hình thanh — 白 gợi nghĩa, 勺 sháo gợi âm.", "运": "Hình thanh — 辶 gợi nghĩa, 云 yún gợi âm.", "气": "Tượng hình — 丿 + 米.", "就": "Hội ý — 京 + 尤 hợp lại thành nghĩa “thì, liền, ngay”.", "是": "Hội ý — 日 + 正 hợp lại thành nghĩa “là, đúng”.", "遇": "Hình thanh — 辶 gợi nghĩa, 禺 yú gợi âm.", "见": "Hội ý — 目 + 儿 hợp lại thành nghĩa “thấy; gặp”.", "了": "Chỉ sự — 丿 + 亅.", "你": "Hình thanh — 亻 gợi nghĩa, 尔 ěr gợi âm.", "刚": "Hình thanh — 刂 gợi nghĩa, 冈 gāng gợi âm.", "也": "Chỉ sự — 也.", "爱": "Hội ý — 爫 + 冖 + 心 + 友 hợp lại thành nghĩa “yêu; thích”.", "我": "Hội ý — 手 + 戈 hợp lại thành nghĩa “tôi; ta”.", "着": "Hình thanh — 羊 + 目.", "在": "Hội ý — 才 + 土 hợp lại thành nghĩa “ở; tại; đang”.", "这": "Hình thanh — 文 + 辶.", "个": "Hội ý — 人 + 丿 hợp lại thành nghĩa “cái, chiếc (lượng từ)”.", "尴": "Hình thanh — 尢 gợi nghĩa (đi đứng lúng túng), 监 jiān gợi âm theo âm cổ.", "尬": "Hình thanh — 尢 gợi nghĩa, 介 jiè gợi âm theo âm cổ.", "年": "Hội ý — 丿 + 千 hợp lại thành nghĩa “năm”.", "纪": "Hình thanh — 纟 gợi nghĩa, 己 jǐ gợi âm.", "不": "Chỉ sự — 一 + 卜.", "再": "Hội ý — 一 + 冉 hợp lại thành nghĩa “lại; nữa”.", "一": "Chỉ sự — 一.", "人": "Tượng hình — 人 (chữ đơn, bộ thủ 人).", "多": "Hội ý — 夕 + 夕 hợp lại thành nghĩa “nhiều”.", "幸": "Hội ý — 土 + 丷 + 干 hợp lại thành nghĩa “may mắn; hạnh phúc”.", "能": "Hội ý — 厶 + 月 + 匕 + 匕 hợp lại thành nghĩa “có thể, có khả năng”.", "和": "Hội ý — 禾 + 口 hợp lại thành nghĩa “hòa; ấm áp”.", "起": "Hình thanh — 走 gợi nghĩa, 己 jǐ gợi âm.", "大": "Tượng hình — 大.", "欢": "Hình thanh — 欠 gợi nghĩa, 又 yòu gợi âm.", "喜": "Hình thanh — 口 gợi nghĩa, 壴 zhù gợi âm.", "等": "Hình thanh — 竹 gợi nghĩa, 寺 sì gợi âm.", "到": "Hình thanh — 刂 gợi nghĩa, 刂 dāo gợi âm.", "带": "Hội ý — 巾 + 巾 hợp lại thành nghĩa “mang theo; thắt lưng”.", "走": "Hội ý — 止 + 土 hợp lại thành nghĩa “đi; đi bộ”.", "出": "Hội ý — 山 + 山 hợp lại thành nghĩa “ra; xuất”.", "那": "Hình thanh — 阝 gợi nghĩa, 阝 fù gợi âm.", "片": "Tượng hình — 片.", "沼": "Hình thanh — 氵 gợi nghĩa (nước, đầm), 召 zhào gợi âm (zhào gần zhǎo).", "泽": "Hình thanh — 氵 gợi nghĩa (nước), 睪 yì/zhái gợi âm theo âm cổ.", "地": "Hình thanh — 土 gợi nghĩa, 也 yě gợi âm.", "从": "Hội ý — 人 + 人 hợp lại thành nghĩa “từ; theo; đi theo”.", "们": "Hình thanh — 亻 gợi nghĩa, 门 mén gợi âm.", "交": "Hội ý — 六 + 乂 hợp lại thành nghĩa “giao nhau, gặp gỡ, giao”.", "换": "Hình thanh — 扌 gợi nghĩa, 奂 huàn gợi âm.", "信": "Hội ý — 亻 + 言 hợp lại thành nghĩa “tin, thư, tin tưởng”.", "物": "Hình thanh — 牛 gợi nghĩa, 勿 wù gợi âm.", "深": "Hình thanh — 氵 gợi nghĩa, 罙 shēn gợi âm.", "情": "Hình thanh — 忄 gợi nghĩa, 青 qīng gợi âm.", "相": "Hội ý — 木 + 目 hợp lại thành nghĩa “lẫn nhau; dáng vẻ”.", "望": "Hội ý — 亡 + 月 + 王 hợp lại thành nghĩa “trông; ngắm; hy vọng”.", "刻": "Hình thanh — 刂 gợi nghĩa, 亥 hài gợi âm.", "余": "Hội ý — 亼 + 朩 hợp lại thành nghĩa “thừa; dư”.", "希": "Hội ý — 乂 + 巾 hợp lại thành nghĩa “hy vọng; hiếm”.", "五": "Chỉ sự — 五.", "十": "Chỉ sự — 一 + 丨.", "以": "Hội ý — 丶 + 人 hợp lại thành nghĩa “dùng, lấy; để”.", "后": "Hội ý — 厂 + 丿 + 口 hợp lại thành nghĩa “phía sau, sau”.", "还": "Hình thanh — 辶 gợi nghĩa, 不 bù gợi âm.", "左": "Hội ý — 𠂇 + 工 hợp lại thành nghĩa “trái”.", "右": "Hội ý — 𠂇 + 口 hợp lại thành nghĩa “phải”.", "坐": "Hội ý — 人 + 人 + 土 hợp lại thành nghĩa “ngồi; đi (xe)”.", "摇": "Hình thanh — 扌 gợi nghĩa, 爫 zhǎo gợi âm.", "椅": "Hình thanh — 木 gợi nghĩa (gỗ, ghế), 奇 qí gợi âm theo âm cổ.", "里": "Hội ý — 日 + 土 hợp lại thành nghĩa “trong; dặm”.", "感": "Hội ý — 咸 + 心 hợp lại thành nghĩa “cảm thấy, cảm giác”.", "受": "Hội ý — 爫 + 冖 + 又 hợp lại thành nghĩa “nhận; chịu; cảm nhận”.", "夕": "Tượng hình — 夕.", "阳": "Hình thanh — 阝 + 日.", "温": "Hình thanh — 氵 gợi nghĩa, 昷 wēn gợi âm.", "柔": "Hội ý — 矛 (giáo) + 木 (gỗ): vật cứng gặp chất mềm thành dịu dàng.", "听": "Hình thanh — 口 gợi nghĩa, 斤 jīn gợi âm.", "微": "Hội ý — 彳 + 山 + 攵 hợp lại thành nghĩa “nhỏ, bé, tinh vi”.", "风": "Hội ý — 几 + 乂 hợp lại thành nghĩa “gió”.", "轻": "Hình thanh — 车 gợi nghĩa, 又 yòu gợi âm.", "吹": "Hội ý — 口 (miệng) + 欠 (há miệng): há miệng thổi hơi ra.", "河": "Hình thanh — 氵 gợi nghĩa (nước), 可 kě gợi âm theo âm cổ.", "水": "Tượng hình — 水.", "慢": "Hình thanh — 忄 gợi nghĩa, 曼 màn gợi âm.", "流": "Hình thanh — 水 gợi nghĩa, 㐬 liú gợi âm.", "聊": "Hình thanh — 耳 gợi nghĩa, 卯 mǎo gợi âm.", "前": "Hội ý — 丷 + 月 + 刂 hợp lại thành nghĩa “phía trước, trước”.", "日": "Tượng hình — 囗 + 一.", "子": "Tượng hình — 子.", "谈": "Hình thanh — 讠 gợi nghĩa, 炎 yán gợi âm.", "恋": "Hình thanh — 心 gợi nghĩa, 亦 yì gợi âm.", "时": "Hình thanh — 日 gợi nghĩa, 寸 cùn gợi âm.", "候": "Hình thanh — 亻 gợi nghĩa, 侯 hòu gợi âm.", "都": "Hình thanh — 者 + 阝.", "已": "Chỉ sự — 己 (biến thể).", "白": "Hội ý — 丿 + 日 hợp lại thành nghĩa “trắng”.", "头": "Hội ý — 丶 + 丶 + 大 hợp lại thành nghĩa “đầu”.", "想": "Hình thanh — 相 + 心.", "叫": "Hình thanh — 口 gợi nghĩa, 丩 jiū gợi âm.", "丫": "Tượng hình — hình cái chạc cây chẻ đôi.", "牵": "Hội ý — 大 + 冖 + 牛 hợp lại thành nghĩa “dắt; kéo”.", "手": "Tượng hình — 手.", "静": "Hình thanh — 青 gợi nghĩa, 青 qīng gợi âm.", "靠": "Hội ý — 告 + 非 hợp lại thành nghĩa “dựa vào”.", "胸": "Hình thanh — 月 gợi nghĩa, 匈 xiōng gợi âm.", "口": "Tượng hình — 口.", "画": "Hội ý — 一 + 田 + 凵 hợp lại thành nghĩa “vẽ, tranh”.", "面": "Tượng hình — 面.", "做": "Hình thanh — 亻 gợi nghĩa, 故 gù gợi âm.", "长": "Tượng hình — 丿 + 匕.", "厮": "Hình thanh — 厂 gợi nghĩa (nơi nương náu), 斯 sī gợi âm đúng luôn.", "守": "Hội ý — 宀 + 寸 hợp lại thành nghĩa “giữ; canh giữ”."};
-const WORDS={"左右": ["zuǒyòu", "tả hữu", "khoảng, chừng; trái phải"], "以后": ["yǐhòu", "dĩ hậu", "sau này, về sau"], "运气": ["yùnqi", "vận khí", "vận may, may rủi"], "希望": ["xīwàng", "hi vọng", "hy vọng"], "夕阳": ["xīyáng", "tịch dương", "nắng chiều, hoàng hôn"], "感受": ["gǎnshòu", "cảm thụ", "cảm nhận; cảm thấy"], "交换": ["jiāohuàn", "giao hoán", "trao đổi, trao cho nhau"], "胸口": ["xiōngkǒu", "hung khẩu", "ngực, lồng ngực"], "一起": ["yìqǐ", "nhất khởi", "cùng nhau"], "时候": ["shíhou", "thời hậu", "lúc; khi; thời gian"], "日子": ["rìzi", "nhật tử", "ngày tháng; cuộc sống"], "幸运": ["xìngyùn", "hạnh vận", "may mắn"], "尴尬": ["gāngà", "giam giới", "lúng túng; dở dang, ngượng ngùng"], "年纪": ["niánjì", "niên kỷ", "tuổi tác"], "沼泽": ["zhǎozé", "chiểu trạch", "đầm lầy"], "信物": ["xìnwù", "tín vật", "vật làm tin, tín vật"], "余生": ["yúshēng", "dư sinh", "quãng đời còn lại"], "摇椅": ["yáoyǐ", "diêu ỷ", "ghế xích đu, ghế bập bênh"], "温柔": ["wēnróu", "ôn nhu", "dịu dàng, ấm áp"], "微风": ["wēifēng", "vi phong", "gió nhẹ"], "丫头": ["yātou", "nha đầu", "“nha đầu” — cách gọi yêu cô gái"], "画面": ["huàmiàn", "họa diện", "khung cảnh, hình ảnh"], "长相厮守": ["cháng xiāng sī shǒu", "trường tương tư thủ", "bên nhau trọn đời, mãi mãi không rời"], "刚好": ["gānghǎo", "cương hảo", "vừa khéo, vừa đúng lúc"], "深情": ["shēnqíng", "thâm tình", "tình cảm sâu đậm"], "相望": ["xiāng wàng", "tương vọng", "nhìn nhau đắm đuối"], "在一起": ["zài yìqǐ", "tại nhất khởi", "ở bên nhau"], "五十年": ["wǔshí nián", "ngũ thập niên", "năm mươi năm"]};
+const WORDS={"左右": ["zuǒyòu", "tả hữu", "khoảng, chừng; trái phải"], "以后": ["yǐhòu", "dĩ hậu", "sau này, về sau"], "运气": ["yùnqi", "vận khí", "vận may, may rủi"], "希望": ["xīwàng", "hi vọng", "hy vọng"], "夕阳": ["xīyáng", "tịch dương", "nắng chiều, hoàng hôn"], "感受": ["gǎnshòu", "cảm thụ", "cảm nhận; cảm thấy"], "交换": ["jiāohuàn", "giao hoán", "trao đổi, trao cho nhau"], "胸口": ["xiōngkǒu", "hung khẩu", "ngực, lồng ngực"], "一起": ["yìqǐ", "nhất khởi", "cùng nhau"], "时候": ["shíhou", "thời hậu", "lúc; khi; thời gian"], "日子": ["rìzi", "nhật tử", "ngày tháng; cuộc sống"], "幸运": ["xìngyùn", "hạnh vận", "may mắn"], "尴尬": ["gāngà", "giam giới", "lúng túng; dở dang, ngượng ngùng"], "年纪": ["niánjì", "niên kỷ", "tuổi tác"], "沼泽": ["zhǎozé", "chiểu trạch", "đầm lầy"], "信物": ["xìnwù", "tín vật", "vật làm tin, tín vật"], "余生": ["yúshēng", "dư sinh", "quãng đời còn lại"], "摇椅": ["yáoyǐ", "diêu ỷ", "ghế xích đu, ghế bập bênh"], "温柔": ["wēnróu", "ôn nhu", "dịu dàng, ấm áp"], "微风": ["wēifēng", "vi phong", "gió nhẹ"], "丫头": ["yātou", "nha đầu", "“nha đầu” — cách gọi yêu cô gái"], "画面": ["huàmiàn", "họa diện", "khung cảnh, hình ảnh"], "长相厮守": ["cháng xiāng sī shǒu", "trường tương tư thủ", "bên nhau trọn đời, mãi mãi không rời"], "刚好": ["gānghǎo", "cương hảo", "vừa khéo, vừa đúng lúc"], "深情": ["shēnqíng", "thâm tình", "tình cảm sâu đậm"], "相望": ["xiāng wàng", "tương vọng", "nhìn nhau đắm đuối"], "在一起": ["zài yìqǐ", "tại nhất khởi", "ở bên nhau"], "遇见": ["yùjiàn", "ngộ kiến", "gặp được; bắt gặp"], "五十年": ["wǔshí nián", "ngũ thập niên", "năm mươi năm"]};
 function toggleOpt(cls,btn){document.body.classList.toggle(cls);var on=!document.body.classList.contains(cls);btn.setAttribute('aria-pressed',on?'true':'false');}
 const POS={"此": "Đại từ", "生": "Danh từ", "最": "Phó từ", "好": "Tính từ", "的": "Trợ từ", "运": "Danh từ", "气": "Danh từ", "就": "Phó từ", "是": "Động từ", "遇": "Động từ", "见": "Động từ", "了": "Trợ từ", "你": "Đại từ", "刚": "Phó từ", "也": "Phó từ", "爱": "Động từ", "我": "Đại từ", "着": "Trợ từ", "在": "Giới từ", "这": "Đại từ", "个": "Lượng từ", "尴": "Tính từ", "尬": "Tính từ", "年": "Danh từ", "纪": "Danh từ", "再": "Phó từ", "一": "Số từ", "人": "Danh từ", "多": "Phó từ", "幸": "Tính từ", "能": "Động từ", "和": "Liên từ", "起": "Động từ", "大": "Tính từ", "欢": "Tính từ", "喜": "Tính từ", "等": "Động từ", "到": "Động từ", "带": "Động từ", "走": "Động từ", "出": "Động từ", "那": "Đại từ", "片": "Lượng từ", "沼": "Danh từ", "泽": "Danh từ", "地": "Danh từ", "从": "Giới từ", "们": "Trợ từ", "交": "Động từ", "换": "Động từ", "信": "Danh từ", "物": "Danh từ", "深": "Tính từ", "情": "Danh từ", "相": "Phó từ", "望": "Động từ", "刻": "Danh từ", "余": "Tính từ", "希": "Động từ", "五": "Số từ", "十": "Số từ", "以": "Giới từ", "后": "Danh từ", "还": "Phó từ", "左": "Danh từ", "右": "Danh từ", "坐": "Động từ", "摇": "Động từ", "椅": "Danh từ", "里": "Danh từ", "感": "Động từ", "受": "Động từ", "夕": "Danh từ", "阳": "Danh từ", "温": "Tính từ", "柔": "Tính từ", "听": "Động từ", "微": "Tính từ", "风": "Danh từ", "轻": "Tính từ", "吹": "Động từ", "河": "Danh từ", "水": "Danh từ", "慢": "Tính từ", "流": "Động từ", "聊": "Động từ", "前": "Danh từ", "日": "Danh từ", "子": "Danh từ", "谈": "Động từ", "恋": "Động từ", "时": "Danh từ", "候": "Danh từ", "都": "Phó từ", "已": "Phó từ", "白": "Tính từ", "头": "Danh từ", "想": "Động từ", "叫": "Động từ", "丫": "Danh từ", "牵": "Động từ", "手": "Danh từ", "静": "Tính từ", "靠": "Động từ", "胸": "Danh từ", "口": "Danh từ", "画": "Danh từ", "面": "Danh từ", "做": "Động từ", "长": "Tính từ", "厮": "Phó từ", "守": "Động từ", "不": "Phó từ"};
 const GLOSS={"此": "này; đây", "生": "sinh ra; sống; sinh", "最": "nhất, nhất", "好": "tốt; hay", "的": "(trong 打的) xe taxi; của", "运": "vận chuyển; vận may; vận", "气": "khí, hơi", "就": "thì, liền, ngay", "是": "là, đúng", "遇": "gặp; đối xử", "见": "thấy; gặp", "了": "trợ từ hoàn thành: đã, rồi — 遇见了 (đã gặp), 等到了 (đã chờ được)", "你": "bạn; anh; chị", "刚": "cứng, chắc; vừa mới", "也": "cũng; vậy", "爱": "yêu; thích", "我": "tôi; ta", "着": "trợ từ tiếp diễn: đang — 爱着 (đang yêu), 牵着 (đang nắm)", "在": "ở; tại; đang", "这": "này; đây", "个": "cái, chiếc (lượng từ)", "尴": "lúng túng, ngượng ngùng", "尬": "lúng túng (chỉ dùng trong 尴尬)", "年": "năm", "纪": "thế kỷ; ghi chép", "不": "không", "再": "lại; nữa", "一": "một", "人": "người", "多": "nhiều", "幸": "may mắn; hạnh phúc", "能": "có thể, có khả năng", "和": "hòa; ấm áp", "起": "đứng dậy; bắt đầu", "大": "lớn; to", "欢": "vui vẻ; hoan hỉ", "喜": "vui; thích", "等": "đợi; bằng nhau", "到": "đến; tới", "带": "mang theo; thắt lưng", "走": "đi; đi bộ", "出": "ra; xuất", "那": "đó; kia", "片": "tấm; mảnh; danh thiếp (trong 名片)", "沼": "đầm lầy, ao bùn", "泽": "đầm nước; ân trạch", "地": "đất; mặt đất; địa", "从": "từ; theo; đi theo", "们": "hậu tố số nhiều (chỉ người)", "交": "giao nhau, gặp gỡ, giao", "换": "đổi, thay; hoán", "信": "tin, thư, tin tưởng", "物": "vật, đồ vật", "深": "sâu; thâm", "情": "tình cảm; cảm xúc", "相": "lẫn nhau; dáng vẻ", "望": "trông; ngắm; hy vọng", "刻": "khắc, chạm; giờ khắc", "余": "thừa; dư", "希": "hy vọng; hiếm", "五": "năm (số 5)", "十": "mười", "以": "dùng, lấy; để", "后": "phía sau, sau", "还": "vẫn; còn (đọc hái; nghĩa “trả lại” đọc huán)", "左": "trái", "右": "phải", "坐": "ngồi; đi (xe)", "摇": "lắc; vẫy", "椅": "ghế", "里": "trong; dặm", "感": "cảm thấy, cảm giác", "受": "nhận; chịu; cảm nhận", "夕": "chiều tối", "阳": "mặt trời, phía nắng", "温": "ấm, nhiệt độ", "柔": "mềm mại, dịu dàng", "听": "nghe; nghe ngóng", "微": "nhỏ, bé, tinh vi", "风": "gió", "轻": "nhẹ, trẻ trung", "吹": "thổi", "河": "sông", "水": "nước", "慢": "chậm", "流": "chảy; lưu thông", "聊": "trò chuyện; buồn chán", "前": "phía trước, trước", "日": "ngày; mặt trời", "子": "con, đứa trẻ", "谈": "nói chuyện; bàn luận", "恋": "yêu; lưu luyến", "时": "thời gian, lúc", "候": "chờ đợi; lúc, thời điểm", "都": "đều; tất cả (đọc dōu; nghĩa “thủ đô” đọc dū)", "已": "đã; mà thôi", "白": "trắng", "头": "đầu", "想": "nghĩ; muốn", "叫": "gọi; kêu; tên là", "丫": "chạc cây; (trong 丫头: cách gọi cô gái)", "牵": "dắt; kéo", "手": "tay", "静": "yên tĩnh", "靠": "dựa vào", "胸": "ngực", "口": "miệng", "画": "vẽ, tranh", "面": "mặt; bề mặt", "做": "làm; làm việc", "长": "dài lâu (đọc cháng trong 长相厮守; nghĩa “lớn lên, trưởng” đọc zhǎng)", "厮": "lẫn nhau, gắn bó (trong 长相厮守)", "守": "giữ; canh giữ"};
@@ -507,6 +654,201 @@ makeClickable();
     else if (running) raf = requestAnimationFrame(frame);
   });
 })();
+</script>
+
+
+<script>
+/* ================= 4 cách học chủ động ================= */
+var FLASH = [{"w": "运气", "py": "yùnqi", "hv": "vận khí", "vi": "vận may, may rủi", "ex": "此生最好的运气，就是遇见了你"}, {"w": "遇见", "py": "yùjiàn", "hv": "ngộ kiến", "vi": "gặp được; bắt gặp", "ex": "此生最好的运气，就是遇见了你"}, {"w": "刚好", "py": "gānghǎo", "hv": "cương hảo", "vi": "vừa khéo, vừa đúng lúc", "ex": "刚好你也爱我，我也爱着你"}, {"w": "尴尬", "py": "gāngà", "hv": "giam giới", "vi": "lúng túng; dở dang, ngượng ngùng", "ex": "在这个尴尬年纪，我不再是一个人"}, {"w": "年纪", "py": "niánjì", "hv": "niên kỷ", "vi": "tuổi tác", "ex": "在这个尴尬年纪，我不再是一个人"}, {"w": "幸运", "py": "xìngyùn", "hv": "hạnh vận", "vi": "may mắn", "ex": "多幸运能和你在一起"}, {"w": "在一起", "py": "zài yìqǐ", "hv": "tại nhất khởi", "vi": "ở bên nhau", "ex": "多幸运能和你在一起"}, {"w": "一起", "py": "yìqǐ", "hv": "nhất khởi", "vi": "cùng nhau", "ex": "多幸运能和你在一起"}, {"w": "沼泽", "py": "zhǎozé", "hv": "chiểu trạch", "vi": "đầm lầy", "ex": "是你带我走出，那片沼泽地"}, {"w": "交换", "py": "jiāohuàn", "hv": "giao hoán", "vi": "trao đổi, trao cho nhau", "ex": "从我们交换信物，深情相望那刻起"}, {"w": "信物", "py": "xìnwù", "hv": "tín vật", "vi": "vật làm tin, tín vật", "ex": "从我们交换信物，深情相望那刻起"}, {"w": "深情", "py": "shēnqíng", "hv": "thâm tình", "vi": "tình cảm sâu đậm", "ex": "从我们交换信物，深情相望那刻起"}, {"w": "相望", "py": "xiāng wàng", "hv": "tương vọng", "vi": "nhìn nhau đắm đuối", "ex": "从我们交换信物，深情相望那刻起"}, {"w": "余生", "py": "yúshēng", "hv": "dư sinh", "vi": "quãng đời còn lại", "ex": "我的余生就是你"}, {"w": "希望", "py": "xīwàng", "hv": "hi vọng", "vi": "hy vọng", "ex": "我希望五十年以后，你还能在我左右"}, {"w": "五十年", "py": "wǔshí nián", "hv": "ngũ thập niên", "vi": "năm mươi năm", "ex": "我希望五十年以后，你还能在我左右"}, {"w": "以后", "py": "yǐhòu", "hv": "dĩ hậu", "vi": "sau này, về sau", "ex": "我希望五十年以后，你还能在我左右"}, {"w": "左右", "py": "zuǒyòu", "hv": "tả hữu", "vi": "khoảng, chừng; trái phải", "ex": "我希望五十年以后，你还能在我左右"}, {"w": "摇椅", "py": "yáoyǐ", "hv": "diêu ỷ", "vi": "ghế xích đu, ghế bập bênh", "ex": "和你坐在摇椅里，感受那夕阳的温柔"}, {"w": "感受", "py": "gǎnshòu", "hv": "cảm thụ", "vi": "cảm nhận; cảm thấy", "ex": "和你坐在摇椅里，感受那夕阳的温柔"}, {"w": "夕阳", "py": "xīyáng", "hv": "tịch dương", "vi": "nắng chiều, hoàng hôn", "ex": "和你坐在摇椅里，感受那夕阳的温柔"}, {"w": "温柔", "py": "wēnróu", "hv": "ôn nhu", "vi": "dịu dàng, ấm áp", "ex": "和你坐在摇椅里，感受那夕阳的温柔"}, {"w": "微风", "py": "wēifēng", "hv": "vi phong", "vi": "gió nhẹ", "ex": "听微风轻轻地吹，听河水慢慢地流"}, {"w": "日子", "py": "rìzi", "hv": "nhật tử", "vi": "ngày tháng; cuộc sống", "ex": "再聊聊从前日子，刚谈恋爱的时候"}, {"w": "时候", "py": "shíhou", "hv": "thời hậu", "vi": "lúc; khi; thời gian", "ex": "再聊聊从前日子，刚谈恋爱的时候"}, {"w": "丫头", "py": "yātou", "hv": "nha đầu", "vi": "“nha đầu” — cách gọi yêu cô gái", "ex": "那时都已白了头，还想听你叫我丫头"}, {"w": "胸口", "py": "xiōngkǒu", "hv": "hung khẩu", "vi": "ngực, lồng ngực", "ex": "轻轻牵着你的手，静静靠在你胸口"}, {"w": "画面", "py": "huàmiàn", "hv": "họa diện", "vi": "khung cảnh, hình ảnh", "ex": "这个画面，是不是就叫做长相厮守"}, {"w": "长相厮守", "py": "cháng xiāng sī shǒu", "hv": "trường tương tư thủ", "vi": "bên nhau trọn đời, mãi mãi không rời", "ex": "这个画面，是不是就叫做长相厮守"}];
+var TTS_OK = ('speechSynthesis' in window);
+
+/* ---------- 1) NGHE TỪNG CÂU ---------- */
+function ttsRate(){ var s = document.getElementById('tts-speed'); return s ? parseFloat(s.value) : 0.85; }
+function zhVoice(){ try { var vs = speechSynthesis.getVoices(); for (var i = 0; i < vs.length; i++) if (/^zh/i.test(vs[i].lang)) return vs[i]; } catch(e){} return null; }
+var playingLine = null, playAllIdx = -1, playAllLines = [];
+function clearPlaying(){ if (playingLine) playingLine.classList.remove('playing'); playingLine = null; }
+function speakText(text, onend){
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN'; u.rate = ttsRate();
+  var v = zhVoice(); if (v) u.voice = v;
+  u.onend = function(){ if (onend) onend(); };
+  u.onerror = function(){ if (onend) onend(); };
+  speechSynthesis.speak(u);
+}
+function stopSpeech(){ if (TTS_OK) speechSynthesis.cancel(); playAllIdx = -1; clearPlaying();
+  var b = document.getElementById('btn-playall'); if (b) b.textContent = '▶ Nghe cả bài'; }
+function playLine(line){
+  if (!TTS_OK) return;
+  speechSynthesis.cancel(); playAllIdx = -1;
+  clearPlaying(); playingLine = line; line.classList.add('playing');
+  speakText(line.dataset.text, function(){ if (playingLine === line) clearPlaying(); });
+}
+function playAllNext(){
+  if (playAllIdx < 0 || playAllIdx >= playAllLines.length) { stopSpeech(); return; }
+  var line = playAllLines[playAllIdx];
+  clearPlaying(); playingLine = line; line.classList.add('playing');
+  speakText(line.dataset.text, function(){ playAllIdx++; playAllNext(); });
+}
+(function initListen(){
+  var toolbar = document.querySelector('.toolbar');
+  document.querySelectorAll('.line').forEach(function(line){
+    line.dataset.text = [...line.querySelectorAll('.hz')].map(function(b){ return b.getAttribute('data-ch'); }).join('');
+    playAllLines.push(line);
+    var btn = document.createElement('button');
+    btn.className = 'listen-btn'; btn.type = 'button'; btn.textContent = '🔊 Nghe câu';
+    btn.onclick = function(){ playLine(line); };
+    line.appendChild(btn);
+  });
+  if (!toolbar) return;
+  var sel = document.createElement('select'); sel.id = 'tts-speed'; sel.className = 'tts-speed';
+  sel.innerHTML = '<option value="0.7">Chậm 0.7×</option><option value="0.85" selected>Vừa 0.85×</option><option value="1">Thường 1×</option>';
+  toolbar.appendChild(sel);
+  var pa = document.createElement('button'); pa.id = 'btn-playall'; pa.type = 'button'; pa.textContent = '▶ Nghe cả bài';
+  pa.setAttribute('aria-pressed', 'false');
+  pa.onclick = function(){
+    if (playAllIdx >= 0) { stopSpeech(); pa.setAttribute('aria-pressed', 'false'); return; }
+    if (!TTS_OK) return;
+    speechSynthesis.cancel(); playAllIdx = 0; pa.textContent = '⏹ Dừng nghe';
+    pa.setAttribute('aria-pressed', 'true'); playAllNext();
+  };
+  toolbar.appendChild(pa);
+  var ph = document.createElement('button'); ph.id = 'btn-phrase'; ph.type = 'button';
+  ph.textContent = '🧩 Học theo cụm'; ph.setAttribute('aria-pressed', 'false');
+  ph.onclick = function(){ togglePhrase(ph); };
+  toolbar.appendChild(ph);
+  if (!TTS_OK) { pa.style.display = 'none'; sel.style.display = 'none';
+    document.querySelectorAll('.listen-btn').forEach(function(b){ b.style.display = 'none'; }); }
+  if (TTS_OK && speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function(){};
+})();
+
+/* ---------- 2) HỌC THEO CỤM TỪ ---------- */
+var phraseOn = false, cnBackup = new Map();
+function segmentText(text){
+  var keys = Object.keys(WORDS).sort(function(a, b){ return b.length - a.length; });
+  var res = [], i = 0;
+  while (i < text.length){
+    var m = null;
+    for (var k = 0; k < keys.length; k++) if (text.indexOf(keys[k], i) === i) { m = keys[k]; break; }
+    if (m) { res.push(m); i += m.length; } else { res.push(text[i]); i++; }
+  }
+  return res;
+}
+function togglePhrase(btn){
+  phraseOn = !phraseOn;
+  btn.setAttribute('aria-pressed', phraseOn ? 'true' : 'false');
+  document.querySelectorAll('.line .cn').forEach(function(cn){
+    if (phraseOn) { if (!cnBackup.has(cn)) cnBackup.set(cn, cn.innerHTML); buildPhrases(cn); }
+    else if (cnBackup.has(cn)) { cn.innerHTML = cnBackup.get(cn); }
+  });
+}
+function buildPhrases(cn){
+  var units = [...cn.children];
+  var items = units.map(function(u){
+    var hz = u.querySelector('.hz');
+    return { u: u, ch: hz ? hz.getAttribute('data-ch') : null };
+  });
+  var text = items.filter(function(x){ return x.ch; }).map(function(x){ return x.ch; }).join('');
+  var segs = segmentText(text).slice();
+  var frag = document.createDocumentFragment(), buffer = [], flip = false;
+  function flush(){
+    if (!buffer.length) return;
+    var span = document.createElement('span');
+    span.className = 'phrase ' + (flip ? 'ph-b' : 'ph-a');
+    var w = buffer.map(function(u){ return u.querySelector('.hz').getAttribute('data-ch'); }).join('');
+    buffer.forEach(function(u){ span.appendChild(u); });
+    span.dataset.word = w;
+    span.addEventListener('click', function(ev){ ev.stopPropagation(); openPhrase(w); });
+    frag.appendChild(span); buffer = []; flip = !flip;
+  }
+  items.forEach(function(it){
+    if (!it.ch) { flush(); frag.appendChild(it.u); return; }
+    buffer.push(it.u);
+    var cur = buffer.map(function(u){ return u.querySelector('.hz').getAttribute('data-ch'); }).join('');
+    if (segs.length && cur === segs[0]) { segs.shift(); flush(); }
+  });
+  flush();
+  cn.innerHTML = ''; cn.appendChild(frag);
+}
+function openPhrase(w){
+  var py, hv, vi;
+  if (WORDS[w]) { py = WORDS[w][0]; hv = WORDS[w][1]; vi = WORDS[w][2]; }
+  else if (DATA[w]) { py = DATA[w][0]; hv = DATA[w][1]; vi = GLOSS[w] || DATA[w][2]; }
+  else return;
+  document.getElementById('phrase-word').textContent = w;
+  document.getElementById('phrase-py').textContent = py + ' · ' + hv;
+  document.getElementById('phrase-vi').textContent = vi;
+  document.getElementById('phrase-overlay').classList.add('open');
+}
+function closePhrase(){ document.getElementById('phrase-overlay').classList.remove('open'); }
+document.getElementById('phrase-overlay').addEventListener('click', function(e){ if (e.target === this) closePhrase(); });
+
+/* ---------- 3) FLASHCARD ---------- */
+var fcIdx = 0, fcFlipped = false;
+function fcRender(){
+  var c = FLASH[fcIdx];
+  document.getElementById('fc-word').textContent = c.w;
+  document.getElementById('fc-py').textContent = c.py + ' · ' + c.hv;
+  document.getElementById('fc-vi').textContent = c.vi;
+  document.getElementById('fc-ex').textContent = 'Trong bài: ' + c.ex;
+  document.getElementById('fc-count').textContent = (fcIdx + 1) + ' / ' + FLASH.length;
+  fcFlipped = false;
+  document.getElementById('fc-card').classList.remove('flipped');
+}
+document.getElementById('fc-card').addEventListener('click', function(e){
+  var r = this.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
+  if (e.offsetX !== undefined && x < 0.22) { fcIdx = (fcIdx - 1 + FLASH.length) % FLASH.length; fcRender(); return; }
+  if (e.offsetX !== undefined && x > 0.78) { fcIdx = (fcIdx + 1) % FLASH.length; fcRender(); return; }
+  fcFlipped = !fcFlipped;
+  this.classList.toggle('flipped', fcFlipped);
+});
+document.getElementById('fc-prev').onclick = function(){ fcIdx = (fcIdx - 1 + FLASH.length) % FLASH.length; fcRender(); };
+document.getElementById('fc-next').onclick = function(){ fcIdx = (fcIdx + 1) % FLASH.length; fcRender(); };
+document.getElementById('fc-shuffle').onclick = function(){
+  for (var i = FLASH.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = FLASH[i]; FLASH[i] = FLASH[j]; FLASH[j] = t; }
+  fcIdx = 0; fcRender();
+};
+fcRender();
+
+/* ---------- 4a) ĐIỀN KHUYẾT ---------- */
+document.querySelectorAll('#sec-fill .blank').forEach(function(b){
+  b.addEventListener('click', function(){
+    if (b.classList.contains('revealed')) return;
+    b.classList.add('revealed'); b.textContent = b.dataset.word;
+    var py = b.closest('.fill-line').querySelector('.fill-py');
+    if (py) py.textContent = b.dataset.py;
+  });
+});
+document.getElementById('fill-show').onclick = function(){ document.querySelectorAll('#sec-fill .blank').forEach(function(b){ b.click(); }); };
+document.getElementById('fill-hide').onclick = function(){
+  document.querySelectorAll('#sec-fill .blank').forEach(function(b){
+    b.classList.remove('revealed'); b.textContent = '……';
+    var py = b.closest('.fill-line').querySelector('.fill-py'); if (py) py.textContent = '';
+  });
+};
+
+/* ---------- 4b) TRẮC NGHIỆM ---------- */
+var quizDone = 0, quizRight = 0;
+document.querySelectorAll('#sec-quiz .quiz-q').forEach(function(q){
+  q.querySelectorAll('.q-opt').forEach(function(opt){
+    opt.addEventListener('click', function(){
+      if (q.classList.contains('done')) return;
+      q.classList.add('done'); quizDone++;
+      if (opt.dataset.correct === '1') { opt.classList.add('right'); quizRight++; }
+      else { opt.classList.add('wrong');
+        q.querySelectorAll('.q-opt').forEach(function(o){ if (o.dataset.correct === '1') o.classList.add('right'); }); }
+      q.querySelectorAll('.q-opt').forEach(function(o){ o.disabled = true; });
+      document.getElementById('quiz-score').textContent = quizRight + ' / 10';
+    });
+  });
+});
+document.getElementById('quiz-reset').onclick = function(){
+  quizDone = 0; quizRight = 0;
+  document.getElementById('quiz-score').textContent = '0 / 10';
+  document.querySelectorAll('#sec-quiz .quiz-q').forEach(function(q){
+    q.classList.remove('done');
+    q.querySelectorAll('.q-opt').forEach(function(o){ o.classList.remove('right', 'wrong'); o.disabled = false; });
+  });
+};
 </script>
 
 </body>
