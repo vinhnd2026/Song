@@ -249,11 +249,13 @@ h1 {color: #43302a; text-shadow: 0 2px 18px rgba(255,180,90,0.5);}
     border: 1px solid rgba(201,168,106,0.28); background: rgba(13,26,39,0.72); color: #c3ced6;
     border-radius: 999px; padding: 10px 14px; font-size: 15px; font-weight: 600; cursor: pointer;
 }
-.phrase {border-radius: 10px; padding: 2px 2px 9px; cursor: pointer;}
+.phrase {border-radius: 10px; padding: 2px 1px; cursor: pointer;}
 .phrase .hz {pointer-events: none;}
-/* dấu ngoặc cụm như cũ (gạch dưới cả cụm) — đệm 9px phía dưới để gạch nằm hẳn dưới hàng Hán Việt, không đè chữ */
-.phrase.ph-a {box-shadow: inset 0 -3px 0 rgba(201,168,106,0.55);}
-.phrase.ph-b {box-shadow: inset 0 -3px 0 rgba(120,180,220,0.55);}
+/* KHÔNG dùng ngoặc/gạch nữa — phân biệt cụm bằng MÀU CHỮ xen kẽ (Anh chốt) */
+.phrase.ph-a .hz {color: #ecc97f;}
+.phrase.ph-b .hz {color: #93c9e8;}
+.phrase.ph-a .ruby-py {color: #cbb27a;}
+.phrase.ph-b .ruby-py {color: #7fa8bf;}
 .phrase:hover {background: rgba(201,168,106,0.12);}
 .phrase-popup {text-align: center; max-width: 420px;}
 .phrase-word {font-family: "Noto Serif SC", serif; font-size: 44px; color: #f0ead9;}
@@ -343,7 +345,10 @@ h1 {color: #43302a; text-shadow: 0 2px 18px rgba(255,180,90,0.5);}
 .listen-btn:hover {background: rgba(242,181,68,0.3);}
 .tts-speed {background: rgba(255,255,255,0.85); color: #6b543a; border-color: rgba(176,125,43,0.35);}
 .line.playing {border-color: rgba(232,147,12,0.75); box-shadow: 0 0 0 2px rgba(232,147,12,0.30), 0 20px 44px rgba(150,110,50,0.2);}
-.phrase.ph-b {box-shadow: inset 0 -3px 0 rgba(47,126,166,0.5);}
+.phrase.ph-a .hz {color: #b3541e;}
+.phrase.ph-b .hz {color: #1f6f9f;}
+.phrase.ph-a .ruby-py {color: #a5713d;}
+.phrase.ph-b .ruby-py {color: #3d7ca3;}
 </style>
 
 </head>
